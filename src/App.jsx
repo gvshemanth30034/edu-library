@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { LandingPage } from './pages/LandingPage.jsx';
 import { HomePage } from './pages/HomePage.jsx';
 import { LoginPage } from './pages/LoginPage.jsx';
 import { RegisterPage } from './pages/RegisterPage.jsx';
+import { RegistrationPage } from './pages/RegistrationPage.jsx';
 import { BrowseCatalogsPage } from './pages/BrowseCatalogsPage.jsx';
 import { AdminDashboard } from './pages/AdminDashboard.jsx';
 import './index.css';
@@ -32,8 +34,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Home Page - Always accessible */}
-        <Route path="/" element={<HomePage />} />
+        {/* Landing Page - Always accessible (new home page design) */}
+        <Route path="/" element={<LandingPage />} />
+
+        {/* Home Page - Resource browsing page */}
+        <Route path="/home" element={<HomePage />} />
+
+        {/* Register Page - Full-width registration page */}
+        <Route path="/register" element={<RegistrationPage />} />
 
         {/* Login Page - Redirect to home if already logged in */}
         <Route
