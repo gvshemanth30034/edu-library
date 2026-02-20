@@ -1,76 +1,90 @@
 import React, { useState } from 'react';
-import { Search, ArrowRight } from 'lucide-react';
+import { Search } from 'lucide-react';
 
+/**
+ * NDL HERO SECTION
+ * - "One Library All of India" headline
+ * - Language-aware search bar
+ * - Tagline
+ */
 export const Hero = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchText, setSearchText] = useState('');
+  const [language, setLanguage] = useState('EN');
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      // Handle search action
-      console.log('Searching for:', searchQuery);
+  const handleSearch = () => {
+    if (searchText.trim()) {
+      console.log(`Searching: "${searchText}" in ${language}`);
+      // Can be extended to filter catalogs by search term
     }
   };
 
   return (
-    <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-16 md:py-24">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-            Access Knowledge <span className="text-blue-300">Anytime, Anywhere</span>
-          </h1>
-          <p className="text-lg md:text-xl text-blue-100 mb-2">
-            India's Largest Digital Repository of Knowledge Resources
-          </p>
-          <p className="text-sm md:text-base text-blue-200">
-            Explore millions of books, journals, research papers, and educational materials
-          </p>
+    <section className="ndl-hero relative bg-gradient-to-b from-white to-blue-50 py-16 md:py-24 px-4 overflow-hidden">
+      {/* Decorative Element */}
+      <div className="absolute top-0 left-0 w-48 h-48 bg-orange-100 rounded-full opacity-10 -translate-x-1/3 -translate-y-1/3"></div>
+
+      <div className="max-w-4xl mx-auto relative z-10">
+        {/* Headline */}
+        <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 text-blue-900">
+          One Library <span className="text-green-600">All of India</span>
+        </h1>
+
+        {/* Tagline */}
+        <p className="text-center text-gray-600 italic mb-8 text-lg">
+          A Single Window Towards Paradigm Shift in Indian Education
+        </p>
+
+        {/* Search Bar with Language */}
+        <div className="flex bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+          {/* Language Dropdown */}
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="px-4 py-3 bg-gray-50 border-r border-gray-300 focus:outline-none cursor-pointer font-medium text-sm"
+          >
+            <option value="EN">English</option>
+            <option value="HI">हिंदी</option>
+            <option value="TA">தமிழ்</option>
+            <option value="TE">తెలుగు</option>
+            <option value="KA">ಕನ್ನಡ</option>
+            <option value="ML">മലയാളം</option>
+          </select>
+
+          {/* Search Input */}
+          <input
+            type="text"
+            placeholder="Enter your search key..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+            className="flex-1 px-4 py-3 outline-none text-gray-700 placeholder-gray-400"
+          />
+
+          {/* Search Button */}
+          <button
+            onClick={handleSearch}
+            className="px-6 py-3 bg-blue-900 hover:bg-blue-800 text-white font-bold transition flex items-center gap-2"
+          >
+            <Search size={18} />
+            Search
+          </button>
         </div>
 
-        {/* Search Bar */}
-        <form onSubmit={handleSearch} className="mb-12">
-          <div className="relative flex flex-col sm:flex-row gap-3">
-            <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by title, author, ISBN, or keyword..."
-                className="w-full px-5 py-4 pl-12 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-lg"
-              />
-            </div>
-            <button
-              type="submit"
-              className="px-8 py-4 bg-blue-500 hover:bg-blue-400 text-white rounded-lg font-semibold transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
-            >
-              Search
-              <ArrowRight size={20} />
-            </button>
-          </div>
-        </form>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div>
-            <div className="text-3xl md:text-4xl font-bold text-blue-300 mb-2">50K+</div>
-            <p className="text-blue-100 text-sm">Books & Journals</p>
-          </div>
-          <div>
-            <div className="text-3xl md:text-4xl font-bold text-blue-300 mb-2">10M+</div>
-            <p className="text-blue-100 text-sm">Downloads</p>
-          </div>
-          <div>
-            <div className="text-3xl md:text-4xl font-bold text-blue-300 mb-2">100+</div>
-            <p className="text-blue-100 text-sm">Languages</p>
-          </div>
-          <div>
-            <div className="text-3xl md:text-4xl font-bold text-blue-300 mb-2">24/7</div>
-            <p className="text-blue-100 text-sm">Access</p>
-          </div>
+        {/* Stats Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+          <StatItem value="50K+" label="Resources" />
+          <StatItem value="10M+" label="Users" />
+          <StatItem value="100+" label="Categories" />
+          <StatItem value="24/7" label="Accessible" />
         </div>
       </div>
     </section>
   );
 };
+
+const StatItem = ({ value, label }) => (
+  <div className="text-center">
+    <p className="text-2xl md:text-3xl font-bold text-blue-900">{value}</p>
+    <p className="text-xs md:text-sm text-gray-600 mt-1">{label}</p>
+  </div>
+);
