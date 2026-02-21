@@ -200,30 +200,30 @@ export const StudentDashboard = () => {
 
       {/* Bottom Navigation Menu */}
       <nav className="bottom-nav-menu" role="navigation" aria-label="Main navigation">
-        <a href="#overview" className={`nav-link ${activeNav === 'overview' ? 'active' : ''}`} onClick={() => setActiveNav('overview')} aria-label="Overview">
+        <div onClick={() => navigate('/student-dashboard')} className={`nav-link cursor-pointer ${activeNav === 'overview' ? 'active' : ''}`} aria-label="Overview">
           <span className="nav-icon">📊</span>
           <span className="nav-title">Overview</span>
-        </a>
-        <a href="#browse" className={`nav-link ${activeNav === 'browse' ? 'active' : ''}`} onClick={() => setActiveNav('browse')} aria-label="Browse Resources">
+        </div>
+        <div onClick={() => navigate('/catalogs')} className={`nav-link cursor-pointer ${activeNav === 'browse' ? 'active' : ''}`} aria-label="Browse Resources">
           <span className="nav-icon">📚</span>
           <span className="nav-title">Browse Resources</span>
-        </a>
-        <a href="#saved" className={`nav-link ${activeNav === 'saved' ? 'active' : ''}`} onClick={() => setActiveNav('saved')} aria-label="Saved Items">
+        </div>
+        <div onClick={() => navigate('/saved-resources')} className={`nav-link cursor-pointer ${activeNav === 'saved' ? 'active' : ''}`} aria-label="Saved Items">
           <span className="nav-icon">💾</span>
           <span className="nav-title">Saved Items</span>
-        </a>
-        <a href="#downloads" className={`nav-link ${activeNav === 'downloads' ? 'active' : ''}`} onClick={() => setActiveNav('downloads')} aria-label="Downloads">
+        </div>
+        <div onClick={() => navigate('/downloads')} className={`nav-link cursor-pointer ${activeNav === 'downloads' ? 'active' : ''}`} aria-label="Downloads">
           <span className="nav-icon">📥</span>
           <span className="nav-title">Downloads</span>
-        </a>
-        <a href="#requests" className={`nav-link ${activeNav === 'requests' ? 'active' : ''}`} onClick={() => setActiveNav('requests')} aria-label="My Requests">
+        </div>
+        <div onClick={() => navigate('/my-requests')} className={`nav-link cursor-pointer ${activeNav === 'requests' ? 'active' : ''}`} aria-label="My Requests">
           <span className="nav-icon">✉️</span>
           <span className="nav-title">My Requests</span>
-        </a>
-        <a href="#announcements" className={`nav-link ${activeNav === 'announcements' ? 'active' : ''}`} onClick={() => setActiveNav('announcements')} aria-label="Announcements">
+        </div>
+        <div onClick={() => navigate('/announcements')} className={`nav-link cursor-pointer ${activeNav === 'announcements' ? 'active' : ''}`} aria-label="Announcements">
           <span className="nav-icon">📢</span>
           <span className="nav-title">Announcements</span>
-        </a>
+        </div>
         <button onClick={handleLogout} className="nav-link nav-logout" aria-label="Logout">
           <span className="nav-icon">🚪</span>
           <span className="nav-title">Logout</span>
