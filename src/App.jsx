@@ -11,6 +11,7 @@ import { DownloadsPage } from './pages/DownloadsPage.jsx';
 import { RequestResourcePage } from './pages/RequestResourcePage.jsx';
 import { MyRequestsPage } from './pages/MyRequestsPage.jsx';
 import { AnnouncementsPage } from './pages/AnnouncementsPage.jsx';
+import { CategoryContentPage } from './pages/CategoryContentPage.jsx';
 import { AdminDashboard } from './pages/AdminDashboard.jsx';
 import { StudentDashboard } from './pages/StudentDashboard.jsx';
 import './index.css';
@@ -63,6 +64,7 @@ function App() {
 
         {/* Browse Catalogs - Always accessible */}
         <Route path="/catalogs" element={<BrowseCatalogsPage />} />
+        <Route path="/category/:slug" element={<CategoryContentPage />} />
         <Route path="/saved-resources" element={<SavedResourcesPage />} />
         <Route path="/downloads" element={<DownloadsPage />} />
         <Route path="/request-resource" element={<RequestResourcePage />} />

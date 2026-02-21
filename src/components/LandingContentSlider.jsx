@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getCategorySlug } from '../data/categoryContentData';
 
 const CARDS_DATA = [
   {
@@ -60,10 +62,16 @@ const CARDS_DATA = [
 ];
 
 export const LandingContentSlider = () => {
+  const navigate = useNavigate();
   const sliderRef = useRef(null);
   const autoScrollIntervalRef = useRef(null);
   const scrollStepRef = useRef(0);
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleCardClick = (title) => {
+    const slug = getCategorySlug(title);
+    navigate(`/category/${slug}`);
+  };
 
   const updateScrollStep = () => {
     if (!sliderRef.current) return;
@@ -145,7 +153,7 @@ export const LandingContentSlider = () => {
       
       <div className="content-grid" ref={sliderRef}>
         {CARDS_DATA.map((card) => (
-          <div key={card.id} className="card">
+          <div key={card.id} className="card cursor-pointer transition-transform hover:scale-105" onClick={() => handleCardClick(card.title)}>
             <div 
               className="card-img" 
               style={{ backgroundImage: `url('${card.image}')` }}
