@@ -1,8 +1,10 @@
 import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { MY_REQUESTS_DATA } from '../data/studentResourcesData';
 
 export const MyRequestsPage = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
 
@@ -28,6 +30,12 @@ export const MyRequestsPage = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <button
+          onClick={() => navigate('/student-dashboard')}
+          className="text-sm text-teal-600 hover:underline mb-4"
+        >
+          ← Back to Dashboard
+        </button>
         <div className="bg-white rounded-xl shadow-md p-8">
           <div className="uiExtension-filterSection mb-8">
             <div className="mb-6">

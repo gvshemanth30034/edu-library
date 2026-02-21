@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const AnnouncementsPage = () => {
+  const navigate = useNavigate();
   const announcements = [
     { date: '28 May 2024', message: 'New semester study materials uploaded for all departments' },
     { date: '25 May 2024', message: 'Database maintenance scheduled for Saturday 3AM-6AM' },
@@ -17,6 +19,12 @@ export const AnnouncementsPage = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <button
+          onClick={() => navigate('/student-dashboard')}
+          className="text-sm text-teal-600 hover:underline mb-4"
+        >
+          ← Back to Dashboard
+        </button>
         <div className="bg-white rounded-xl shadow-md p-8">
           <div className="announcements-list space-y-6">
             {announcements.length > 0 ? (

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Grid3X3, List, Info, BookOpen } from 'lucide-react';
 
 /**
@@ -178,6 +179,7 @@ const CATALOG_DATA = [
 ];
 
 export const BrowseCatalogsPage = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
@@ -209,6 +211,12 @@ export const BrowseCatalogsPage = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <button
+          onClick={() => navigate('/student-dashboard')}
+          className="text-sm text-teal-600 hover:underline mb-4"
+        >
+          ← Back to Dashboard
+        </button>
         {/* Search & Filter Section */}
         <div className="uiExtension-filterSection mb-12">
           {/* Search Bar */}
