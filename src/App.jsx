@@ -9,6 +9,7 @@ import { BrowseCatalogsPage } from './pages/BrowseCatalogsPage.jsx';
 import { SavedResourcesPage } from './pages/SavedResourcesPage.jsx';
 import { DownloadsPage } from './pages/DownloadsPage.jsx';
 import { RequestResourcePage } from './pages/RequestResourcePage.jsx';
+import { AnnouncementsPage } from './pages/AnnouncementsPage.jsx';
 import { AdminDashboard } from './pages/AdminDashboard.jsx';
 import { StudentDashboard } from './pages/StudentDashboard.jsx';
 import './index.css';
@@ -64,6 +65,7 @@ function App() {
         <Route path="/saved-resources" element={<SavedResourcesPage />} />
         <Route path="/downloads" element={<DownloadsPage />} />
         <Route path="/request-resource" element={<RequestResourcePage />} />
+        <Route path="/announcements" element={<AnnouncementsPage />} />
 
         {/* ROLE SYSTEM: Admin Dashboard - Protected route for admins only */}
         <Route path="/admin-dashboard" element={<AdminDashboard />} />

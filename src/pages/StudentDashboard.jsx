@@ -91,7 +91,7 @@ export const StudentDashboard = () => {
             <span className="link-icon">✉️</span>
             My Requests
           </a>
-          <a href="#announcements" className="sidebar-link">
+          <a href="/announcements" className="sidebar-link">
             <span className="link-icon">📢</span>
             Announcements
           </a>
