@@ -70,7 +70,7 @@ export const StudentDashboard = () => {
       <main className="dashboard-main dashboard-main--bottom-nav">
         {/* Welcome Section */}
         <section className="dashboard-welcome">
-          <h1>Welcome back, {userName}!</h1>
+          <h1>Welcome  {userName}!</h1>
           <p>Access and manage your learning materials efficiently</p>
         </section>
 
