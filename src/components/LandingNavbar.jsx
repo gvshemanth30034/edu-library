@@ -17,7 +17,7 @@ export const LandingNavbar = ({ onLoginClick }) => {
 
   return (
     <nav>
-      <div className="logo">NATIONAL DIGITAL LIBRARY</div>
+      <div className="logo">DIGITAL LIBRARY</div>
       <div className="nav-links">
         <a href="#language">Language</a>
         <a href="#login" onClick={(e) => { e.preventDefault(); onLoginClick(); }}>Log-in</a>
