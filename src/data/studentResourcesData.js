@@ -60,3 +60,30 @@ export const DOWNLOADS_DATA = [
     status: 'Completed',
   },
 ];
+
+export const MY_REQUESTS_DATA = [
+  {
+    id: 1,
+    title: 'Advanced Machine Learning Textbook',
+    category: 'Computer Science',
+    description: 'Looking for comprehensive ML textbooks covering deep learning and neural networks',
+    submittedDate: '15 May 2024',
+    status: 'Approved',
+  },
+  {
+    id: 2,
+    title: 'VLSI Design Reference',
+    category: 'Electronics',
+    description: 'Need VLSI design materials including circuit design and fabrication processes',
+    submittedDate: '10 May 2024',
+    status: 'Pending',
+  },
+  {
+    id: 3,
+    title: 'CAM/CNC Programming Guide',
+    category: 'Mechanical Engg.',
+    description: 'Request for CAM and CNC machine programming educational materials',
+    submittedDate: '5 May 2024',
+    status: 'Approved',
+  },
+];

@@ -87,7 +87,7 @@ export const StudentDashboard = () => {
             <span className="link-icon">📥</span>
             Downloads
           </a>
-          <a href="/request-resource" className="sidebar-link">
+          <a href="/my-requests" className="sidebar-link">
             <span className="link-icon">✉️</span>
             My Requests
           </a>
