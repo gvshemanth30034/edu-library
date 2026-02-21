@@ -105,7 +105,7 @@ export const LandingContentSlider = () => {
         }
 
         sliderRef.current.scrollBy({ left: step, behavior: 'smooth' });
-      }, 2500);
+      }, 1250);
     };
 
     startAutoScroll();

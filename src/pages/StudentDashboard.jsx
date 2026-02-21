@@ -74,6 +74,19 @@ export const StudentDashboard = () => {
           <p>Access and manage your learning materials efficiently</p>
         </section>
 
+        {/* Announcements Panel */}
+        <section className="dashboard-section">
+          <h2 className="section-title">Announcements</h2>
+          <div className="announcements-list">
+            {announcements.map((announcement, idx) => (
+              <div key={idx} className="announcement-item">
+                <div className="announcement-date">{announcement.date}</div>
+                <div className="announcement-message">{announcement.message}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Smart Quick Access Panel */}
         <section className="quick-access-panel">
           <div className="quick-access-card" onClick={() => navigate('/catalogs')}>
@@ -184,18 +197,6 @@ export const StudentDashboard = () => {
           </div>
         </section>
 
-        {/* Announcements Panel */}
-        <section className="dashboard-section">
-          <h2 className="section-title">Announcements</h2>
-          <div className="announcements-list">
-            {announcements.map((announcement, idx) => (
-              <div key={idx} className="announcement-item">
-                <div className="announcement-date">{announcement.date}</div>
-                <div className="announcement-message">{announcement.message}</div>
-              </div>
-            ))}
-          </div>
-        </section>
       </main>
 
       {/* Bottom Navigation Menu */}
