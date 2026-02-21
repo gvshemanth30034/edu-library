@@ -1,8 +1,10 @@
 import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Grid3X3, List, BookOpen } from 'lucide-react';
 import { SAVED_RESOURCES_DATA } from '../data/studentResourcesData';
 
 export const SavedResourcesPage = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState('grid');
@@ -29,6 +31,12 @@ export const SavedResourcesPage = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <button
+          onClick={() => navigate('/student-dashboard')}
+          className="text-sm text-teal-600 hover:underline mb-4"
+        >
+          ← Back to Dashboard
+        </button>
         <div className="uiExtension-filterSection mb-12">
           <div className="mb-8">
             <div className="relative">
