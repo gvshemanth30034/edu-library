@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCategorySlug } from '../data/categoryContentData';
 
@@ -59,13 +59,66 @@ const CARDS_DATA = [
     image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400',
     links: ['Mechanical', 'Software', 'Electrical'],
   },
+  {
+    id: 9,
+    title: 'Computer Science',
+    icon: '💻',
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400',
+    links: ['Algorithms', 'AI & ML', 'Data Structures'],
+  },
+  {
+    id: 10,
+    title: 'Medical Sciences',
+    icon: '🩺',
+    image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+    links: ['Anatomy', 'Pharmacology', 'Pathology'],
+  },
+  {
+    id: 11,
+    title: 'Business Administration',
+    icon: '📊',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400',
+    links: ['Management', 'Marketing', 'Strategy'],
+  },
+  {
+    id: 12,
+    title: 'Mathematics',
+    icon: '📐',
+    image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400',
+    links: ['Calculus', 'Linear Algebra', 'Statistics'],
+  },
+  {
+    id: 13,
+    title: 'Psychology',
+    icon: '🧠',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    links: ['Cognitive Science', 'Clinical', 'Developmental'],
+  },
+  {
+    id: 14,
+    title: 'Physics',
+    icon: '⚛️',
+    image: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=400',
+    links: ['Quantum Mechanics', 'Optics', 'Electrodynamics'],
+  },
+  {
+    id: 15,
+    title: 'Economics',
+    icon: '📈',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400',
+    links: ['Microeconomics', 'Macroeconomics', 'Econometrics'],
+  },
+  {
+    id: 16,
+    title: 'Biotechnology',
+    icon: '🧬',
+    image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400',
+    links: ['Molecular Biology', 'Bioinformatics', 'Fermentation'],
+  },
 ];
 
 export const LandingContentSlider = () => {
   const navigate = useNavigate();
-  const sliderRef = useRef(null);
-  const autoScrollIntervalRef = useRef(null);
-  const scrollStepRef = useRef(0);
   const [isHovered, setIsHovered] = useState(false);
 
   const handleCardClick = (title) => {
@@ -73,105 +126,61 @@ export const LandingContentSlider = () => {
     navigate(`/category/${slug}`);
   };
 
-  const updateScrollStep = () => {
-    if (!sliderRef.current) return;
-    const firstCard = sliderRef.current.querySelector('.card');
-    if (!firstCard) return;
-    const styles = window.getComputedStyle(sliderRef.current);
-    const gap = parseFloat(styles.columnGap || styles.gap || '0');
-    scrollStepRef.current = firstCard.getBoundingClientRect().width + gap;
-  };
-
-  // Auto-scroll functionality
-  useEffect(() => {
-    updateScrollStep();
-
-    const handleResize = () => updateScrollStep();
-    window.addEventListener('resize', handleResize);
-
-    const startAutoScroll = () => {
-      if (autoScrollIntervalRef.current) clearInterval(autoScrollIntervalRef.current);
-
-      autoScrollIntervalRef.current = setInterval(() => {
-        if (!sliderRef.current || isHovered) return;
-
-        const step = scrollStepRef.current || 300;
-        const maxScrollLeft = sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
-        const nextScroll = sliderRef.current.scrollLeft + step;
-
-        if (nextScroll >= maxScrollLeft - 2) {
-          sliderRef.current.scrollTo({ left: 0, behavior: 'auto' });
-          return;
-        }
-
-        sliderRef.current.scrollBy({ left: step, behavior: 'smooth' });
-      }, 1250);
-    };
-
-    startAutoScroll();
-
-    return () => {
-      if (autoScrollIntervalRef.current) clearInterval(autoScrollIntervalRef.current);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isHovered]);
-
-  const handleNextClick = () => {
-    if (sliderRef.current) {
-      const step = scrollStepRef.current || 300;
-      const maxScrollLeft = sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
-      const nextScroll = sliderRef.current.scrollLeft + step;
-
-      if (nextScroll >= maxScrollLeft - 2) {
-        sliderRef.current.scrollTo({ left: 0, behavior: 'auto' });
-        return;
-      }
-
-      sliderRef.current.scrollBy({ left: step, behavior: 'smooth' });
-    }
-  };
-
-  const handlePrevClick = () => {
-    if (sliderRef.current) {
-      const step = scrollStepRef.current || 300;
-      if (sliderRef.current.scrollLeft <= 2) {
-        sliderRef.current.scrollTo({ left: sliderRef.current.scrollWidth, behavior: 'auto' });
-        return;
-      }
-
-      sliderRef.current.scrollBy({ left: -step, behavior: 'smooth' });
-    }
-  };
-
   return (
-    <section 
+    <section
       className="slider-container"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <button className="arrow arrow-left" id="prevBtn" onClick={handlePrevClick}>❮</button>
-      
-      <div className="content-grid" ref={sliderRef}>
-        {CARDS_DATA.map((card) => (
-          <div key={card.id} className="card cursor-pointer transition-transform hover:scale-105" onClick={() => handleCardClick(card.title)}>
-            <div 
-              className="card-img" 
-              style={{ backgroundImage: `url('${card.image}')` }}
+      <style>{`
+        @keyframes landingMarquee {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .landing-marquee-track {
+          display: flex;
+          gap: 20px;
+          width: max-content;
+          will-change: transform;
+          animation: landingMarquee 40s linear infinite;
+        }
+        .landing-marquee-paused {
+          animation-play-state: paused !important;
+        }
+      `}</style>
+
+      {/* Overflow-hidden wrapper — no JS scroll, pure CSS loop */}
+      <div style={{ overflow: 'hidden', padding: '10px 0' }}>
+        <div className={`landing-marquee-track${isHovered ? ' landing-marquee-paused' : ''}`}>
+          {[...CARDS_DATA, ...CARDS_DATA].map((card, idx) => (
+            <div
+              key={idx}
+              className="card cursor-pointer"
+              onClick={() => handleCardClick(card.title)}
             >
-              <h3 className="heading-entrance heading-entrance-card">{card.title}</h3>
+              <div
+                className="card-img"
+                style={{ backgroundImage: `url('${card.image}')` }}
+              >
+                <h3 className="heading-entrance heading-entrance-card">{card.title}</h3>
+              </div>
+              <div className="icon-box">{card.icon}</div>
+              <ul className="card-links">
+                {card.links.map((link, linkIdx) => (
+                  <li key={linkIdx}>{link}</li>
+                ))}
+              </ul>
+              <div className="card-footer">Explore More Contents</div>
             </div>
-            <div className="icon-box">{card.icon}</div>
-            <ul className="card-links">
-              {card.links.map((link, idx) => (
-                <li key={idx}>{link}</li>
-              ))}
-            </ul>
-            <div className="card-footer">Explore More Contents</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      
-      <button className="arrow arrow-right" id="nextBtn" onClick={handleNextClick}>❯</button>
+
+      {isHovered && (
+        <p style={{ textAlign: 'center', fontSize: '0.7rem', color: '#999', marginTop: '8px' }}>
+          ⏸ Paused — move mouse away to resume
+        </p>
+      )}
     </section>
   );
 };

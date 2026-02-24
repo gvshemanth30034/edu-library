@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /* ===================================
@@ -20,6 +21,7 @@ export const AutoScrollCarousel = () => {
       icon: '📚',
       links: ['NCERT Books', 'State Boards', 'Question Banks'],
       bgImage: 'from-teal-500 via-teal-600 to-teal-700',
+      slug: 'school-education',
     },
     {
       id: 2,
@@ -27,6 +29,7 @@ export const AutoScrollCarousel = () => {
       icon: '⚙️',
       links: ['BTech Resources', 'Project Guides', 'Assignments'],
       bgImage: 'from-purple-500 via-purple-600 to-purple-700',
+      slug: 'engineering',
     },
     {
       id: 3,
@@ -34,6 +37,7 @@ export const AutoScrollCarousel = () => {
       icon: '🔬',
       links: ['IEEE Papers', 'Journals', 'Theses'],
       bgImage: 'from-green-500 via-green-600 to-green-700',
+      slug: 'higher-education',
     },
     {
       id: 4,
@@ -41,6 +45,7 @@ export const AutoScrollCarousel = () => {
       icon: '📖',
       links: ['Novels', 'Poetry', 'Classic Works'],
       bgImage: 'from-pink-500 via-pink-600 to-pink-700',
+      slug: 'english-literature',
     },
     {
       id: 5,
@@ -48,6 +53,7 @@ export const AutoScrollCarousel = () => {
       icon: '🎓',
       links: ['History', 'Philosophy', 'Culture'],
       bgImage: 'from-amber-500 via-amber-600 to-amber-700',
+      slug: 'history',
     },
     {
       id: 6,
@@ -55,6 +61,87 @@ export const AutoScrollCarousel = () => {
       icon: '⚖️',
       links: ['Acts & Bills', 'Cases', 'Legal Books'],
       bgImage: 'from-red-500 via-red-600 to-red-700',
+      slug: 'law',
+    },
+    {
+      id: 7,
+      title: 'CAREER DEVELOPMENT',
+      icon: '💼',
+      links: ['Resume Writing', 'Interview Prep', 'Networking'],
+      bgImage: 'from-sky-500 via-sky-600 to-sky-700',
+      slug: 'career-development',
+    },
+    {
+      id: 8,
+      title: 'CULTURAL ARCHIVES',
+      icon: '🏛️',
+      links: ['Art History', 'Festivals', 'Heritage'],
+      bgImage: 'from-rose-500 via-rose-600 to-rose-700',
+      slug: 'cultural-archives',
+    },
+    {
+      id: 9,
+      title: 'NEWSPAPER ARCHIVES',
+      icon: '📰',
+      links: ['National News', 'Hindi Press', 'Regional'],
+      bgImage: 'from-slate-500 via-slate-600 to-slate-700',
+      slug: 'newspaper-archives',
+    },
+    {
+      id: 10,
+      title: 'JUDICIAL RESOURCES',
+      icon: '🏛',
+      links: ['SC Judgments', 'HC Orders', 'Laws & Acts'],
+      bgImage: 'from-stone-500 via-stone-600 to-stone-700',
+      slug: 'judicial-resources',
+    },
+    {
+      id: 11,
+      title: 'PATENTS & STANDARDS',
+      icon: '📜',
+      links: ['CPC Classification', 'Jurisdictions', 'Issuing Authority'],
+      bgImage: 'from-indigo-500 via-indigo-600 to-indigo-700',
+      slug: 'patents-standards',
+    },
+    {
+      id: 12,
+      title: 'COMPUTER SCIENCE',
+      icon: '💻',
+      links: ['Algorithms', 'AI & ML', 'Data Structures'],
+      bgImage: 'from-cyan-500 via-cyan-600 to-cyan-700',
+      slug: 'computer-science',
+    },
+    {
+      id: 13,
+      title: 'MEDICAL SCIENCES',
+      icon: '🩺',
+      links: ['Anatomy', 'Pharmacology', 'Pathology'],
+      bgImage: 'from-emerald-500 via-emerald-600 to-emerald-700',
+      slug: 'medical-sciences',
+    },
+    {
+      id: 14,
+      title: 'BUSINESS ADMIN',
+      icon: '📊',
+      links: ['Management', 'Marketing', 'Strategy'],
+      bgImage: 'from-orange-500 via-orange-600 to-orange-700',
+      slug: 'business-administration',
+    },
+    {
+      id: 15,
+      title: 'PSYCHOLOGY',
+      icon: '🧠',
+      links: ['Cognitive Science', 'Clinical', 'Developmental'],
+      bgImage: 'from-violet-500 via-violet-600 to-violet-700',
+      slug: 'psychology',
+    },
+    {
+      id: 16,
+      title: 'MATHEMATICS',
+      icon: '📐',
+      links: ['Calculus', 'Linear Algebra', 'Statistics'],
+      bgImage: 'from-lime-500 via-lime-600 to-lime-700',
+      slug: 'mathematics',
     },
   ];
 
@@ -183,8 +270,12 @@ export const AutoScrollCarousel = () => {
    =================================== */
 
 const CarouselCard = ({ card }) => {
+  const navigate = useNavigate();
   return (
-    <div className="w-80 h-96 mr-6 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 group cursor-pointer relative">
+    <div
+      className="w-80 h-96 mr-6 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 group cursor-pointer relative"
+      onClick={() => card.slug && navigate(`/category/${card.slug}`)}
+    >
       {/* Background Gradient */}
       <div className={`absolute inset-0 bg-gradient-to-br ${card.bgImage} opacity-90`} />
 
