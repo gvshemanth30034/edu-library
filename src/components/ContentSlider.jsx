@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * NDL CONTENT CARDS SLIDER
@@ -14,6 +15,7 @@ const CARDS = [
     icon: '🎓',
     image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400',
     links: ['Examinations', 'Resource Types', 'Languages'],
+    slug: 'career-development',
   },
   {
     id: 2,
@@ -21,6 +23,7 @@ const CARDS = [
     icon: '🎨',
     image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400',
     links: ['Content Providers', 'Resource Types', 'Languages'],
+    slug: 'cultural-archives',
   },
   {
     id: 3,
@@ -28,6 +31,7 @@ const CARDS = [
     icon: '📰',
     image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400',
     links: ['Content Providers', 'Countries', 'Languages'],
+    slug: 'newspaper-archives',
   },
   {
     id: 4,
@@ -35,6 +39,7 @@ const CARDS = [
     icon: '⚖️',
     image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400',
     links: ['Content Providers', 'Case Types', 'Laws/Acts'],
+    slug: 'judicial-resources',
   },
   {
     id: 5,
@@ -42,6 +47,7 @@ const CARDS = [
     icon: '📝',
     image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400',
     links: ['CPC Classification', 'Jurisdictions', 'Issuing Authority'],
+    slug: 'patents-standards',
   },
   {
     id: 6,
@@ -49,6 +55,7 @@ const CARDS = [
     icon: '🎒',
     image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400',
     links: ['Educational Boards', 'Educational Levels', 'Subjects'],
+    slug: 'school-education',
   },
   {
     id: 7,
@@ -56,6 +63,7 @@ const CARDS = [
     icon: '🏛️',
     image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400',
     links: ['Universities', 'Colleges', 'Research'],
+    slug: 'higher-education',
   },
   {
     id: 8,
@@ -63,11 +71,77 @@ const CARDS = [
     icon: '🛠️',
     image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400',
     links: ['Mechanical', 'Software', 'Electrical'],
+    slug: 'engineering',
+  },
+  {
+    id: 9,
+    title: 'Computer Science',
+    icon: '💻',
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400',
+    links: ['Algorithms', 'AI & ML', 'Data Structures'],
+    slug: 'computer-science',
+  },
+  {
+    id: 10,
+    title: 'Medical Sciences',
+    icon: '🩺',
+    image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+    links: ['Anatomy', 'Pharmacology', 'Pathology'],
+    slug: 'medical-sciences',
+  },
+  {
+    id: 11,
+    title: 'Business Administration',
+    icon: '📊',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400',
+    links: ['Management', 'Marketing', 'Strategy'],
+    slug: 'business-administration',
+  },
+  {
+    id: 12,
+    title: 'Mathematics',
+    icon: '📐',
+    image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400',
+    links: ['Calculus', 'Linear Algebra', 'Statistics'],
+    slug: 'mathematics',
+  },
+  {
+    id: 13,
+    title: 'Psychology',
+    icon: '🧠',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    links: ['Cognitive Science', 'Clinical', 'Developmental'],
+    slug: 'psychology',
+  },
+  {
+    id: 14,
+    title: 'Law & Legal Studies',
+    icon: '⚖️',
+    image: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=400',
+    links: ['Constitutional Law', 'IPC', 'Corporate Law'],
+    slug: 'law',
+  },
+  {
+    id: 15,
+    title: 'Physics',
+    icon: '⚛️',
+    image: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=400',
+    links: ['Quantum Mechanics', 'Optics', 'Electrodynamics'],
+    slug: 'physics',
+  },
+  {
+    id: 16,
+    title: 'Economics',
+    icon: '📈',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400',
+    links: ['Microeconomics', 'Macroeconomics', 'Econometrics'],
+    slug: 'economics',
   },
 ];
 
 export const ContentSlider = () => {
   const sliderRef = useRef(null);
+  const navigate = useNavigate();
   const [isPaused, setIsPaused] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -148,7 +222,8 @@ export const ContentSlider = () => {
             {[...CARDS, ...CARDS].map((card, idx) => (
               <div
                 key={idx}
-                className="ndl-card flex-shrink-0 w-64 bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                className="ndl-card flex-shrink-0 w-64 bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => card.slug && navigate(`/category/${card.slug}`)}
               >
                 {/* Card Image */}
                 <div
@@ -190,7 +265,10 @@ export const ContentSlider = () => {
 
                 {/* Card Footer */}
                 <div className="px-4 py-2 bg-gray-50 border-t border-gray-200 text-center">
-                  <p className="text-xs font-bold text-green-700 cursor-pointer hover:text-green-800 transition">
+                  <p
+                    className="text-xs font-bold text-green-700 cursor-pointer hover:text-green-800 transition"
+                    onClick={(e) => { e.stopPropagation(); card.slug && navigate(`/category/${card.slug}`); }}
+                  >
                     Explore More Contents
                   </p>
                 </div>

@@ -14,14 +14,14 @@ export const LandingHero = () => {
     <header className="hero">
       <h1 className="heading-entrance heading-premium">One Library <span>All of India</span></h1>
       <p className="heading-entrance heading-entrance-delay-1">A Single Window Towards Paradigm Shift in Indian Education</p>
-      
+
       <div className="search-container">
         <select value={language} onChange={(e) => setLanguage(e.target.value)}>
           <option>English</option>
           <option>Hindi</option>
         </select>
-        <input 
-          type="text" 
+        <input
+          type="text"
           placeholder="Enter your search key..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
