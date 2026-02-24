@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Save, Download, Mail, Megaphone, LogOut, LayoutDashboard } from 'lucide-react';
+import { BookOpen, Save, Download, Mail, Megaphone, LogOut, LayoutDashboard, Bell, X } from 'lucide-react';
 import { SAVED_RESOURCES_DATA, DOWNLOADS_DATA } from '../data/studentResourcesData';
 
 /**
@@ -37,6 +37,8 @@ export const StudentDashboard = () => {
   const [userRole, setUserRole] = useState('');
   const [userName, setUserName] = useState('Student');
   const [activeNav, setActiveNav] = useState('overview');
+  const [announcementsOpen, setAnnouncementsOpen] = useState(false);
+  const announcementsRef = useRef(null);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('uiExtension-isLoggedIn') === 'true';
@@ -53,6 +55,17 @@ export const StudentDashboard = () => {
     setUserRole(normalizedRole);
     setUserName(user.name || user.email || 'Student');
   }, [navigate]);
+
+  // Close announcements dropdown when clicking outside
+  useEffect(() => {
+    const handler = (e) => {
+      if (announcementsRef.current && !announcementsRef.current.contains(e.target)) {
+        setAnnouncementsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('uiExtension-isLoggedIn');
@@ -104,9 +117,11 @@ export const StudentDashboard = () => {
   ];
 
   const announcements = [
-    { date: '28 May 2024', message: 'New semester study materials uploaded for all departments' },
-    { date: '25 May 2024', message: 'Database maintenance scheduled for Saturday 3AM-6AM' },
-    { date: '22 May 2024', message: 'Request feature now available for suggesting new resources' },
+    { date: '28 May 2024', message: 'New semester study materials uploaded for all departments', priority: 'high' },
+    { date: '25 May 2024', message: 'Database maintenance scheduled for Saturday 3AM-6AM', priority: 'medium' },
+    { date: '22 May 2024', message: 'Request feature now available for suggesting new resources', priority: 'normal' },
+    { date: '18 May 2024', message: 'Library hours extended till 10PM during exam week', priority: 'high' },
+    { date: '15 May 2024', message: 'Research paper submission deadline: 30 May 2024', priority: 'high' },
   ];
 
   return (
@@ -120,14 +135,79 @@ export const StudentDashboard = () => {
               <p className="text-xs sm:text-sm font-semibold text-teal-700 tracking-wide uppercase">Edu Library</p>
               <h2 className="heading-premium text-lg sm:text-xl font-bold text-slate-900 truncate">Student Dashboard</h2>
             </div>
-            <button
-              onClick={handleLogout}
-              className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg border border-teal-200 bg-teal-50 text-teal-700 text-sm font-semibold hover:bg-teal-100 hover:border-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-colors"
-              aria-label="Logout"
-            >
-              <LogOut size={16} />
-              Logout
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Announcements Bell */}
+              <div ref={announcementsRef} className="relative">
+                <button
+                  onClick={() => setAnnouncementsOpen((o) => !o)}
+                  className="relative inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 bg-white text-slate-600 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-1 transition-colors"
+                  aria-label="Announcements"
+                  aria-expanded={announcementsOpen}
+                >
+                  <Bell size={18} />
+                  {/* High-priority badge */}
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-[9px] font-bold leading-none shadow">
+                    {announcements.filter(a => a.priority === 'high').length}
+                  </span>
+                </button>
+
+                {/* Dropdown */}
+                {announcementsOpen && (
+                  <div className="absolute right-0 top-12 z-50 w-80 sm:w-96 rounded-2xl bg-white border border-gray-200 shadow-2xl overflow-hidden animate-fade-in">
+                    {/* Header */}
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-orange-50 to-red-50">
+                      <div className="flex items-center gap-2">
+                        <Bell size={15} className="text-orange-600" />
+                        <span className="font-semibold text-slate-800 text-sm">Announcements</span>
+                        <span className="inline-flex items-center justify-center h-5 px-1.5 rounded-full bg-red-500 text-white text-[10px] font-bold">
+                          {announcements.filter(a => a.priority === 'high').length} urgent
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => setAnnouncementsOpen(false)}
+                        className="text-slate-400 hover:text-slate-600 transition-colors"
+                        aria-label="Close"
+                      >
+                        <X size={15} />
+                      </button>
+                    </div>
+                    {/* List */}
+                    <ul className="divide-y divide-gray-100 max-h-72 overflow-y-auto">
+                      {announcements.map((a, idx) => (
+                        <li key={idx} className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                          <span className={`mt-0.5 flex-shrink-0 h-2.5 w-2.5 rounded-full ${
+                            a.priority === 'high' ? 'bg-red-500' : a.priority === 'medium' ? 'bg-orange-400' : 'bg-teal-400'
+                          }`} />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm text-slate-700 leading-snug">{a.message}</p>
+                            <p className="text-xs text-slate-400 mt-0.5">{a.date}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    {/* Footer */}
+                    <div className="px-4 py-2.5 border-t border-gray-100 bg-gray-50">
+                      <button
+                        onClick={() => { setAnnouncementsOpen(false); navigate('/announcements'); }}
+                        className="w-full text-center text-xs font-semibold text-teal-700 hover:text-teal-900 transition-colors"
+                      >
+                        View all announcements →
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Logout */}
+              <button
+                onClick={handleLogout}
+                className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg border border-teal-200 bg-teal-50 text-teal-700 text-sm font-semibold hover:bg-teal-100 hover:border-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-colors"
+                aria-label="Logout"
+              >
+                <LogOut size={16} />
+                Logout
+              </button>
+            </div>
           </div>
         </section>
 
@@ -207,19 +287,6 @@ export const StudentDashboard = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Announcements Panel */}
-        <section className="dashboard-section">
-          <h2 className="section-title heading-entrance heading-premium">Announcements</h2>
-          <div className="announcements-list">
-            {announcements.map((announcement, idx) => (
-              <div key={idx} className="announcement-item">
-                <div className="announcement-date">{announcement.date}</div>
-                <div className="announcement-message">{announcement.message}</div>
-              </div>
-            ))}
           </div>
         </section>
 
