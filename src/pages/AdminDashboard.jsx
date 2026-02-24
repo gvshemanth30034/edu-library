@@ -56,23 +56,70 @@ export const AdminDashboard = () => {
     { student: 'Sneha Reddy', request: 'Machine Learning lecture videos', date: '27 May 2024', status: 'Pending' },
   ];
 
+  const dummyResources = {
+    PDFs: [
+      { id: 1, title: 'Data Structures Notes' },
+      { id: 2, title: 'Operating Systems Guide' },
+      { id: 3, title: 'Computer Networks PDF' },
+    ],
+    Videos: [
+      { id: 4, title: 'React Basics Tutorial' },
+      { id: 5, title: 'DBMS Full Course' },
+    ],
+    Documents: [
+      { id: 6, title: 'Physics Lab Manual' },
+      { id: 7, title: 'Project Documentation Template' },
+    ],
+  };
+
+  const totalResourcesCount = dummyResources.PDFs.length
+    + dummyResources.Videos.length
+    + dummyResources.Documents.length;
+
+  const handleResourceCardClick = () => {
+    navigate('/resources-analytics');
+  };
+
   return (
     <div className="dashboard-wrapper dashboard-wrapper--bottom-nav">
       {/* Main Content */}
       <main className="dashboard-main dashboard-main--bottom-nav">
         {/* Welcome Section */}
-        <section className="dashboard-welcome admin-welcome">
-          <h1 className="heading-entrance heading-premium">Admin Control Center</h1>
-          <p className="heading-entrance heading-entrance-delay-1">Manage learning resources and monitor student activity</p>
+        <section className="admin-hero">
+          <div className="admin-hero__content">
+            <p className="admin-hero__kicker">Welcome back</p>
+            <h1 className="admin-hero__title">Admin Control Center</h1>
+            <p className="admin-hero__subtitle">
+              Manage learning resources, review requests, and monitor activity in one place.
+            </p>
+            <div className="admin-hero__actions">
+              <button type="button" className="admin-hero__primary" onClick={handleResourceCardClick}>
+                View Analytics
+              </button>
+              <button type="button" className="admin-hero__secondary" onClick={() => navigate('/announcements')}>
+                Post Announcement
+              </button>
+            </div>
+          </div>
+          <div className="admin-hero__visual" aria-hidden="true">
+            <div className="admin-hero__icon-grid">
+              <div className="admin-hero__icon-card"><BookOpen size={26} /></div>
+              <div className="admin-hero__icon-card"><Download size={26} /></div>
+              <div className="admin-hero__icon-card"><Settings size={26} /></div>
+              <div className="admin-hero__icon-card"><LayoutDashboard size={26} /></div>
+            </div>
+            <span className="admin-hero__orb admin-hero__orb--one" />
+            <span className="admin-hero__orb admin-hero__orb--two" />
+          </div>
         </section>
 
         {/* Overview Stats Grid */}
         <section className="admin-stats-grid">
-          <div className="admin-stat-card">
+          <div className="admin-stat-card" onClick={handleResourceCardClick}>
             <div className="stat-icon flex items-center justify-center rounded-xl bg-teal-50 text-teal-600 p-3 h-14 w-14"><BookOpen size={36} /></div>
             <div className="stat-content">
               <h3 className="heading-entrance heading-entrance-card heading-premium">Total Resources</h3>
-              <p className="stat-number">1,248</p>
+              <p className="stat-number">{totalResourcesCount}</p>
               <span className="stat-meta">+36 this month</span>
             </div>
           </div>
