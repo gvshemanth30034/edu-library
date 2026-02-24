@@ -74,12 +74,33 @@ export const StudentDashboard = () => {
   ];
 
   const departments = [
-    { name: 'Computer Science', count: 45 },
-    { name: 'Electronics & Comm.', count: 38 },
-    { name: 'Mechanical Engg.', count: 32 },
-    { name: 'Civil Engineering', count: 28 },
-    { name: 'Mathematics', count: 25 },
-    { name: 'Physics', count: 22 },
+    { name: 'Computer Science',    count: 45, slug: 'computer-science' },
+    { name: 'Electronics & Comm.', count: 38, slug: 'electronics' },
+    { name: 'Mechanical Engg.',    count: 32, slug: 'mechanical' },
+    { name: 'Civil Engineering',   count: 28, slug: 'civil-engineering' },
+    { name: 'Mathematics',         count: 25, slug: 'mathematics' },
+    { name: 'Physics',             count: 22, slug: 'physics' },
+  ];
+
+  const learningItems = [
+    {
+      title: 'Data Structures',
+      progress: 60,
+      lastAccessed: 'Today',
+      url: 'https://www.orimi.com/pdf-test.pdf',
+    },
+    {
+      title: 'Circuit Theory',
+      progress: 35,
+      lastAccessed: 'Yesterday',
+      url: 'https://web.eecs.utk.edu/~hqi/teaching/ece505f15/lecture01_intro.pdf',
+    },
+    {
+      title: 'Engineering Mathematics',
+      progress: 80,
+      lastAccessed: '3 days ago',
+      url: 'https://www.youtube.com/watch?v=4LqZdkkBDas',
+    },
   ];
 
   const announcements = [
@@ -273,7 +294,12 @@ export const StudentDashboard = () => {
               <div key={idx} className="department-card">
                 <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">{dept.name}</h4>
                 <p className="dept-count">{dept.count} resources</p>
-                <button className="dept-btn">Explore</button>
+                <button
+                  className="dept-btn"
+                  onClick={() => navigate(`/category/${dept.slug}`)}
+                >
+                  Explore
+                </button>
               </div>
             ))}
           </div>
@@ -283,36 +309,28 @@ export const StudentDashboard = () => {
         <section className="dashboard-section">
           <h2 className="section-title heading-entrance heading-premium">Ongoing Learning</h2>
           <div className="learning-cards">
-            <div className="learning-card">
-              <div className="learning-header">
-                <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">Data Structures</h4>
-                <span className="progress-badge">60% Complete</span>
+            {learningItems.map((item, idx) => (
+              <div key={idx} className="learning-card">
+                <div className="learning-header">
+                  <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">{item.title}</h4>
+                  <span className="progress-badge">{item.progress}% Complete</span>
+                </div>
+                <div className="progress-bar">
+                  <div className="progress-fill" style={{ width: `${item.progress}%` }}></div>
+                </div>
+                <div className="flex items-center justify-between mt-3">
+                  <p className="learning-meta">Last accessed: {item.lastAccessed}</p>
+                  <button
+                    onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-600 text-white text-xs font-semibold hover:bg-teal-700 active:bg-teal-800 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1"
+                    aria-label={`Continue ${item.title}`}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Continue
+                  </button>
+                </div>
               </div>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '60%' }}></div>
-              </div>
-              <p className="learning-meta">Last accessed: Today</p>
-            </div>
-            <div className="learning-card">
-              <div className="learning-header">
-                <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">Circuit Theory</h4>
-                <span className="progress-badge">35% Complete</span>
-              </div>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '35%' }}></div>
-              </div>
-              <p className="learning-meta">Last accessed: Yesterday</p>
-            </div>
-            <div className="learning-card">
-              <div className="learning-header">
-                <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">Engineering Mathematics</h4>
-                <span className="progress-badge">80% Complete</span>
-              </div>
-              <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '80%' }}></div>
-              </div>
-              <p className="learning-meta">Last accessed: 3 days ago</p>
-            </div>
+            ))}
           </div>
         </section>
 
