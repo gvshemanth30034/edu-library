@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 const STATS = [
-  { value: 5000000, label: 'Resources', suffix: '+', display: '5M+' },
-  { value: 30,      label: 'Languages', suffix: '+', display: '30+' },
-  { value: 1000,    label: 'Institutions', suffix: '+', display: '1K+' },
-  { value: 16,      label: 'Departments', suffix: '', display: '16' },
+  { value: 5000000, label: 'resources', suffix: '+', display: '5M+' },
+  { value: 30,      label: 'languages', suffix: '+', display: '30+' },
+  { value: 1000,    label: 'institutions', suffix: '+', display: '1K+' },
+  { value: 16,      label: 'departments', suffix: '', display: '16' },
 ];
 
 const FLOATING = [
@@ -17,8 +19,9 @@ const FLOATING = [
 ];
 
 export const LandingHero = () => {
+  const { language } = useLanguage();
   const [searchText, setSearchText] = useState('');
-  const [language, setLanguage]     = useState('English');
+  const [selectedLang, setSelectedLang] = useState('English');
   const [counts, setCounts]         = useState(STATS.map(() => 0));
   const countedRef = useRef(false);
 
@@ -49,7 +52,7 @@ export const LandingHero = () => {
   };
 
   const handleSearch = () => {
-    if (searchText.trim()) console.log(`Searching: "${searchText}" in ${language}`);
+    if (searchText.trim()) console.log(`Searching: "${searchText}" in ${selectedLang}`);
   };
 
   return (
@@ -59,11 +62,11 @@ export const LandingHero = () => {
         <span key={i} className="hero-float" style={{ ...f.style, animationDuration: f.style.animationDuration, animationDelay: f.style.animationDelay }}>{f.emoji}</span>
       ))}
 
-      <h1 className="heading-entrance heading-premium">One Library <span>All of India</span></h1>
-      <p className="heading-entrance heading-entrance-delay-1">A Single Window Towards Paradigm Shift in Indian Education</p>
+      <h1 className="heading-entrance heading-premium">{translate('heroTitle', language)} <span>{translate('heroTitleHighlight', language)}</span></h1>
+      <p className="heading-entrance heading-entrance-delay-1">{translate('heroSubtitle', language)}</p>
 
       <div className="search-container">
-        <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+        <select value={selectedLang} onChange={(e) => setSelectedLang(e.target.value)}>
           <option>English</option>
           <option>Hindi</option>
           <option>Tamil</option>
@@ -73,12 +76,12 @@ export const LandingHero = () => {
         </select>
         <input
           type="text"
-          placeholder="Search books, journals, research papers..."
+          placeholder={translate('searchPlaceholder', language)}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
         />
-        <button className="search-btn" onClick={handleSearch}>Search</button>
+        <button className="search-btn" onClick={handleSearch}>{translate('searchButton', language)}</button>
       </div>
 
       {/* Animated stats strip */}
@@ -86,7 +89,7 @@ export const LandingHero = () => {
         {STATS.map((stat, i) => (
           <div key={i} className="hero-stat-item">
             <span className="hero-stat-num">{formatCount(counts[i], stat)}</span>
-            <span className="hero-stat-label">{stat.label}</span>
+            <span className="hero-stat-label">{translate(stat.label, language)}</span>
           </div>
         ))}
       </div>

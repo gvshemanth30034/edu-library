@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Globe, LogIn, Maximize2 } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 export const LandingNavbar = ({ onLoginClick }) => {
   const navigate = useNavigate();
+  const { language, setLanguage } = useLanguage();
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [language, setLanguage] = useState('English');
   const [showLangMenu, setShowLangMenu] = useState(false);
   const langMenuRef = useRef(null);
 
@@ -34,7 +36,7 @@ export const LandingNavbar = ({ onLoginClick }) => {
 
   return (
     <nav style={{ padding: '12px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff', borderBottom: '1px solid #e5e7eb', position: 'sticky', top: 0, zIndex: 1000 }}>
-      <div className="logo" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#008080', letterSpacing: '0.02em' }}>DIGITAL LIBRARY</div>
+      <div className="logo" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#008080', letterSpacing: '0.02em' }}>{translate('logo', language)}</div>
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         {/* Language Dropdown */}
         <div ref={langMenuRef} style={{ position: 'relative' }}>
@@ -139,7 +141,7 @@ export const LandingNavbar = ({ onLoginClick }) => {
           }}
         >
           <LogIn size={16} strokeWidth={2} />
-          <span>Log in</span>
+          <span>{translate('login', language)}</span>
         </button>
 
         {/* Fullscreen Button */}
