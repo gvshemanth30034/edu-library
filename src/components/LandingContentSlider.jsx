@@ -1,116 +1,118 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCategorySlug } from '../data/categoryContentData';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 const CARDS_DATA = [
   {
     id: 1,
-    title: 'Career Development',
+    titleKey: 'careerDevelopment',
     icon: '🎓',
     image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400',
     links: ['Examinations', 'Resource Types', 'Languages'],
   },
   {
     id: 2,
-    title: 'Cultural Archives',
+    titleKey: 'culturalArchives',
     icon: '🎨',
     image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400',
     links: ['Content Providers', 'Resource Types', 'Languages'],
   },
   {
     id: 3,
-    title: 'Newspaper Archives',
+    titleKey: 'newspaperArchives',
     icon: '📰',
     image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400',
     links: ['Content Providers', 'Countries', 'Languages'],
   },
   {
     id: 4,
-    title: 'Judicial Resources',
+    titleKey: 'judicialResources',
     icon: '⚖️',
     image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400',
     links: ['Content Providers', 'Case Types', 'Laws/Acts'],
   },
   {
     id: 5,
-    title: 'Patents & Standards',
+    titleKey: 'patentsStandards',
     icon: '📝',
     image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400',
     links: ['CPC Classification', 'Jurisdictions', 'Issuing Authority'],
   },
   {
     id: 6,
-    title: 'School Education',
+    titleKey: 'schoolEducation',
     icon: '🎒',
     image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400',
     links: ['Educational Boards', 'Educational Levels', 'Subjects'],
   },
   {
     id: 7,
-    title: 'Higher Education',
+    titleKey: 'higherEducation',
     icon: '🏛️',
     image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400',
     links: ['Universities', 'Colleges', 'Research'],
   },
   {
     id: 8,
-    title: 'Engineering',
+    titleKey: 'engineering',
     icon: '🛠️',
     image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400',
     links: ['Mechanical', 'Software', 'Electrical'],
   },
   {
     id: 9,
-    title: 'Computer Science',
+    titleKey: 'computerScience',
     icon: '💻',
     image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400',
     links: ['Algorithms', 'AI & ML', 'Data Structures'],
   },
   {
     id: 10,
-    title: 'Medical Sciences',
+    titleKey: 'medicalSciences',
     icon: '🩺',
     image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
     links: ['Anatomy', 'Pharmacology', 'Pathology'],
   },
   {
     id: 11,
-    title: 'Business Administration',
+    titleKey: 'businessAdmin',
     icon: '📊',
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400',
     links: ['Management', 'Marketing', 'Strategy'],
   },
   {
     id: 12,
-    title: 'Mathematics',
+    titleKey: 'mathematics',
     icon: '📐',
     image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400',
     links: ['Calculus', 'Linear Algebra', 'Statistics'],
   },
   {
     id: 13,
-    title: 'Psychology',
+    titleKey: 'psychology',
     icon: '🧠',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
     links: ['Cognitive Science', 'Clinical', 'Developmental'],
   },
   {
     id: 14,
-    title: 'Physics',
+    titleKey: 'physics',
     icon: '⚛️',
     image: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=400',
     links: ['Quantum Mechanics', 'Optics', 'Electrodynamics'],
   },
   {
     id: 15,
-    title: 'Economics',
+    titleKey: 'economics',
     icon: '📈',
     image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400',
     links: ['Microeconomics', 'Macroeconomics', 'Econometrics'],
   },
   {
     id: 16,
-    title: 'Biotechnology',
+    titleKey: 'biotechnology',
     icon: '🧬',
     image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400',
     links: ['Molecular Biology', 'Bioinformatics', 'Fermentation'],
@@ -118,6 +120,7 @@ const CARDS_DATA = [
 ];
 
 export const LandingContentSlider = () => {
+  const { language } = useLanguage();
   const navigate = useNavigate();
   const trackRef   = useRef(null);
   const firstCardRef = useRef(null);
@@ -211,13 +214,13 @@ export const LandingContentSlider = () => {
               ref={idx === 0 ? firstCardRef : null}
               className="card"
               style={{ cursor: 'pointer', flexShrink: 0 }}
-              onClick={() => handleCardClick(card.title)}
+              onClick={() => handleCardClick(translate(card.titleKey, language))}
             >
               <div
                 className="card-img"
                 style={{ backgroundImage: `url('${card.image}')` }}
               >
-                <h3 className="heading-entrance heading-entrance-card">{card.title}</h3>
+                <h3 className="heading-entrance heading-entrance-card">{translate(card.titleKey, language)}</h3>
               </div>
               <div className="icon-box">{card.icon}</div>
               <ul className="card-links">
@@ -225,7 +228,7 @@ export const LandingContentSlider = () => {
                   <li key={linkIdx}>{link}</li>
                 ))}
               </ul>
-              <div className="card-footer">Explore More Contents</div>
+              <div className="card-footer">{translate('exploreMore', language)}</div>
             </div>
           ))}
         </div>

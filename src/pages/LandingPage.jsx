@@ -6,6 +6,8 @@ import { LandingFooter } from '../components/LandingFooter.jsx';
 import { LoginModal } from '../components/LoginModal.jsx';
 import { RecoveryModal } from '../components/RecoveryModal.jsx';
 import { Search, Download, Globe, Landmark, Shield, Smartphone, UserPlus, Rocket } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 function RevealOnScroll({ children, delay = 0 }) {
   const ref = useRef(null);
@@ -32,42 +34,43 @@ function RevealOnScroll({ children, delay = 0 }) {
 }
 
 const FEATURES = [
-  { icon: Search, title: 'Smart Search',       desc: 'Full-text search across 5M+ resources in 30+ languages instantly.',     bg: '#ccfbf1', accent: '#0d9488' },
-  { icon: Download, title: 'Free Downloads',     desc: 'Download PDFs, research papers, e-books and study material at no cost.', bg: '#d1fae5', accent: '#059669' },
-  { icon: Globe, title: 'Multilingual',       desc: 'Access content in Hindi, Tamil, Telugu, Bengali, Marathi and more.',    bg: '#e8fdf5', accent: '#0f766e' },
-  { icon: Landmark, title: '1000+ Institutions', desc: 'Resources from NCERT, IITs, IIMs, universities and research labs.',     bg: '#f0fdfa', accent: '#008080' },
-  { icon: Shield, title: 'Secure & Trusted',   desc: 'Government-backed digital library — verified, safe and reliable.',      bg: '#ecfdf5', accent: '#2e7d32' },
-  { icon: Smartphone, title: 'Any Device',         desc: 'Access on mobile, tablet or desktop, anytime, anywhere.',               bg: '#cffafe', accent: '#0891b2' },
+  { icon: Search, titleKey: 'smartSearch',       descKey: 'smartSearchDesc',     bg: '#ccfbf1', accent: '#0d9488' },
+  { icon: Download, titleKey: 'freeDownloads',     descKey: 'freeDownloadsDesc', bg: '#d1fae5', accent: '#059669' },
+  { icon: Globe, titleKey: 'multilingual',       descKey: 'multilingualDesc',    bg: '#e8fdf5', accent: '#0f766e' },
+  { icon: Landmark, titleKey: 'institutions1000', descKey: 'institutions1000Desc',     bg: '#f0fdfa', accent: '#008080' },
+  { icon: Shield, titleKey: 'secureTrusted',   descKey: 'secureTrustedDesc',      bg: '#ecfdf5', accent: '#2e7d32' },
+  { icon: Smartphone, titleKey: 'anyDevice',         descKey: 'anyDeviceDesc',               bg: '#cffafe', accent: '#0891b2' },
 ];
 
 const HOW_IT_WORKS = [
   {
     step: '01',
     icon: UserPlus,
-    title: 'Create a Free Account',
-    desc: 'Register with your institutional email in under a minute. No credit card needed.',
+    titleKey: 'step1Title',
+    descKey: 'step1Desc',
     color: '#008080',
     bg: '#ccfbf1',
   },
   {
     step: '02',
     icon: Search,
-    title: 'Search Anything',
-    desc: 'Browse 5M+ resources — books, journals, research papers and e-content across 30+ languages.',
+    titleKey: 'step2Title',
+    descKey: 'step2Desc',
     color: '#059669',
     bg: '#d1fae5',
   },
   {
     step: '03',
     icon: Download,
-    title: 'Read & Download Free',
-    desc: 'Save resources, download PDFs and access full content from anywhere, on any device.',
+    titleKey: 'step3Title',
+    descKey: 'step3Desc',
     color: '#0f766e',
     bg: '#e8fdf5',
   },
 ];
 
 export const LandingPage = () => {
+  const { language } = useLanguage();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRecoveryOpen, setIsRecoveryOpen] = useState(false);
 
@@ -87,10 +90,10 @@ export const LandingPage = () => {
         <div style={{ maxWidth: '1120px', margin: '0 auto', position: 'relative' }}>
           <RevealOnScroll delay={0}>
             <div style={{ display: 'inline-block', margin: '0 auto', padding: '6px 16px', borderRadius: '999px', background: 'linear-gradient(90deg, rgba(15,76,76,0.08), rgba(0,128,128,0.08))', border: '1px solid rgba(0,128,128,0.15)', marginBottom: '12px' }}>
-              <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#008080', margin: 0 }}>Why EDU Library?</p>
+              <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#008080', margin: 0 }}>{translate('whyChooseBadge', language)}</p>
             </div>
-            <h2 style={{ textAlign: 'center', fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: '12px', marginTop: '12px' }}>Everything You Need,<br /><span style={{ background: 'linear-gradient(110deg,#0f4c4c,#008080,#059669)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>In One Platform</span></h2>
-            <p style={{ textAlign: 'center', color: '#64748b', fontSize: '0.95rem', maxWidth: '540px', margin: '0 auto 56px', lineHeight: 1.6 }}>Built for India's students, researchers and educators fully free, always.</p>
+            <h2 style={{ textAlign: 'center', fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: '12px', marginTop: '12px' }}>{translate('whyChooseTitle', language)}<br /><span style={{ background: 'linear-gradient(110deg,#0f4c4c,#008080,#059669)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{translate('whyChooseTitleHighlight', language)}</span></h2>
+            <p style={{ textAlign: 'center', color: '#64748b', fontSize: '0.95rem', maxWidth: '540px', margin: '0 auto 56px', lineHeight: 1.6 }}>{translate('whyChooseSubtitle', language)}</p>
           </RevealOnScroll>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px' }}>
@@ -141,8 +144,8 @@ export const LandingPage = () => {
                     <f.icon size={32} strokeWidth={2} color={f.accent} />
                   </div>
                   
-                  <h3 style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.05rem', marginBottom: '10px', position: 'relative' }}>{f.title}</h3>
-                  <p style={{ color: '#64748b', fontSize: '0.87rem', lineHeight: 1.7, position: 'relative' }}>{f.desc}</p>
+                  <h3 style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.05rem', marginBottom: '10px', position: 'relative' }}>{translate(f.titleKey, language)}</h3>
+                  <p style={{ color: '#64748b', fontSize: '0.87rem', lineHeight: 1.7, position: 'relative' }}>{translate(f.descKey, language)}</p>
                   
                   {/* accent line */}
                   <div style={{ marginTop: '20px', height: '4px', width: '44px', borderRadius: '999px', background: `linear-gradient(90deg, ${f.accent}, ${f.accent}80)`, position: 'relative' }} />
@@ -162,10 +165,10 @@ export const LandingPage = () => {
         <div style={{ maxWidth: '1120px', margin: '0 auto', position: 'relative' }}>
           <RevealOnScroll delay={0}>
             <div style={{ display: 'inline-block', margin: '0 auto', padding: '6px 16px', borderRadius: '999px', background: 'linear-gradient(90deg, rgba(0,128,128,0.08), rgba(5,150,105,0.08))', border: '1px solid rgba(0,128,128,0.15)', marginBottom: '12px' }}>
-              <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#008080', margin: 0 }}>3 Simple Steps</p>
+              <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#008080', margin: 0 }}>{translate('howItWorksBadge', language)}</p>
             </div>
-            <h2 style={{ textAlign: 'center', fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: '12px', marginTop: '12px' }}>Get Started in <span style={{ background: 'linear-gradient(110deg,#008080,#059669,#0d9488)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Minutes</span></h2>
-            <p style={{ textAlign: 'center', color: '#64748b', fontSize: '0.95rem', marginBottom: '52px', maxWidth: '480px', margin: '0 auto 52px' }}>No setup required. Free for students, researchers and educators across India.</p>
+            <h2 style={{ textAlign: 'center', fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, marginBottom: '12px', marginTop: '12px' }}>{translate('howItWorksTitle', language)} <span style={{ background: 'linear-gradient(110deg,#008080,#059669,#0d9488)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{translate('howItWorksTitleHighlight', language)}</span></h2>
+            <p style={{ textAlign: 'center', color: '#64748b', fontSize: '0.95rem', marginBottom: '52px', maxWidth: '480px', margin: '0 auto 52px' }}>{translate('howItWorksSubtitle', language)}</p>
           </RevealOnScroll>
 
           {/* Step cards */}
@@ -227,8 +230,8 @@ export const LandingPage = () => {
                   </div>
                   
                   {/* text */}
-                  <h3 style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.1rem', marginBottom: '10px', lineHeight: 1.3, position: 'relative' }}>{step.title}</h3>
-                  <p style={{ color: '#64748b', fontSize: '0.87rem', lineHeight: 1.7, position: 'relative' }}>{step.desc}</p>
+                  <h3 style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.1rem', marginBottom: '10px', lineHeight: 1.3, position: 'relative' }}>{translate(step.titleKey, language)}</h3>
+                  <p style={{ color: '#64748b', fontSize: '0.87rem', lineHeight: 1.7, position: 'relative' }}>{translate(step.descKey, language)}</p>
                   
                   {/* bottom accent line */}
                   <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, ${step.color}, transparent)`, borderRadius: '0 0 24px 24px' }} />
@@ -269,9 +272,9 @@ export const LandingPage = () => {
                   e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1), 0 8px 28px rgba(0,128,128,0.35)'; 
                 }}
               >
-                <Rocket size={20} strokeWidth={2.5} /> Start Free Now
+                <Rocket size={20} strokeWidth={2.5} /> {translate('startFreeNow', language)}
               </button>
-              <p style={{ marginTop: '12px', fontSize: '0.8rem', color: '#94a3b8', letterSpacing: '0.02em' }}>No credit card • Instant access • All resources free</p>
+              <p style={{ marginTop: '12px', fontSize: '0.8rem', color: '#94a3b8', letterSpacing: '0.02em' }}>{translate('ctaFooter', language)}</p>
             </div>
           </RevealOnScroll>
         </div>
@@ -280,8 +283,8 @@ export const LandingPage = () => {
       {/* Announcement Banner */}
       <div style={{ background: 'linear-gradient(90deg,#0f4c4c,#0d9488)', color: '#fff', padding: '12px 20px', textAlign: 'center', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
         <span style={{ fontSize: '1rem' }}>📢</span>
-        <span><strong>New:</strong> Research paper submission deadline extended — <strong>30 May 2026</strong>. Library hours extended till 10PM during exam week.</span>
-        <button onClick={() => setIsLoginOpen(true)} style={{ marginLeft: '16px', padding: '5px 14px', borderRadius: '999px', background: '#fff', color: '#0d9488', border: 'none', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer' }}>Log In →</button>
+        <span><strong>{translate('announcementNew', language)}</strong> {translate('announcementText', language)}</span>
+        <button onClick={() => setIsLoginOpen(true)} style={{ marginLeft: '16px', padding: '5px 14px', borderRadius: '999px', background: '#fff', color: '#0d9488', border: 'none', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer' }}>{translate('login', language)} →</button>
       </div>
 
       <LandingFooter />

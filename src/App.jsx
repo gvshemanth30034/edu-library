@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { LanguageProvider } from './contexts/LanguageContext.jsx';
 import { LandingPage } from './pages/LandingPage.jsx';
 import { HomePage } from './pages/HomePage.jsx';
 import { LoginPage } from './pages/LoginPage.jsx';
@@ -61,10 +62,11 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Routes>
-        {/* Landing Page - Always accessible (new home page design) */}
-        <Route path="/" element={<LandingPage />} />
+    <LanguageProvider>
+      <Router>
+        <Routes>
+          {/* Landing Page - Always accessible (new home page design) */}
+          <Route path="/" element={<LandingPage />} />
 
         {/* Home Page - Resource browsing page */}
         <Route path="/home" element={<HomePage />} />
@@ -127,6 +129,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
+    </LanguageProvider>
   );
 }
 
