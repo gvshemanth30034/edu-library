@@ -286,25 +286,6 @@ export const StudentDashboard = () => {
           </div>
         </section>
 
-        {/* Explore by Department Grid */}
-        <section className="dashboard-section">
-          <h2 className="section-title heading-entrance heading-premium">Explore by Department</h2>
-          <div className="department-grid">
-            {departments.map((dept, idx) => (
-              <div key={idx} className="department-card">
-                <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">{dept.name}</h4>
-                <p className="dept-count">{dept.count} resources</p>
-                <button
-                  className="dept-btn"
-                  onClick={() => navigate(`/category/${dept.slug}`)}
-                >
-                  Explore
-                </button>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* Ongoing Learning Section */}
         <section className="dashboard-section">
           <h2 className="section-title heading-entrance heading-premium">Ongoing Learning</h2>
@@ -329,6 +310,34 @@ export const StudentDashboard = () => {
                     Continue
                   </button>
                 </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Explore by Department Grid */}
+        <section className="dashboard-section">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="section-title heading-entrance heading-premium mb-0">Explore by Department</h2>
+            <button
+              onClick={() => navigate('/departments')}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-teal-200 bg-teal-50 text-teal-700 text-sm font-semibold hover:bg-teal-100 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500"
+            >
+              Explore More
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+          <div className="department-grid">
+            {departments.map((dept, idx) => (
+              <div key={idx} className="department-card">
+                <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">{dept.name}</h4>
+                <p className="dept-count">{dept.count} resources</p>
+                <button
+                  className="dept-btn"
+                  onClick={() => navigate(`/category/${dept.slug}`)}
+                >
+                  Explore
+                </button>
               </div>
             ))}
           </div>

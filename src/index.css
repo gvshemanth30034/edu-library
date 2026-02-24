@@ -1666,9 +1666,9 @@ nav {
 .nav-link:hover {
   width: 120px;
   padding: 0 14px;
-  color: #fff;
-  background: rgba(0, 128, 128, 0.12);
-  box-shadow: inset 0 0 0 1px rgba(0, 128, 128, 0.15);
+  color: #008080;
+  background: rgba(0, 128, 128, 0.08);
+  box-shadow: 0 0 0 2px #008080;
 }
 
 .nav-link.active {

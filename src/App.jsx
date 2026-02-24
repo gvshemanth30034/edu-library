@@ -12,6 +12,7 @@ import { RequestResourcePage } from './pages/RequestResourcePage.jsx';
 import { MyRequestsPage } from './pages/MyRequestsPage.jsx';
 import { AnnouncementsPage } from './pages/AnnouncementsPage.jsx';
 import { CategoryContentPage } from './pages/CategoryContentPage.jsx';
+import { DepartmentsPage } from './pages/DepartmentsPage.jsx';
 import { AdminDashboard } from './pages/AdminDashboard.jsx';
 import { StudentDashboard } from './pages/StudentDashboard.jsx';
 import './index.css';
@@ -70,6 +71,7 @@ function App() {
         <Route path="/request-resource" element={<RequestResourcePage />} />
         <Route path="/my-requests" element={<MyRequestsPage />} />
         <Route path="/announcements" element={<AnnouncementsPage />} />
+        <Route path="/departments" element={<DepartmentsPage />} />
 
         {/* ROLE SYSTEM: Admin Dashboard - Protected route for admins only */}
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
