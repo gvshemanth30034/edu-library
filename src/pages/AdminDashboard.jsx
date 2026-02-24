@@ -653,10 +653,15 @@ export const AdminDashboard = () => {
           <span className="nav-icon"><Megaphone size={20} /></span>
           <span className="nav-title">Announcements</span>
         </button>
-        <a href="#settings" className={`nav-link ${activeNav === 'settings' ? 'active' : ''}`} onClick={() => setActiveNav('settings')} aria-label="Settings">
+        <button
+          type="button"
+          className={`nav-link ${activeNav === 'settings' ? 'active' : ''}`}
+          onClick={() => { setActiveNav('settings'); navigate('/admin-settings'); }}
+          aria-label="Settings"
+        >
           <span className="nav-icon"><Settings size={20} /></span>
           <span className="nav-title">Settings</span>
-        </a>
+        </button>
         <button onClick={handleLogout} className="nav-link nav-logout" aria-label="Logout">
           <span className="nav-icon"><LogOut size={20} /></span>
           <span className="nav-title">Logout</span>

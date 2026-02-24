@@ -126,10 +126,10 @@ export const UsersLog = () => {
                         </td>
                         <td className="text-muted">{user.date}</td>
                         <td>
-                          {user.status !== 'Active' ? (
-                            <button className="action-link" onClick={() => handleStatusChange(user.id, 'Active')}>Activate</button>
-                          ) : (
+                          {user.status === 'Active' ? (
                             <button className="action-link action-link--reject" onClick={() => handleStatusChange(user.id, 'Deactivated')}>Deactivate</button>
+                          ) : (
+                            <span className="text-slate-400">—</span>
                           )}
                         </td>
                       </tr>
