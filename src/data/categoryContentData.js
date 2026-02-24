@@ -833,6 +833,193 @@ export const CATEGORIES_DATA = {
       },
     ],
   },
+
+  /* ─── ADDITIONAL STEM ───────────────────────────────────────── */
+
+  'chemical-engineering': {
+    title: 'Chemical Engineering',
+    slug: 'chemical-engineering',
+    description: 'Chemical process design, reaction engineering, mass transfer, thermodynamics, and industrial chemistry',
+    items: [
+      { id: 1, title: 'Chemical Reaction Engineering – Levenspiel', description: 'Rate equations, reactor design (CSTR, PFR, PBR), residence time distribution, and non-ideal flow', type: 'PDF', publishDate: '9 Feb 2026', tags: ['CRE', 'Reactor Design'] },
+      { id: 2, title: 'Mass Transfer Operations', description: 'Absorption, distillation, extraction, leaching, drying, and humidification with design calculations', type: 'PDF', publishDate: '3 Feb 2026', tags: ['Mass Transfer', 'Separation'] },
+      { id: 3, title: 'Process Control & Instrumentation', description: 'PID controllers, Laplace transforms, block diagrams, stability analysis, and industrial control loops', type: 'Video', publishDate: '25 Jan 2026', tags: ['Process Control', 'PID'] },
+      { id: 4, title: 'Fluid Flow & Heat Transfer in Process Equipment', description: 'Shell and tube heat exchangers, pressure drop calculations, and fluidized bed design', type: 'PDF', publishDate: '16 Jan 2026', tags: ['Heat Transfer', 'Fluid Flow'] },
+      { id: 5, title: 'Chemical Plant Design & Economics', description: 'Process flow diagrams, equipment sizing, cost estimation, and economic analysis for plant design', type: 'Report', publishDate: '7 Jan 2026', tags: ['Plant Design', 'Economics'] },
+      { id: 6, title: 'Polymer Science & Engineering', description: 'Polymer synthesis, characterization, processing techniques, and mechanical properties of polymers', type: 'Article', publishDate: '28 Dec 2025', tags: ['Polymers', 'Materials'] },
+    ],
+  },
+
+  'biotechnology': {
+    title: 'Biotechnology',
+    slug: 'biotechnology',
+    description: 'Molecular biology, genetic engineering, bioprocess technology, bioinformatics, and pharmaceutical biotech',
+    items: [
+      { id: 1, title: 'Molecular Biology & Genetic Engineering', description: 'DNA replication, transcription, translation, recombinant DNA technology, PCR, and gene cloning', type: 'PDF', publishDate: '10 Feb 2026', tags: ['Molecular Biology', 'Genetics'] },
+      { id: 2, title: 'Bioprocess Technology & Fermentation', description: 'Microbial growth kinetics, bioreactor design, downstream processing, and scale-up of bioprocesses', type: 'PDF', publishDate: '4 Feb 2026', tags: ['Bioprocess', 'Fermentation'] },
+      { id: 3, title: 'Bioinformatics – Sequence Analysis & Genomics', description: 'BLAST, multiple sequence alignment, phylogenetics, genome assembly, and structural bioinformatics', type: 'Video', publishDate: '27 Jan 2026', tags: ['Bioinformatics', 'Genomics'] },
+      { id: 4, title: 'Immunology & Vaccine Technology', description: 'Innate and adaptive immunity, antibody production, vaccine types, adjuvants, and immunotherapy', type: 'PDF', publishDate: '18 Jan 2026', tags: ['Immunology', 'Vaccines'] },
+      { id: 5, title: 'Pharmaceutical Biotechnology', description: 'Biosimilars, monoclonal antibodies, drug delivery systems, and regulatory affairs in biopharma', type: 'Article', publishDate: '9 Jan 2026', tags: ['Pharma', 'Drug Delivery'] },
+    ],
+  },
+
+  'environmental-science': {
+    title: 'Environmental Science',
+    slug: 'environmental-science',
+    description: 'Ecology, climate science, pollution control, sustainability, and environmental policy resources',
+    items: [
+      { id: 1, title: 'Climate Change – Science & Policy', description: 'Greenhouse effect, global warming, IPCC reports, mitigation strategies, and international climate agreements', type: 'PDF', publishDate: '8 Feb 2026', tags: ['Climate', 'Policy'] },
+      { id: 2, title: 'Ecology & Ecosystem Dynamics', description: 'Population ecology, food webs, nutrient cycles, biodiversity, and conservation biology principles', type: 'PDF', publishDate: '2 Feb 2026', tags: ['Ecology', 'Biodiversity'] },
+      { id: 3, title: 'Air & Water Pollution Control', description: 'Sources of pollution, treatment technologies, ambient standards, and environmental impact assessment', type: 'Video', publishDate: '25 Jan 2026', tags: ['Pollution', 'EIA'] },
+      { id: 4, title: 'Renewable Energy & Sustainability', description: 'Solar, wind, hydro, bioenergy systems, energy auditing, and green building standards', type: 'Article', publishDate: '16 Jan 2026', tags: ['Renewable Energy', 'GreenTech'] },
+      { id: 5, title: 'Environmental Laws & Regulations of India', description: 'Water Act, Air Act, Environment Protection Act, Wildlife Protection, and NGT rulings overview', type: 'Report', publishDate: '7 Jan 2026', tags: ['Environment Law', 'India'] },
+    ],
+  },
+
+  /* ─── COMMERCE & MANAGEMENT ────────────────────────────────── */
+
+  'business-administration': {
+    title: 'Business Administration',
+    slug: 'business-administration',
+    description: 'Management principles, organizational behavior, strategic management, and entrepreneurship resources',
+    items: [
+      { id: 1, title: 'Principles of Management – Fayol & Taylor', description: 'Management functions (POLC), classical vs modern management theories, and organizational structure', type: 'PDF', publishDate: '9 Feb 2026', tags: ['Management', 'Organization'] },
+      { id: 2, title: 'Strategic Management & Business Policy', description: 'SWOT analysis, Porter\'s Five Forces, competitive advantage, and strategic planning frameworks', type: 'PDF', publishDate: '3 Feb 2026', tags: ['Strategy', 'Business Policy'] },
+      { id: 3, title: 'Marketing Management – Kotler', description: 'Market segmentation, positioning, 4Ps, consumer behavior, branding, and digital marketing fundamentals', type: 'Video', publishDate: '26 Jan 2026', tags: ['Marketing', 'Branding'] },
+      { id: 4, title: 'Human Resource Management', description: 'Recruitment, training & development, performance appraisal, employee relations, and labor laws', type: 'PDF', publishDate: '17 Jan 2026', tags: ['HRM', 'HR'] },
+      { id: 5, title: 'Entrepreneurship & Startup Ecosystem', description: 'Business model canvas, startup funding, MVP development, pitch decks, and incubation programs', type: 'Article', publishDate: '8 Jan 2026', tags: ['Entrepreneurship', 'Startup'] },
+      { id: 6, title: 'Operations & Supply Chain Management', description: 'Demand forecasting, inventory models, logistics, lean manufacturing, and six sigma principles', type: 'Report', publishDate: '29 Dec 2025', tags: ['Operations', 'Supply Chain'] },
+    ],
+  },
+
+  'economics': {
+    title: 'Economics',
+    slug: 'economics',
+    description: 'Micro and macroeconomics, econometrics, development economics, and international trade resources',
+    items: [
+      { id: 1, title: 'Microeconomics – Theory & Applications', description: 'Consumer theory, production functions, market structures (monopoly, oligopoly), and game theory', type: 'PDF', publishDate: '7 Feb 2026', tags: ['Microeconomics', 'Market'] },
+      { id: 2, title: 'Macroeconomics – National Income & Policy', description: 'GDP, inflation, monetary and fiscal policy, IS-LM model, and balance of payments', type: 'PDF', publishDate: '1 Feb 2026', tags: ['Macroeconomics', 'Policy'] },
+      { id: 3, title: 'Indian Economy – Contemporary Issues', description: 'Economic reforms, agriculture sector, industrial policy, poverty, unemployment, and Union Budget analysis', type: 'Article', publishDate: '24 Jan 2026', tags: ['Indian Economy', 'Development'] },
+      { id: 4, title: 'International Trade & Finance', description: 'Comparative advantage, trade theories, WTO, exchange rate regimes, and balance of payments', type: 'PDF', publishDate: '15 Jan 2026', tags: ['International Trade', 'Finance'] },
+      { id: 5, title: 'Econometrics – Regression & Forecasting', description: 'OLS regression, hypothesis testing, time series analysis, and panel data econometric methods', type: 'Video', publishDate: '6 Jan 2026', tags: ['Econometrics', 'Statistics'] },
+    ],
+  },
+
+  'accounting-finance': {
+    title: 'Accounting & Finance',
+    slug: 'accounting-finance',
+    description: 'Financial accounting, corporate finance, investment analysis, and taxation principles',
+    items: [
+      { id: 1, title: 'Financial Accounting – IFRS Standards', description: 'Journal entries, ledgers, trial balance, P&L statements, balance sheets, and cash flow statements', type: 'PDF', publishDate: '10 Feb 2026', tags: ['Accounting', 'IFRS'] },
+      { id: 2, title: 'Corporate Finance – Brealey & Myers', description: 'Time value of money, capital budgeting (NPV, IRR), capital structure, and dividend policy', type: 'PDF', publishDate: '4 Feb 2026', tags: ['Corporate Finance', 'Valuation'] },
+      { id: 3, title: 'Security Analysis & Portfolio Management', description: 'Fundamental and technical analysis, CAPM, portfolio theory, mutual funds, and derivatives', type: 'Video', publishDate: '27 Jan 2026', tags: ['Investments', 'Portfolio'] },
+      { id: 4, title: 'Taxation Law & Practice – Direct Tax', description: 'Income Tax Act provisions, heads of income, deductions, computation, and tax planning strategies', type: 'PDF', publishDate: '18 Jan 2026', tags: ['Taxation', 'Income Tax'] },
+      { id: 5, title: 'Management Accounting & Cost Analysis', description: 'Cost classification, standard costing, variance analysis, marginal costing, and budgetary control', type: 'Report', publishDate: '9 Jan 2026', tags: ['Cost Accounting', 'Budgeting'] },
+    ],
+  },
+
+  /* ─── HUMANITIES & SOCIAL SCIENCES ─────────────────────────── */
+
+  'psychology': {
+    title: 'Psychology',
+    slug: 'psychology',
+    description: 'Human behavior, cognitive science, developmental psychology, clinical psychology, and research methods',
+    items: [
+      { id: 1, title: 'Introduction to Psychology – Myers', description: 'Biological bases of behavior, sensation, perception, learning, memory, cognition, and emotion', type: 'PDF', publishDate: '9 Feb 2026', tags: ['Psychology', 'Behavior'] },
+      { id: 2, title: 'Cognitive Psychology & Neuroscience', description: 'Attention, memory systems, language processing, decision-making, and neuroimaging research', type: 'PDF', publishDate: '3 Feb 2026', tags: ['Cognitive Science', 'Neuroscience'] },
+      { id: 3, title: 'Developmental Psychology – Lifespan Approach', description: 'Piaget, Vygotsky, Erikson, moral development, attachment theory, and aging', type: 'Video', publishDate: '26 Jan 2026', tags: ['Developmental', 'Child Psychology'] },
+      { id: 4, title: 'Abnormal Psychology & DSM-5 Disorders', description: 'Classification of mental disorders, anxiety, depression, schizophrenia, personality disorders, and treatment', type: 'PDF', publishDate: '17 Jan 2026', tags: ['Abnormal Psychology', 'Clinical'] },
+      { id: 5, title: 'Research Methods in Psychology', description: 'Experimental design, survey methods, statistical analysis, APA format, and ethical guidelines', type: 'Article', publishDate: '8 Jan 2026', tags: ['Research Methods', 'Statistics'] },
+    ],
+  },
+
+  'history': {
+    title: 'History',
+    slug: 'history',
+    description: 'World history, Indian history, ancient civilizations, modern history, and historical research methods',
+    items: [
+      { id: 1, title: 'Ancient Indian History – Indus to Guptas', description: 'Indus Valley civilization, Vedic age, Mauryan empire, Gupta period, and art & architecture', type: 'PDF', publishDate: '8 Feb 2026', tags: ['Ancient India', 'Civilization'] },
+      { id: 2, title: 'Medieval India – Sultanate to Mughals', description: 'Delhi Sultanate, Mughal administration, economy, culture, and decline of Mughal empire', type: 'PDF', publishDate: '2 Feb 2026', tags: ['Medieval India', 'Mughals'] },
+      { id: 3, title: 'Modern India – Colonial Rule & Independence', description: '1857 revolt, Indian nationalism, Gandhi, freedom struggle, Partition, and Constitution making', type: 'Video', publishDate: '25 Jan 2026', tags: ['Modern India', 'Freedom Struggle'] },
+      { id: 4, title: 'World History – Renaissance to Cold War', description: 'Renaissance, Industrial Revolution, World Wars, decolonization, and Cold War geopolitics', type: 'PDF', publishDate: '16 Jan 2026', tags: ['World History', 'Modern World'] },
+      { id: 5, title: 'Historiography & Historical Methods', description: 'Sources, periodization, schools of historiography (Marxist, Subaltern, Feminist), and archival research', type: 'Article', publishDate: '7 Jan 2026', tags: ['Historiography', 'Research'] },
+    ],
+  },
+
+  'english-literature': {
+    title: 'English Literature',
+    slug: 'english-literature',
+    description: 'British, American, and world literature, literary theory, creative writing, and communication skills',
+    items: [
+      { id: 1, title: 'Literary Theory & Criticism', description: 'Formalism, Structuralism, Post-structuralism, Feminism, Post-colonialism, and New Historicism', type: 'PDF', publishDate: '7 Feb 2026', tags: ['Literary Theory', 'Criticism'] },
+      { id: 2, title: 'Shakespeare – Major Plays & Sonnets', description: "Hamlet, Othello, Macbeth, King Lear, A Midsummer Night's Dream, and selected sonnets with analysis", type: 'PDF', publishDate: '1 Feb 2026', tags: ['Shakespeare', 'Drama'] },
+      { id: 3, title: 'Post-Colonial Literature', description: 'Chinua Achebe, Salman Rushdie, Arundhati Roy, Ngugi wa Thiong\'o — themes of identity, diaspora, and resistance', type: 'Article', publishDate: '24 Jan 2026', tags: ['Post-Colonial', 'World Lit'] },
+      { id: 4, title: 'Technical & Business Communication', description: 'Report writing, business letters, email etiquette, presentation skills, and academic writing', type: 'PDF', publishDate: '15 Jan 2026', tags: ['Communication', 'Writing'] },
+      { id: 5, title: 'American Literature – 20th Century', description: 'Modernism, Harlem Renaissance, Beat Generation, Hemingway, Fitzgerald, and Toni Morrison', type: 'Video', publishDate: '6 Jan 2026', tags: ['American Lit', 'Modernism'] },
+    ],
+  },
+
+  /* ─── LAW & GOVERNANCE ──────────────────────────────────────── */
+
+  'law': {
+    title: 'Law & Legal Studies',
+    slug: 'law',
+    description: 'Constitutional law, criminal law, corporate law, international law, and legal research resources',
+    items: [
+      { id: 1, title: 'Constitutional Law of India', description: "Preamble, Fundamental Rights, DPSP, federalism, Parliament, judiciary, and landmark Supreme Court cases", type: 'PDF', publishDate: '9 Feb 2026', tags: ['Constitutional Law', 'SC Judgments'] },
+      { id: 2, title: 'Indian Penal Code (IPC) – Annotated', description: 'Offences against state, body, property, public tranquility, and defences with case law references', type: 'PDF', publishDate: '3 Feb 2026', tags: ['Criminal Law', 'IPC'] },
+      { id: 3, title: 'Corporate Law & Companies Act 2013', description: 'Company formation, directors, board meetings, mergers, insolvency, and SEBI regulations', type: 'Article', publishDate: '26 Jan 2026', tags: ['Corporate Law', 'Companies Act'] },
+      { id: 4, title: 'Law of Contracts – Indian Contract Act', description: 'Offer, acceptance, consideration, void agreements, breach of contract, and remedies', type: 'PDF', publishDate: '17 Jan 2026', tags: ['Contract Law', 'Civil Law'] },
+      { id: 5, title: 'International Law & Human Rights', description: "Sources of international law, UN system, state responsibility, humanitarian law, and human rights conventions", type: 'Report', publishDate: '8 Jan 2026', tags: ['Int\'l Law', 'Human Rights'] },
+      { id: 6, title: 'Cyber Law & Information Technology Act', description: 'IT Act 2000, cyber crimes, data protection, digital signatures, and emerging issues in tech law', type: 'Video', publishDate: '29 Dec 2025', tags: ['Cyber Law', 'IT Act'] },
+    ],
+  },
+
+  /* ─── ARTS & DESIGN ─────────────────────────────────────────── */
+
+  'architecture': {
+    title: 'Architecture & Design',
+    slug: 'architecture',
+    description: 'Architectural design, urban planning, construction technology, history of architecture, and sustainable design',
+    items: [
+      { id: 1, title: 'History of Architecture – Ancient to Modern', description: 'Egyptian, Greek, Roman, Gothic, Renaissance, Baroque, Modernism, and Deconstructivism with visual guides', type: 'PDF', publishDate: '8 Feb 2026', tags: ['History', 'Architecture'] },
+      { id: 2, title: 'Building Construction Technology', description: 'Foundation types, masonry, concrete structures, roofing, waterproofing, and sustainable materials', type: 'PDF', publishDate: '2 Feb 2026', tags: ['Construction', 'Technology'] },
+      { id: 3, title: 'Urban Planning & Smart Cities', description: 'Land use planning, zoning regulations, transportation planning, green spaces, and smart city frameworks', type: 'Article', publishDate: '25 Jan 2026', tags: ['Urban Planning', 'Smart Cities'] },
+      { id: 4, title: 'Sustainable & Green Architecture', description: 'LEED certification, passive design, energy modelling, bioclimatic design, and net-zero buildings', type: 'Video', publishDate: '16 Jan 2026', tags: ['Sustainable', 'Green Design'] },
+      { id: 5, title: 'Architectural Drawing & CAD', description: 'Orthographic projections, section drawings, site plans, elevation drawings, and AutoCAD fundamentals', type: 'PDF', publishDate: '7 Jan 2026', tags: ['CAD', 'Drawing'] },
+    ],
+  },
+
+  /* ─── MEDICAL & HEALTH SCIENCES ────────────────────────────── */
+
+  'medical-sciences': {
+    title: 'Medical Sciences',
+    slug: 'medical-sciences',
+    description: 'Anatomy, physiology, pharmacology, pathology, clinical medicine, and public health resources',
+    items: [
+      { id: 1, title: "Gray's Anatomy – Regional Study Guide", description: 'Thorax, abdomen, pelvis, upper limb, lower limb, head & neck with clinical correlations', type: 'PDF', publishDate: '10 Feb 2026', tags: ['Anatomy', 'Clinical'] },
+      { id: 2, title: 'Physiology – Guyton & Hall Essentials', description: 'Cardiovascular, respiratory, renal, gastrointestinal, neurological, and endocrine physiology', type: 'PDF', publishDate: '4 Feb 2026', tags: ['Physiology', 'Systems'] },
+      { id: 3, title: 'Pharmacology – Drug Classes & Mechanisms', description: 'Receptor theory, cardiovascular drugs, antimicrobials, CNS agents, and drug interactions', type: 'PDF', publishDate: '27 Jan 2026', tags: ['Pharmacology', 'Drugs'] },
+      { id: 4, title: 'Pathology – Robbins Basic Pathology', description: 'Cell injury, inflammation, neoplasia, cardiovascular, pulmonary, renal, and GI pathology', type: 'Video', publishDate: '18 Jan 2026', tags: ['Pathology', 'Disease'] },
+      { id: 5, title: 'Public Health & Epidemiology', description: 'Study designs, biostatistics, disease surveillance, communicable diseases, and national health programs', type: 'Article', publishDate: '9 Jan 2026', tags: ['Public Health', 'Epidemiology'] },
+      { id: 6, title: 'Clinical Skills & Medical Ethics', description: 'History taking, physical examination, communication with patients, informed consent, and medical ethics', type: 'Report', publishDate: '1 Jan 2026', tags: ['Clinical Skills', 'Ethics'] },
+    ],
+  },
+
+  /* ─── LIBRARY & INFORMATION SCIENCE ──────────────────────────── */
+
+  'library-science': {
+    title: 'Library & Information Science',
+    slug: 'library-science',
+    description: 'Cataloguing, classification, digital libraries, information retrieval, and knowledge management',
+    items: [
+      { id: 1, title: 'Library Classification Systems – DDC & LCC', description: 'Dewey Decimal Classification, Library of Congress Classification, and Universal Decimal Classification', type: 'PDF', publishDate: '7 Feb 2026', tags: ['Classification', 'LIS'] },
+      { id: 2, title: 'Cataloguing & Metadata Standards', description: 'MARC 21, AACR2, RDA, Dublin Core, and metadata schemas for digital and physical collections', type: 'PDF', publishDate: '1 Feb 2026', tags: ['Cataloguing', 'Metadata'] },
+      { id: 3, title: 'Digital Libraries & Institutional Repositories', description: 'DSpace, EPrints, digital preservation, open access mandates, and repository management', type: 'Article', publishDate: '24 Jan 2026', tags: ['Digital Library', 'Open Access'] },
+      { id: 4, title: 'Information Retrieval & Search Systems', description: 'Boolean retrieval, vector space model, relevance ranking, federated search, and IR evaluation', type: 'Video', publishDate: '15 Jan 2026', tags: ['Information Retrieval', 'Search'] },
+      { id: 5, title: 'Research Methodology & Academic Writing', description: 'Literature review, citation styles (APA, MLA, Chicago), plagiarism, and research data management', type: 'PDF', publishDate: '6 Jan 2026', tags: ['Research', 'Academic Writing'] },
+    ],
+  },
 };
 
 export const getCategorySlug = (title) => {
