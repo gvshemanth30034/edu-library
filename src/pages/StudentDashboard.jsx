@@ -92,10 +92,101 @@ export const StudentDashboard = () => {
     <div className="dashboard-wrapper dashboard-wrapper--bottom-nav">
       {/* Main Content */}
       <main className="dashboard-main dashboard-main--bottom-nav">
-        {/* Welcome Section */}
-        <section className="dashboard-welcome">
-          <h1 className="heading-entrance heading-premium">Welcome  {userName}!</h1>
-          <p className="heading-entrance heading-entrance-delay-1">Access and manage your learning materials efficiently</p>
+        {/* Top Bar */}
+        <section className="mb-6">
+          <div className="heading-entrance bg-white border border-gray-200 rounded-xl shadow-sm px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm font-semibold text-teal-700 tracking-wide uppercase">Edu Library</p>
+              <h2 className="heading-premium text-lg sm:text-xl font-bold text-slate-900 truncate">Student Dashboard</h2>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg border border-teal-200 bg-teal-50 text-teal-700 text-sm font-semibold hover:bg-teal-100 hover:border-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-colors"
+              aria-label="Logout"
+            >
+              <LogOut size={16} />
+              Logout
+            </button>
+          </div>
+        </section>
+
+        {/* Hero Welcome Section */}
+        <section className="mb-10 relative overflow-hidden rounded-2xl shadow-lg"
+          style={{ background: 'linear-gradient(135deg, #004d4d 0%, #008080 42%, #1a9080 68%, #1e6e8c 100%)' }}
+        >
+          {/* Decorative background shapes */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="absolute -top-12 -right-12 h-64 w-64 rounded-full"
+              style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)' }} />
+            <div className="absolute bottom-0 right-24 h-40 w-40 rounded-full"
+              style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)' }} />
+            <div className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)' }} />
+          </div>
+
+          <div className="relative z-10 flex flex-col gap-8 px-6 py-10 sm:px-10 sm:py-12 md:flex-row md:items-center md:justify-between">
+            {/* Left — Text & CTAs */}
+            <div className="flex-1 min-w-0">
+              <p className="heading-entrance mb-2 text-xs font-semibold uppercase tracking-widest text-teal-200">
+                Welcome back
+              </p>
+              <h1 className="heading-entrance heading-premium mb-3 text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
+                Hello, {userName}!{' '}
+                <span role="img" aria-label="wave" style={{ display: 'inline-block', animation: 'wave-hand 1.8s ease-in-out 0.8s 1' }}>
+                  👋
+                </span>
+              </h1>
+              <p className="heading-entrance heading-entrance-delay-1 mb-8 max-w-md text-base leading-relaxed text-teal-100 sm:text-lg">
+                Your learning hub is ready. Explore thousands of academic resources, track your progress, and level up your knowledge.
+              </p>
+              <div className="heading-entrance flex flex-wrap gap-3" style={{ animationDelay: '320ms' }}>
+                {/* Primary CTA */}
+                <button
+                  onClick={() => navigate('/catalogs')}
+                  className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-teal-800 shadow-sm transition-all duration-200 hover:bg-teal-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-700"
+                >
+                  <BookOpen size={16} />
+                  Browse Catalog
+                </button>
+                {/* Secondary CTA */}
+                <button
+                  onClick={() => navigate('/saved-resources')}
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-teal-700"
+                >
+                  <Save size={16} />
+                  View Saved Resources
+                </button>
+              </div>
+            </div>
+
+            {/* Right — Academic icon cluster */}
+            <div className="heading-entrance hidden flex-shrink-0 items-center justify-center md:flex" style={{ animationDelay: '200ms' }}>
+              <div className="relative flex h-44 w-44 items-center justify-center">
+                {/* Soft radial glow behind cluster */}
+                <div aria-hidden="true" className="absolute inset-0 rounded-full"
+                  style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 72%)' }} />
+                {/* Icon cluster */}
+                <div className="relative flex flex-col items-center gap-3">
+                  {/* Top: large primary icon */}
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/15 shadow-lg backdrop-blur-sm">
+                    <BookOpen className="h-8 w-8 text-white" />
+                  </div>
+                  {/* Bottom row: two smaller icons */}
+                  <div className="flex gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/20 bg-white/15 shadow-md backdrop-blur-sm">
+                      <Download className="h-5 w-5 text-teal-100" />
+                    </div>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/20 bg-white/15 shadow-md backdrop-blur-sm">
+                      <Save className="h-5 w-5 text-teal-100" />
+                    </div>
+                  </div>
+                  {/* Floating dot accents */}
+                  <div aria-hidden="true" className="absolute -right-4 -top-4 h-3 w-3 rounded-full bg-white/30" />
+                  <div aria-hidden="true" className="absolute -left-3 bottom-2 h-2 w-2 rounded-full bg-teal-200/40" />
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Announcements Panel */}
