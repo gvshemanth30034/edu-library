@@ -16,6 +16,20 @@ import { DepartmentsPage } from './pages/DepartmentsPage.jsx';
 import { AdminDashboard } from './pages/AdminDashboard.jsx';
 import { StudentDashboard } from './pages/StudentDashboard.jsx';
 import { ResourcesAnalytics } from './pages/ResourcesAnalytics.jsx';
+import { AboutPage } from './pages/AboutPage.jsx';
+import { DisclaimerPage } from './pages/DisclaimerPage.jsx';
+import { PrivacyPage } from './pages/PrivacyPage.jsx';
+import { ContactPage } from './pages/ContactPage.jsx';
+import { SponsorPage } from './pages/SponsorPage.jsx';
+import { CopyrightPage } from './pages/CopyrightPage.jsx';
+import { GuidelinesPage } from './pages/GuidelinesPage.jsx';
+import { SitemapPage } from './pages/SitemapPage.jsx';
+import { BrandingPage } from './pages/BrandingPage.jsx';
+import { NDLIClubPage } from './pages/NDLIClubPage.jsx';
+import { IDRHostingPage } from './pages/IDRHostingPage.jsx';
+import { InstitutionalLibraryPage } from './pages/InstitutionalLibraryPage.jsx';
+import { DigitalPreservationPage } from './pages/DigitalPreservationPage.jsx';
+import { FeedbackPage } from './pages/FeedbackPage.jsx';
 import { RecentUploads } from './pages/RecentUploads.jsx';
 import { RequestsLog } from './pages/RequestsLog.jsx';
 import { AdminAnnouncements } from './pages/AdminAnnouncements.jsx';
@@ -57,6 +71,22 @@ function App() {
 
         {/* Register Page - Full-width registration page */}
         <Route path="/register" element={<RegistrationPage />} />
+
+        {/* Footer Pages - Always accessible */}
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/disclaimer" element={<DisclaimerPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/sponsor" element={<SponsorPage />} />
+        <Route path="/copyright" element={<CopyrightPage />} />
+        <Route path="/registration" element={<GuidelinesPage />} />
+        <Route path="/sitemap" element={<SitemapPage />} />
+        <Route path="/branding" element={<BrandingPage />} />
+        <Route path="/ndli-club" element={<NDLIClubPage />} />
+        <Route path="/idr-hosting" element={<IDRHostingPage />} />
+        <Route path="/institutional-library" element={<InstitutionalLibraryPage />} />
+        <Route path="/digital-preservation" element={<DigitalPreservationPage />} />
+        <Route path="/feedback" element={<FeedbackPage />} />
 
         {/* Login Page - Redirect to home if already logged in */}
         <Route

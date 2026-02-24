@@ -53,7 +53,7 @@ export const LandingHero = () => {
   };
 
   return (
-    <header className="hero" style={{ paddingTop: '36px', paddingBottom: '28px', overflow: 'hidden' }}>
+    <header className="hero" style={{ paddingTop: '20px', paddingBottom: '28px', overflow: 'hidden' }}>
       {/* Floating emoji decorations */}
       {FLOATING.map((f, i) => (
         <span key={i} className="hero-float" style={{ ...f.style, animationDuration: f.style.animationDuration, animationDelay: f.style.animationDelay }}>{f.emoji}</span>
