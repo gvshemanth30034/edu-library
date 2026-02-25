@@ -122,8 +122,24 @@ export const AdminDashboard = () => {
     ].slice(0, 6));
   };
 
-  const handleResourceCardClick = (section = 'resources') => {
-    navigate(`/resources-analytics/${section}`);
+  const handleResourceCardClick = (section = 'overview') => {
+    console.log('AdminDashboard passing data to analytics:', {
+      resourcesCount: resources.length,
+      requestsCount: resourceRequests.length,
+      downloadsCount: recentDownloads.length,
+      totalResourcesCount,
+      pendingRequestsCount,
+      recentUploadsCount,
+      activeStudentsCount,
+    });
+    navigate(`/resources-analytics/${section}`, { 
+      state: { 
+        resources,
+        resourceRequests,
+        recentDownloads,
+        activityLog 
+      } 
+    });
   };
 
   const handleResourceFormChange = (field, value) => {
@@ -242,7 +258,7 @@ export const AdminDashboard = () => {
               Manage learning resources, review requests, and monitor activity in one place.
             </p>
             <div className="admin-hero__actions">
-              <button type="button" className="admin-hero__primary" onClick={() => handleResourceCardClick('resources')}>
+              <button type="button" className="admin-hero__primary" onClick={() => handleResourceCardClick('overview')}>
                 View Analytics
               </button>
               <button type="button" className="admin-hero__secondary" onClick={() => navigate('/admin-announcements')}>
