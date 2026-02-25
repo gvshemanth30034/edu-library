@@ -21,7 +21,7 @@ export const translations = {
     whyChooseBadge: 'Why EDU Library?',
     whyChooseTitle: 'Everything You Need,',
     whyChooseTitleHighlight: 'In One Platform',
-    whyChooseSubtitle: 'Built for India\'s students, researchers and educators — fully free, always.',
+    whyChooseSubtitle: 'Built for India\'s students, researchers and educators - fully free, always.',
     
     // Features
     smartSearch: 'Smart Search',
@@ -33,7 +33,7 @@ export const translations = {
     institutions1000: '1000+ Institutions',
     institutions1000Desc: 'Resources from NCERT, IITs, IIMs, universities and research labs.',
     secureTrusted: 'Secure & Trusted',
-    secureTrustedDesc: 'Government-backed digital library — verified, safe and reliable.',
+    secureTrustedDesc: 'Government-backed digital library - verified, safe and reliable.',
     anyDevice: 'Any Device',
     anyDeviceDesc: 'Access on mobile, tablet or desktop, anytime, anywhere.',
     
@@ -46,7 +46,7 @@ export const translations = {
     step1Title: 'Create a Free Account',
     step1Desc: 'Register with your institutional email in under a minute. No credit card needed.',
     step2Title: 'Search Anything',
-    step2Desc: 'Browse 5M+ resources — books, journals, research papers and e-content across 30+ languages.',
+    step2Desc: 'Browse 5M+ resources like books, journals, research papers and e-content across 30+ languages.',
     step3Title: 'Read & Download Free',
     step3Desc: 'Save resources, download PDFs and access full content from anywhere, on any device.',
     
