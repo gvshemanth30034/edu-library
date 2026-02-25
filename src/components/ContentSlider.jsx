@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 /**
  * NDL CONTENT CARDS SLIDER
@@ -11,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 const CARDS = [
   {
     id: 1,
-    title: 'Career Development',
+    titleKey: 'careerDevelopment',
     icon: '🎓',
     image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400',
     links: ['Examinations', 'Resource Types', 'Languages'],
@@ -19,7 +21,7 @@ const CARDS = [
   },
   {
     id: 2,
-    title: 'Cultural Archives',
+    titleKey: 'culturalArchives',
     icon: '🎨',
     image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400',
     links: ['Content Providers', 'Resource Types', 'Languages'],
@@ -27,7 +29,7 @@ const CARDS = [
   },
   {
     id: 3,
-    title: 'Newspaper Archives',
+    titleKey: 'newspaperArchives',
     icon: '📰',
     image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400',
     links: ['Content Providers', 'Countries', 'Languages'],
@@ -35,7 +37,7 @@ const CARDS = [
   },
   {
     id: 4,
-    title: 'Judicial Resources',
+    titleKey: 'judicialResources',
     icon: '⚖️',
     image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400',
     links: ['Content Providers', 'Case Types', 'Laws/Acts'],
@@ -43,7 +45,7 @@ const CARDS = [
   },
   {
     id: 5,
-    title: 'Patents & Standards',
+    titleKey: 'patentsStandards',
     icon: '📝',
     image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400',
     links: ['CPC Classification', 'Jurisdictions', 'Issuing Authority'],
@@ -51,7 +53,7 @@ const CARDS = [
   },
   {
     id: 6,
-    title: 'School Education',
+    titleKey: 'schoolEducation',
     icon: '🎒',
     image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400',
     links: ['Educational Boards', 'Educational Levels', 'Subjects'],
@@ -59,7 +61,7 @@ const CARDS = [
   },
   {
     id: 7,
-    title: 'Higher Education',
+    titleKey: 'higherEducation',
     icon: '🏛️',
     image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400',
     links: ['Universities', 'Colleges', 'Research'],
@@ -67,7 +69,7 @@ const CARDS = [
   },
   {
     id: 8,
-    title: 'Engineering',
+    titleKey: 'engineering',
     icon: '🛠️',
     image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400',
     links: ['Mechanical', 'Software', 'Electrical'],
@@ -75,7 +77,7 @@ const CARDS = [
   },
   {
     id: 9,
-    title: 'Computer Science',
+    titleKey: 'computerScience',
     icon: '💻',
     image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400',
     links: ['Algorithms', 'AI & ML', 'Data Structures'],
@@ -83,7 +85,7 @@ const CARDS = [
   },
   {
     id: 10,
-    title: 'Medical Sciences',
+    titleKey: 'medicalSciences',
     icon: '🩺',
     image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
     links: ['Anatomy', 'Pharmacology', 'Pathology'],
@@ -91,7 +93,7 @@ const CARDS = [
   },
   {
     id: 11,
-    title: 'Business Administration',
+    titleKey: 'businessAdmin',
     icon: '📊',
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400',
     links: ['Management', 'Marketing', 'Strategy'],
@@ -99,7 +101,7 @@ const CARDS = [
   },
   {
     id: 12,
-    title: 'Mathematics',
+    titleKey: 'mathematics',
     icon: '📐',
     image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400',
     links: ['Calculus', 'Linear Algebra', 'Statistics'],
@@ -107,7 +109,7 @@ const CARDS = [
   },
   {
     id: 13,
-    title: 'Psychology',
+    titleKey: 'psychology',
     icon: '🧠',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
     links: ['Cognitive Science', 'Clinical', 'Developmental'],
@@ -123,7 +125,7 @@ const CARDS = [
   },
   {
     id: 15,
-    title: 'Physics',
+    titleKey: 'physics',
     icon: '⚛️',
     image: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=400',
     links: ['Quantum Mechanics', 'Optics', 'Electrodynamics'],
@@ -131,7 +133,7 @@ const CARDS = [
   },
   {
     id: 16,
-    title: 'Economics',
+    titleKey: 'economics',
     icon: '📈',
     image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400',
     links: ['Microeconomics', 'Macroeconomics', 'Econometrics'],
@@ -145,6 +147,7 @@ export const ContentSlider = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const { language } = useLanguage();
 
   // Auto-scroll functionality
   useEffect(() => {
@@ -239,7 +242,7 @@ export const ContentSlider = () => {
                   
                   {/* Category Title */}
                   <h3 className="heading-entrance heading-entrance-card absolute inset-0 flex items-center justify-center text-white text-center text-sm font-semibold tracking-wide px-3 uppercase">
-                    {card.title}
+                    {card.titleKey ? translate(card.titleKey, language) : card.title}
                   </h3>
                 </div>
 
@@ -269,7 +272,7 @@ export const ContentSlider = () => {
                     className="text-xs font-bold text-green-700 cursor-pointer hover:text-green-800 transition"
                     onClick={(e) => { e.stopPropagation(); card.slug && navigate(`/category/${card.slug}`); }}
                   >
-                    Explore More Contents
+                    {translate('exploreMore', language)}
                   </p>
                 </div>
               </div>

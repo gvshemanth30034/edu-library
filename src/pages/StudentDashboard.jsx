@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Save, Download, Mail, Megaphone, LogOut, LayoutDashboard, Bell, X } from 'lucide-react';
 import { SAVED_RESOURCES_DATA, DOWNLOADS_DATA } from '../data/studentResourcesData';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 /**
  * STUDENT DASHBOARD
@@ -39,6 +41,7 @@ export const StudentDashboard = () => {
   const [activeNav, setActiveNav] = useState('overview');
   const [announcementsOpen, setAnnouncementsOpen] = useState(false);
   const announcementsRef = useRef(null);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('uiExtension-isLoggedIn') === 'true';
@@ -133,7 +136,7 @@ export const StudentDashboard = () => {
           <div className="heading-entrance bg-white border border-gray-200 rounded-xl shadow-sm px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
             <div className="min-w-0">
               <p className="text-xs sm:text-sm font-semibold text-teal-700 tracking-wide uppercase">Edu Library</p>
-              <h2 className="heading-premium text-lg sm:text-xl font-bold text-slate-900 truncate">Student Dashboard</h2>
+              <h2 className="heading-premium text-lg sm:text-xl font-bold text-slate-900 truncate">{translate('dashboardWelcome', language)}</h2>
             </div>
             <div className="flex items-center gap-2">
               {/* Announcements Bell */}
@@ -158,9 +161,9 @@ export const StudentDashboard = () => {
                     <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-orange-50 to-red-50">
                       <div className="flex items-center gap-2">
                         <Bell size={15} className="text-orange-600" />
-                        <span className="font-semibold text-slate-800 text-sm">Announcements</span>
+                        <span className="font-semibold text-slate-800 text-sm">{translate('announcements', language)}</span>
                         <span className="inline-flex items-center justify-center h-5 px-1.5 rounded-full bg-red-500 text-white text-[10px] font-bold">
-                          {announcements.filter(a => a.priority === 'high').length} urgent
+                          {announcements.filter(a => a.priority === 'high').length} {translate('urgent', language)}
                         </span>
                       </div>
                       <button
@@ -191,7 +194,7 @@ export const StudentDashboard = () => {
                         onClick={() => { setAnnouncementsOpen(false); navigate('/announcements'); }}
                         className="w-full text-center text-xs font-semibold text-teal-700 hover:text-teal-900 transition-colors"
                       >
-                        View all announcements →
+                        {translate('viewAllAnnouncements', language)} →
                       </button>
                     </div>
                   </div>
@@ -205,7 +208,7 @@ export const StudentDashboard = () => {
                 aria-label="Logout"
               >
                 <LogOut size={16} />
-                Logout
+                {translate('logout', language)}
               </button>
             </div>
           </div>
@@ -229,16 +232,16 @@ export const StudentDashboard = () => {
             {/* Left — Text & CTAs */}
             <div className="flex-1 min-w-0">
               <p className="heading-entrance mb-2 text-xs font-semibold uppercase tracking-widest text-teal-200">
-                Welcome back
+                {translate('welcomeBackText', language)}
               </p>
               <h1 className="heading-entrance heading-premium mb-3 text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
-                Hello, {userName}!{' '}
+                {translate('hello', language)}, {userName}!{' '}
                 <span role="img" aria-label="wave" style={{ display: 'inline-block', animation: 'wave-hand 1.8s ease-in-out 0.8s 1' }}>
                   👋
                 </span>
               </h1>
               <p className="heading-entrance heading-entrance-delay-1 mb-8 max-w-md text-base leading-relaxed text-teal-100 sm:text-lg">
-                Your learning hub is ready. Explore thousands of academic resources, track your progress, and level up your knowledge.
+                {translate('yourLearningHub', language)}
               </p>
               <div className="heading-entrance flex flex-wrap gap-3" style={{ animationDelay: '320ms' }}>
                 {/* Primary CTA */}
@@ -247,7 +250,7 @@ export const StudentDashboard = () => {
                   className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-teal-800 shadow-sm transition-all duration-200 hover:bg-teal-50 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-700"
                 >
                   <BookOpen size={16} />
-                  Browse Catalog
+                  {translate('browseAction', language)}
                 </button>
                 {/* Secondary CTA */}
                 <button
@@ -255,7 +258,7 @@ export const StudentDashboard = () => {
                   className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-teal-700"
                 >
                   <Save size={16} />
-                  View Saved Resources
+                  {translate('savedAction', language)}
                 </button>
               </div>
             </div>
@@ -293,26 +296,26 @@ export const StudentDashboard = () => {
         {/* Unified Dashboard Action Cards */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           <DashboardActionCard
-            title="Browse Catalog"
-            subtitle="Explore all resources"
+            title={translate('browseAction', language)}
+            subtitle={translate('browseActionDesc', language)}
             icon={<BookOpen className="w-7 h-7 text-slate-600 group-hover:text-blue-600 transition-colors" />}
             onClick={() => navigate('/catalogs')}
           />
           <DashboardActionCard
-            title="Saved Resources"
-            subtitle={`${SAVED_RESOURCES_DATA.length} items saved`}
+            title={translate('savedAction', language)}
+            subtitle={`${SAVED_RESOURCES_DATA.length} ${translate('itemsSaved', language)}`}
             icon={<Save className="w-7 h-7 text-slate-600 group-hover:text-blue-600 transition-colors" />}
             onClick={() => navigate('/saved-resources')}
           />
           <DashboardActionCard
-            title="Downloads"
-            subtitle={`${DOWNLOADS_DATA.length} files downloaded`}
+            title={translate('downloadsAction', language)}
+            subtitle={`${DOWNLOADS_DATA.length} ${translate('filesDownloaded', language)}`}
             icon={<Download className="w-7 h-7 text-slate-600 group-hover:text-blue-600 transition-colors" />}
             onClick={() => navigate('/downloads')}
           />
           <DashboardActionCard
-            title="Request Resource"
-            subtitle="Suggest new materials"
+            title={translate('requestAction', language)}
+            subtitle={translate('requestActionDesc', language)}
             icon={<Mail className="w-7 h-7 text-slate-600 group-hover:text-blue-600 transition-colors" />}
             onClick={() => navigate('/request-resource')}
           />
@@ -320,15 +323,15 @@ export const StudentDashboard = () => {
 
         {/* Recently Accessed Resources - Academic Table */}
         <section className="dashboard-section">
-          <h2 className="section-title heading-entrance heading-premium">Recently Accessed Resources</h2>
+          <h2 className="section-title heading-entrance heading-premium">{translate('recentlyAccessedResources', language)}</h2>
           <div className="resource-table-wrapper">
             <table className="resource-table">
               <thead>
                 <tr>
-                  <th>Title</th>
-                  <th>Subject</th>
-                  <th>Type</th>
-                  <th>Last Accessed</th>
+                  <th>{translate('title', language)}</th>
+                  <th>{translate('subject', language)}</th>
+                  <th>{translate('type', language)}</th>
+                  <th>{translate('lastAccessedText', language)}</th>
                 </tr>
               </thead>
               <tbody>
@@ -355,26 +358,26 @@ export const StudentDashboard = () => {
 
         {/* Ongoing Learning Section */}
         <section className="dashboard-section">
-          <h2 className="section-title heading-entrance heading-premium">Ongoing Learning</h2>
+          <h2 className="section-title heading-entrance heading-premium">{translate('ongoingLearning', language)}</h2>
           <div className="learning-cards">
             {learningItems.map((item, idx) => (
               <div key={idx} className="learning-card">
                 <div className="learning-header">
                   <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">{item.title}</h4>
-                  <span className="progress-badge">{item.progress}% Complete</span>
+                  <span className="progress-badge">{item.progress}% {translate('complete', language)}</span>
                 </div>
                 <div className="progress-bar">
                   <div className="progress-fill" style={{ width: `${item.progress}%` }}></div>
                 </div>
                 <div className="flex items-center justify-between mt-3">
-                  <p className="learning-meta">Last accessed: {item.lastAccessed}</p>
+                  <p className="learning-meta">{translate('lastAccessedColon', language)} {item.lastAccessed}</p>
                   <button
                     onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-600 text-white text-xs font-semibold hover:bg-teal-700 active:bg-teal-800 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1"
                     aria-label={`Continue ${item.title}`}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    Continue
+                    {translate('continueButton', language)}
                   </button>
                 </div>
               </div>
@@ -385,12 +388,12 @@ export const StudentDashboard = () => {
         {/* Explore by Department Grid */}
         <section className="dashboard-section">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="section-title heading-entrance heading-premium mb-0">Explore by Department</h2>
+            <h2 className="section-title heading-entrance heading-premium mb-0">{translate('exploreByDepartment', language)}</h2>
             <button
               onClick={() => navigate('/departments')}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-teal-200 bg-teal-50 text-teal-700 text-sm font-semibold hover:bg-teal-100 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
-              Explore More
+              {translate('exploreMore', language)}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </div>
@@ -398,12 +401,12 @@ export const StudentDashboard = () => {
             {departments.map((dept, idx) => (
               <div key={idx} className="department-card">
                 <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">{dept.name}</h4>
-                <p className="dept-count">{dept.count} resources</p>
+                <p className="dept-count">{dept.count} {translate('resourcesCount', language)}</p>
                 <button
                   className="dept-btn"
                   onClick={() => navigate(`/category/${dept.slug}`)}
                 >
-                  Explore
+                  {translate('explore', language)}
                 </button>
               </div>
             ))}
@@ -416,31 +419,31 @@ export const StudentDashboard = () => {
       <nav className="bottom-nav-menu" role="navigation" aria-label="Main navigation">
         <div onClick={() => navigate('/student-dashboard')} className={`nav-link cursor-pointer ${activeNav === 'overview' ? 'active' : ''}`} aria-label="Overview">
           <span className="nav-icon"><LayoutDashboard size={20} /></span>
-          <span className="nav-title">Overview</span>
+          <span className="nav-title">{translate('overview', language)}</span>
         </div>
         <div onClick={() => navigate('/catalogs')} className={`nav-link cursor-pointer ${activeNav === 'browse' ? 'active' : ''}`} aria-label="Browse Resources">
           <span className="nav-icon"><BookOpen size={20} /></span>
-          <span className="nav-title">Browse Resources</span>
+          <span className="nav-title">{translate('browseResources', language)}</span>
         </div>
         <div onClick={() => navigate('/saved-resources')} className={`nav-link cursor-pointer ${activeNav === 'saved' ? 'active' : ''}`} aria-label="Saved Items">
           <span className="nav-icon"><Save size={20} /></span>
-          <span className="nav-title">Saved Items</span>
+          <span className="nav-title">{translate('savedItems', language)}</span>
         </div>
         <div onClick={() => navigate('/downloads')} className={`nav-link cursor-pointer ${activeNav === 'downloads' ? 'active' : ''}`} aria-label="Downloads">
           <span className="nav-icon"><Download size={20} /></span>
-          <span className="nav-title">Downloads</span>
+          <span className="nav-title">{translate('downloads', language)}</span>
         </div>
         <div onClick={() => navigate('/my-requests')} className={`nav-link cursor-pointer ${activeNav === 'requests' ? 'active' : ''}`} aria-label="My Requests">
           <span className="nav-icon"><Mail size={20} /></span>
-          <span className="nav-title">My Requests</span>
+          <span className="nav-title">{translate('myRequests', language)}</span>
         </div>
         <div onClick={() => navigate('/announcements')} className={`nav-link cursor-pointer ${activeNav === 'announcements' ? 'active' : ''}`} aria-label="Announcements">
           <span className="nav-icon"><Megaphone size={20} /></span>
-          <span className="nav-title">Announcements</span>
+          <span className="nav-title">{translate('announcements', language)}</span>
         </div>
         <button onClick={handleLogout} className="nav-link nav-logout" aria-label="Logout">
           <span className="nav-icon"><LogOut size={20} /></span>
-          <span className="nav-title">Logout</span>
+          <span className="nav-title">{translate('logout', language)}</span>
         </button>
       </nav>
     </div>

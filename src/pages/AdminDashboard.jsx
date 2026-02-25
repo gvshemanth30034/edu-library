@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Users, Download, Mail, Megaphone, Settings, LogOut, LayoutDashboard } from 'lucide-react';
 import { Documents, PDFs, Videos } from '../data/resourcesCatalog.js';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 /**
  * ADMIN DASHBOARD
@@ -11,6 +13,7 @@ import { Documents, PDFs, Videos } from '../data/resourcesCatalog.js';
 
 export const AdminDashboard = () => {
   const navigate = useNavigate();
+  const { language } = useLanguage();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('');
   const [activeNav, setActiveNav] = useState('overview');
@@ -252,17 +255,17 @@ export const AdminDashboard = () => {
         {/* Welcome Section */}
         <section className="admin-hero" id="overview">
           <div className="admin-hero__content">
-            <p className="admin-hero__kicker">Welcome back</p>
-            <h1 className="admin-hero__title">Admin Control Center</h1>
+            <p className="admin-hero__kicker">{translate('welcomeBack', language)}</p>
+            <h1 className="admin-hero__title">{translate('adminControlCenter', language)}</h1>
             <p className="admin-hero__subtitle">
-              Manage learning resources, review requests, and monitor activity in one place.
+              {translate('manageResourcesSubtitle', language)}
             </p>
             <div className="admin-hero__actions">
               <button type="button" className="admin-hero__primary" onClick={() => handleResourceCardClick('overview')}>
                 View Analytics
               </button>
               <button type="button" className="admin-hero__secondary" onClick={() => navigate('/admin-announcements')}>
-                Post Announcement
+                {translate('postAnnouncement', language)}
               </button>
             </div>
           </div>
@@ -283,33 +286,33 @@ export const AdminDashboard = () => {
           <div className="admin-stat-card" onClick={() => handleResourceCardClick('resources')}>
             <div className="stat-icon flex items-center justify-center rounded-xl bg-teal-50 text-teal-600 p-3 h-14 w-14"><BookOpen size={36} /></div>
             <div className="stat-content">
-              <h3 className="heading-entrance heading-entrance-card heading-premium">Total Resources</h3>
+              <h3 className="heading-entrance heading-entrance-card heading-premium">{translate('totalResources', language)}</h3>
               <p className="stat-number">{totalResourcesCount}</p>
-              <span className="stat-meta">{recentUploadsCount} added this week</span>
+              <span className="stat-meta">{recentUploadsCount} {translate('addedThisWeek', language)}</span>
             </div>
           </div>
           <div className="admin-stat-card" onClick={() => handleResourceCardClick('users')}>
             <div className="stat-icon flex items-center justify-center rounded-xl bg-green-50 text-green-600 p-3 h-14 w-14"><Users size={36} /></div>
             <div className="stat-content">
-              <h3 className="heading-entrance heading-entrance-card heading-premium">Active Students</h3>
+              <h3 className="heading-entrance heading-entrance-card heading-premium">{translate('activeStudents', language)}</h3>
               <p className="stat-number">{activeStudentsCount}</p>
-              <span className="stat-meta">Active in last 48 hours</span>
+              <span className="stat-meta">{translate('activeInLast48Hours', language)}</span>
             </div>
           </div>
           <div className="admin-stat-card" onClick={() => handleResourceCardClick('uploads')}>
             <div className="stat-icon flex items-center justify-center rounded-xl bg-blue-50 text-blue-600 p-3 h-14 w-14"><Download size={36} /></div>
             <div className="stat-content">
-              <h3 className="heading-entrance heading-entrance-card heading-premium">Recent Uploads</h3>
+              <h3 className="heading-entrance heading-entrance-card heading-premium">{translate('recentUploads', language)}</h3>
               <p className="stat-number">{recentUploadsCount}</p>
-              <span className="stat-meta">Last 7 days</span>
+              <span className="stat-meta">{translate('last7Days', language)}</span>
             </div>
           </div>
           <div className="admin-stat-card" onClick={() => handleResourceCardClick('requests')}>
             <div className="stat-icon flex items-center justify-center rounded-xl bg-orange-50 text-orange-600 p-3 h-14 w-14"><Mail size={36} /></div>
             <div className="stat-content">
-              <h3 className="heading-entrance heading-entrance-card heading-premium">Pending Requests</h3>
+              <h3 className="heading-entrance heading-entrance-card heading-premium">{translate('pendingRequests', language)}</h3>
               <p className="stat-number">{pendingRequestsCount}</p>
-              <span className="stat-meta">Requires attention</span>
+              <span className="stat-meta">{translate('requiresAttention', language)}</span>
             </div>
           </div>
         </section>
@@ -641,11 +644,11 @@ export const AdminDashboard = () => {
       <nav className="bottom-nav-menu bottom-nav-menu--admin" role="navigation" aria-label="Admin navigation">
         <a href="#overview" className={`nav-link ${activeNav === 'overview' ? 'active' : ''}`} onClick={() => setActiveNav('overview')} aria-label="Overview">
           <span className="nav-icon"><LayoutDashboard size={20} /></span>
-          <span className="nav-title">Overview</span>
+          <span className="nav-title">{translate('overview', language)}</span>
         </a>
         <a href="#resources" className={`nav-link ${activeNav === 'resources' ? 'active' : ''}`} onClick={() => setActiveNav('resources')} aria-label="Resource Management">
           <span className="nav-icon"><BookOpen size={20} /></span>
-          <span className="nav-title">Resources</span>
+          <span className="nav-title">{translate('resources', language)}</span>
         </a>
         <button
           type="button"
@@ -654,11 +657,11 @@ export const AdminDashboard = () => {
           aria-label="Student Activity"
         >
           <span className="nav-icon"><Users size={20} /></span>
-          <span className="nav-title">Students</span>
+          <span className="nav-title">{translate('students', language)}</span>
         </button>
         <a href="#requests" className={`nav-link ${activeNav === 'requests' ? 'active' : ''}`} onClick={() => setActiveNav('requests')} aria-label="Requests">
           <span className="nav-icon"><Mail size={20} /></span>
-          <span className="nav-title">Requests</span>
+          <span className="nav-title">{translate('requests', language)}</span>
         </a>
         <button
           type="button"
@@ -667,7 +670,7 @@ export const AdminDashboard = () => {
           aria-label="Announcements"
         >
           <span className="nav-icon"><Megaphone size={20} /></span>
-          <span className="nav-title">Announcements</span>
+          <span className="nav-title">{translate('announcements', language)}</span>
         </button>
         <button
           type="button"
@@ -676,11 +679,11 @@ export const AdminDashboard = () => {
           aria-label="Settings"
         >
           <span className="nav-icon"><Settings size={20} /></span>
-          <span className="nav-title">Settings</span>
+          <span className="nav-title">{translate('settings', language)}</span>
         </button>
         <button onClick={handleLogout} className="nav-link nav-logout" aria-label="Logout">
           <span className="nav-icon"><LogOut size={20} /></span>
-          <span className="nav-title">Logout</span>
+          <span className="nav-title">{translate('logout', language)}</span>
         </button>
       </nav>
     </div>

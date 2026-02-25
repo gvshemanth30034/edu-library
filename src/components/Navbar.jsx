@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Globe, LogOut, Maximize2, Menu, X } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 /**
  * NDL-INSPIRED NAVBAR
@@ -14,7 +16,7 @@ export const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
   const [userRole, setUserRole] = useState('');
-  const [language, setLanguage] = useState('EN');
+  const { language, setLanguage } = useLanguage();
   const navigate = useNavigate();
 
   // Check login status on mount
@@ -75,13 +77,13 @@ export const Navbar = () => {
           {/* Middle Nav Links - Desktop */}
           <div className="hidden md:flex items-center gap-8">
             <Link to="/catalogs" className="text-gray-700 hover:text-teal-900 text-sm font-medium transition">
-              Browse
+              {translate('browse', language)}
             </Link>
             <a href="#" className="text-gray-700 hover:text-teal-900 text-sm font-medium transition">
-              Guidelines
+              {translate('guidelines', language)}
             </a>
             <a href="#" className="text-gray-700 hover:text-teal-900 text-sm font-medium transition">
-              About
+              {translate('about', language)}
             </a>
           </div>
 
@@ -93,10 +95,12 @@ export const Navbar = () => {
               onChange={(e) => setLanguage(e.target.value)}
               className="px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-900 cursor-pointer"
             >
-              <option value="EN">EN</option>
-              <option value="HI">हिंदी</option>
-              <option value="TA">தமிழ்</option>
-              <option value="TE">తెలుగు</option>
+              <option value="English">EN</option>
+              <option value="Hindi">हिंदी</option>
+              <option value="Tamil">தமிழ்</option>
+              <option value="Telugu">తెలుగు</option>
+              <option value="Bengali">বাংলা</option>
+              <option value="Marathi">मराठी</option>
             </select>
 
             {/* Fullscreen Toggle */}
@@ -120,14 +124,14 @@ export const Navbar = () => {
                     to="/admin-dashboard"
                     className="text-xs font-medium text-red-600 hover:text-red-700 transition"
                   >
-                    Admin
+                    {translate('admin', language)}
                   </Link>
                 ) : (
                   <Link
                     to="/student-dashboard"
                     className="text-xs font-medium text-teal-900 hover:text-teal-700 transition"
                   >
-                    Student
+                    {translate('student', language)}
                   </Link>
                 )}
                 <button
@@ -135,7 +139,7 @@ export const Navbar = () => {
                   className="px-3 py-1 text-xs text-red-600 hover:bg-red-50 rounded transition flex items-center gap-1"
                 >
                   <LogOut size={14} />
-                  Logout
+                  {translate('logout', language)}
                 </button>
               </>
             ) : (
@@ -144,13 +148,13 @@ export const Navbar = () => {
                   to="/login"
                   className="text-xs font-medium text-teal-900 hover:text-teal-700 transition"
                 >
-                  Log-in
+                  {translate('login', language)}
                 </Link>
                 <Link
                   to="/register"
                   className="px-3 py-1.5 text-xs font-medium text-white bg-teal-900 hover:bg-teal-800 rounded transition"
                 >
-                  Sign-up
+                  {translate('signup', language)}
                 </Link>
               </>
             )}
@@ -173,17 +177,19 @@ export const Navbar = () => {
               className="block text-gray-700 hover:text-teal-900 text-sm font-medium px-3 py-2 hover:bg-gray-50 rounded"
               onClick={() => setIsMenuOpen(false)}
             >
-              Browse
+              {translate('browse', language)}
             </Link>
             <select 
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
             >
-              <option value="EN">English</option>
-              <option value="HI">हिंदी</option>
-              <option value="TA">தமிழ்</option>
-              <option value="TE">తెలుగు</option>
+              <option value="English">English</option>
+              <option value="Hindi">हिंदी</option>
+              <option value="Tamil">தமிழ்</option>
+              <option value="Telugu">తెలుగు</option>
+              <option value="Bengali">বাংলা</option>
+              <option value="Marathi">मराठी</option>
             </select>
             
             {isLoggedIn ? (
@@ -195,7 +201,7 @@ export const Navbar = () => {
                     className="block text-red-600 hover:text-red-700 text-sm font-medium px-3 py-2 hover:bg-red-50 rounded"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Admin Dashboard
+                    {translate('adminDashboard', language)}
                   </Link>
                 ) : (
                   <Link
@@ -203,7 +209,7 @@ export const Navbar = () => {
                     className="block text-teal-900 hover:text-teal-700 text-sm font-medium px-3 py-2 hover:bg-teal-50 rounded"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Student Dashboard
+                    {translate('studentDashboard', language)}
                   </Link>
                 )}
                 <button
@@ -211,7 +217,7 @@ export const Navbar = () => {
                   className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition flex items-center gap-2"
                 >
                   <LogOut size={14} />
-                  Logout
+                  {translate('logout', language)}
                 </button>
               </>
             ) : (
@@ -221,14 +227,14 @@ export const Navbar = () => {
                   className="block w-full px-3 py-2 text-sm text-teal-900 border border-teal-900 rounded hover:bg-teal-50 text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Log-in
+                  {translate('login', language)}
                 </Link>
                 <Link
                   to="/register"
                   className="block w-full px-3 py-2 text-sm text-white bg-teal-900 rounded hover:bg-teal-800 text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Sign-up
+                  {translate('signup', language)}
                 </Link>
               </>
             )}

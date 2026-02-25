@@ -1,4 +1,6 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 /**
  * FOOTER - NDL DESIGN
@@ -6,6 +8,8 @@ import React from 'react';
  */
 
 export const Footer = () => {
+  const { language } = useLanguage();
+  
   return (
     <footer className="ndl-footer bg-gray-900 text-white">
       {/* Main Footer Content */}
@@ -13,26 +17,26 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Column 1: About */}
           <div className="ndl-footer-col">
-            <h4 className="text-lg font-bold mb-4 text-white">About</h4>
+            <h4 className="text-lg font-bold mb-4 text-white">{translate('footerAbout', language)}</h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  📖 About NDLI
+                  📖 {translate('aboutNDLI', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  📋 Disclaimer
+                  📋 {translate('disclaimer', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  🤝 Sponsor
+                  🤝 {translate('sponsor', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  🔒 Privacy Policy
+                  🔒 {translate('privacyPolicy', language)}
                 </a>
               </li>
             </ul>
@@ -40,26 +44,26 @@ export const Footer = () => {
 
           {/* Column 2: Guidelines */}
           <div className="ndl-footer-col">
-            <h4 className="text-lg font-bold mb-4 text-white">Guidelines</h4>
+            <h4 className="text-lg font-bold mb-4 text-white">{translate('footerGuidelines', language)}</h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  ©️ Copyright Guide
+                  ©️ {translate('copyrightGuide', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  🏢 Institutional Registration
+                  🏢 {translate('institutionalRegistration', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  🗺️ Sitemap
+                  🗺️ {translate('sitemap', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  🎨 Branding
+                  🎨 {translate('branding', language)}
                 </a>
               </li>
             </ul>
@@ -67,26 +71,26 @@ export const Footer = () => {
 
           {/* Column 3: Services */}
           <div className="ndl-footer-col">
-            <h4 className="text-lg font-bold mb-4 text-white">Our Services</h4>
+            <h4 className="text-lg font-bold mb-4 text-white">{translate('ourServices', language)}</h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  🎯 NDLI Club
+                  🎯 {translate('ndliClub', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  🌐 IDR Hosting
+                  🌐 {translate('idrHosting', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  📚 Institutional Digital Library
+                  📚 {translate('institutionalDigitalLibrary', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  💾 Digital Preservation Centre
+                  💾 {translate('digitalPreservationCentre', language)}
                 </a>
               </li>
             </ul>
@@ -94,26 +98,26 @@ export const Footer = () => {
 
           {/* Column 4: Contact */}
           <div className="ndl-footer-col">
-            <h4 className="text-lg font-bold mb-4 text-white">Contact Us</h4>
+            <h4 className="text-lg font-bold mb-4 text-white">{translate('contactUs', language)}</h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  📧 Contact
+                  📧 {translate('contact', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  💬 Feedback
+                  💬 {translate('feedback', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  📱 Mobile App
+                  📱 {translate('mobileApp', language)}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition text-sm">
-                  🌐 Web Platform
+                  🌐 {translate('webPlatform', language)}
                 </a>
               </li>
             </ul>
@@ -127,13 +131,13 @@ export const Footer = () => {
             {/* App Download Buttons */}
             <div className="ndl-app-buttons flex gap-4">
               <button className="bg-white text-gray-900 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition text-sm flex items-center gap-2">
-                🍎 App Store
+                🍎 {translate('appStore', language)}
               </button>
               <button className="bg-white text-gray-900 px-4 py-2 rounded font-semibold hover:bg-gray-100 transition text-sm flex items-center gap-2">
-                🤖 Play Store
+                🤖 {translate('playStore', language)}
               </button>
               <button className="border border-white text-white px-4 py-2 rounded font-semibold hover:bg-white hover:text-gray-900 transition text-sm flex items-center gap-2">
-                🌐 Web
+                🌐 {translate('web', language)}
               </button>
             </div>
 
@@ -159,8 +163,8 @@ export const Footer = () => {
 
           {/* Copyright */}
           <div className="text-center text-gray-500 text-xs mt-6">
-            <p>© 2024 National Digital Library of India. All rights reserved.</p>
-            <p className="mt-1">Powered by Ministry of Education, Government of India</p>
+            <p>© 2024 {translate('nationalDigitalLibrary', language)}. {translate('allRightsReserved', language)}.</p>
+            <p className="mt-1">{translate('poweredBy', language)}</p>
           </div>
         </div>
       </div>

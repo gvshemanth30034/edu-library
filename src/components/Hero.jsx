@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 /**
  * NDL HERO SECTION
@@ -9,11 +11,12 @@ import { Search } from 'lucide-react';
  */
 export const Hero = () => {
   const [searchText, setSearchText] = useState('');
-  const [language, setLanguage] = useState('EN');
+  const [selectedLang, setSelectedLang] = useState('EN');
+  const { language } = useLanguage();
 
   const handleSearch = () => {
     if (searchText.trim()) {
-      console.log(`Searching: "${searchText}" in ${language}`);
+      console.log(`Searching: "${searchText}" in ${selectedLang}`);
       // Can be extended to filter catalogs by search term
     }
   };
@@ -26,20 +29,20 @@ export const Hero = () => {
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Headline */}
         <h1 className="heading-entrance heading-premium text-4xl md:text-5xl font-bold text-center mb-3 text-teal-900">
-          One Library <span className="text-green-600">All of India</span>
+          {translate('oneLibrary', language)} <span className="text-green-600">{translate('allOfIndia', language)}</span>
         </h1>
 
         {/* Tagline */}
         <p className="heading-entrance heading-entrance-delay-1 text-center text-gray-600 italic mb-8 text-lg">
-          A Single Window Towards Paradigm Shift in Indian Education
+          {translate('tagline', language)}
         </p>
 
         {/* Search Bar with Language */}
         <div className="flex bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
           {/* Language Dropdown */}
           <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            value={selectedLang}
+            onChange={(e) => setSelectedLang(e.target.value)}
             className="px-4 py-3 bg-gray-50 border-r border-gray-300 focus:outline-none cursor-pointer font-medium text-sm"
           >
             <option value="EN">English</option>
@@ -53,7 +56,7 @@ export const Hero = () => {
           {/* Search Input */}
           <input
             type="text"
-            placeholder="Enter your search key..."
+            placeholder={translate('enterSearch', language)}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -66,16 +69,16 @@ export const Hero = () => {
             className="px-6 py-3 bg-teal-900 hover:bg-teal-800 text-white font-bold transition flex items-center gap-2"
           >
             <Search size={18} />
-            Search
+            {translate('search', language)}
           </button>
         </div>
 
         {/* Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
-          <StatItem value="50K+" label="Resources" />
-          <StatItem value="10M+" label="Users" />
-          <StatItem value="100+" label="Categories" />
-          <StatItem value="24/7" label="Accessible" />
+          <StatItem value="50K+" label={translate('resources', language)} />
+          <StatItem value="10M+" label={translate('users', language)} />
+          <StatItem value="100+" label={translate('categories', language)} />
+          <StatItem value="24/7" label={translate('accessible', language)} />
         </div>
       </div>
     </section>

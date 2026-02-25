@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { translate } from '../translations/index.js';
 
 /**
  * FRONTEND-ONLY LOGIN PAGE
@@ -16,6 +18,7 @@ export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { language } = useLanguage();
 
   const createDemoSession = (role) => {
     const demoSession = {
@@ -89,8 +92,8 @@ export const LoginPage = () => {
           <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-green-600 rounded-full flex items-center justify-center text-white text-3xl mx-auto mb-4 shadow-lg">
             📚
           </div>
-          <h1 className="heading-entrance heading-premium text-3xl font-bold text-teal-900 mb-2">Welcome Back</h1>
-          <p className="heading-entrance heading-entrance-delay-1 text-gray-600">Sign in to your account to continue</p>
+          <h1 className="heading-entrance heading-premium text-3xl font-bold text-teal-900 mb-2">{translate('welcomeBack', language)}</h1>
+          <p className="heading-entrance heading-entrance-delay-1 text-gray-600">{translate('signInAccount', language)}</p>
         </div>
 
         {/* Error Message */}
@@ -105,7 +108,7 @@ export const LoginPage = () => {
           {/* Email Field */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Email Address
+              {translate('emailAddress', language)}
             </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
@@ -113,7 +116,7 @@ export const LoginPage = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder={translate('emailPlaceholder', language)}
                 className="uiExtension-inputField w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
               />
             </div>
@@ -122,7 +125,7 @@ export const LoginPage = () => {
           {/* Password Field */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Password
+              {translate('password', language)}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
@@ -130,7 +133,7 @@ export const LoginPage = () => {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder={translate('passwordPlaceholder', language)}
                 className="uiExtension-inputField w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
               />
               {/* Show/Hide Password Toggle */}
@@ -151,44 +154,44 @@ export const LoginPage = () => {
             disabled={isLoading}
             className="uiExtension-loginBtn w-full py-3 bg-gradient-to-r from-teal-600 to-green-600 text-white rounded-lg font-semibold hover:from-teal-700 hover:to-green-700 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? translate('signingIn', language) : translate('signIn', language)}
           </button>
         </form>
 
         {/* Divider */}
         <div className="my-6 flex items-center">
           <div className="flex-1 border-t border-gray-300"></div>
-          <span className="px-3 text-sm text-gray-500">or</span>
+          <span className="px-3 text-sm text-gray-500">{translate('or', language)}</span>
           <div className="flex-1 border-t border-gray-300"></div>
         </div>
 
         {/* Register Link */}
         <div className="text-center">
           <p className="text-gray-600 text-sm">
-            Don't have an account?{' '}
+            {translate('noAccount', language)}{' '}
             <button
               onClick={() => navigate('/register')}
               className="text-teal-600 font-semibold hover:text-teal-700 transition hover:underline"
             >
-              Create one
+              {translate('createOne', language)}
             </button>
           </p>
         </div>
 
         <div className="demo-login">
-          <span>Quick demo login:</span>
+          <span>{translate('quickDemo', language)}</span>
           <button type="button" onClick={() => createDemoSession('student')}>
-            Student
+            {translate('demoStudent', language)}
           </button>
           <button type="button" onClick={() => createDemoSession('admin')}>
-            Admin
+            {translate('demoAdmin', language)}
           </button>
         </div>
 
         {/* Demo Credentials Info */}
         <div className="uiExtension-demoInfo mt-8 p-4 bg-teal-50 rounded-lg border border-teal-200">
           <p className="text-xs text-teal-700 font-medium">
-            💡 <strong>Demo Mode:</strong> Use any email/password to login
+            💡 <strong>{translate('demoMode', language)}</strong> {translate('demoModeText', language)}
           </p>
         </div>
       </div>
