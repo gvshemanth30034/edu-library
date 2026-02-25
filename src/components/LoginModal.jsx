@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { LogIn, Mail, Lock, Eye, EyeOff, X, UserPlus, KeyRound, GraduationCap, ShieldCheck, Loader2 } from 'lucide-react';
 
 /**
- * Login Modal - Compact Design
- * - Email and password inputs
- * - Register and Account recovery links
- * - Keep me logged in checkbox
- * - Modal overlay with backdrop
+ * Login Modal - Modern Animated Design
+ * Teal/green theme matching the Digital Library branding
  */
 export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
   const [formData, setFormData] = useState({
@@ -16,6 +14,30 @@ export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
 
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [successLogin, setSuccessLogin] = useState(false);
+  const emailRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+      setIsClosing(false);
+      setTimeout(() => emailRef.current?.focus(), 400);
+    }
+  }, [isOpen]);
+
+  const handleAnimatedClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      setIsClosing(false);
+      onClose();
+    }, 280);
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -30,25 +52,11 @@ export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
     e.preventDefault();
     setError('');
 
-    // Validation
-    if (!formData.email.trim()) {
-      setError('Email is required');
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError('Please enter a valid email');
-      return;
-    }
-    if (!formData.password.trim()) {
-      setError('Password is required');
-      return;
-    }
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
-    }
+    if (!formData.email.trim()) { setError('Email is required'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) { setError('Please enter a valid email'); return; }
+    if (!formData.password.trim()) { setError('Password is required'); return; }
+    if (formData.password.length < 6) { setError('Password must be at least 6 characters'); return; }
 
-    // Simulate login
     setIsLoading(true);
     setTimeout(() => {
       const users = JSON.parse(localStorage.getItem('uiExtension-users') || '[]');
@@ -60,7 +68,6 @@ export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
         return;
       }
 
-      // Create session
       const normalizedRole = user.role === 'user' ? 'student' : (user.role || 'student');
       const userSession = {
         id: Math.random().toString(36).substr(2, 9),
@@ -80,8 +87,11 @@ export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
       }
 
       setIsLoading(false);
-      onClose();
-      window.location.href = normalizedRole === 'admin' ? '/admin-dashboard' : '/student-dashboard';
+      setSuccessLogin(true);
+      setTimeout(() => {
+        onClose();
+        window.location.href = normalizedRole === 'admin' ? '/admin-dashboard' : '/student-dashboard';
+      }, 700);
     }, 600);
   };
 
@@ -99,136 +109,182 @@ export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
     localStorage.setItem('uiExtension-isLoggedIn', 'true');
     localStorage.setItem('uiExtension-userRole', role);
 
-    onClose();
-    window.location.href = role === 'admin' ? '/admin-dashboard' : '/student-dashboard';
+    setSuccessLogin(true);
+    setTimeout(() => {
+      onClose();
+      window.location.href = role === 'admin' ? '/admin-dashboard' : '/student-dashboard';
+    }, 700);
   };
 
   const handleRecoveryClick = () => {
-    if (onRecoveryClick) {
-      onRecoveryClick();
-    }
+    if (onRecoveryClick) onRecoveryClick();
   };
 
-  if (!isOpen) return null;
+  if (!isOpen && !isVisible) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        {/* Modal Header */}
-        <div className="modal-header">
-          <h2 className="heading-entrance heading-premium">
-            <span className="login-icon">➜]</span> Log-in
-          </h2>
-          <span className="close-btn" onClick={onClose}>
-            &times;
-          </span>
+    <div
+      className={`lm-overlay ${isClosing ? 'lm-overlay--closing' : ''}`}
+      onClick={handleAnimatedClose}
+    >
+      <div
+        className={`lm-card ${isClosing ? 'lm-card--closing' : ''} ${successLogin ? 'lm-card--success' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Decorative top accent */}
+        <div className="lm-accent-bar" />
+
+        {/* Floating particles */}
+        <div className="lm-particles">
+          <span /><span /><span /><span /><span />
         </div>
 
-        {/* Modal Body */}
-        <form className="modal-body" onSubmit={handleSubmit}>
-          {/* Error Message */}
-          {error && (
-            <div style={{
-              background: '#fee',
-              border: '1px solid #fcc',
-              borderRadius: '4px',
-              padding: '10px 15px',
-              marginBottom: '20px',
-              color: '#c33',
-              fontSize: '0.9rem',
-              textAlign: 'center'
-            }}>
-              {error}
-            </div>
-          )}
+        {/* Close button */}
+        <button className="lm-close-btn" onClick={handleAnimatedClose} aria-label="Close">
+          <X size={20} strokeWidth={2.5} />
+        </button>
 
-          {/* Email Input */}
-          <div className="input-group">
-            <span className="icon">✉</span>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              required
-            />
+        {/* Header */}
+        <div className="lm-header">
+          <div className="lm-logo-circle">
+            {successLogin ? (
+              <ShieldCheck size={28} strokeWidth={2} />
+            ) : (
+              <LogIn size={28} strokeWidth={2} />
+            )}
           </div>
+          <h2 className="lm-title">{successLogin ? 'Welcome Back!' : 'Sign In'}</h2>
+          <p className="lm-subtitle">
+            {successLogin ? 'Redirecting you now...' : 'Access the Digital Library'}
+          </p>
+        </div>
 
-          {/* Password Input */}
-          <div className="input-group">
-            <span className="icon">🔒</span>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Password"
-              required
-            />
-          </div>
-
-          {/* Helper Links */}
-          <div className="helper-links">
-            <div className="link-item">
-              <p>Do not have an account?</p>
-              <a href="/register">
-                <span className="green-icon">👤+</span> Register Now
-              </a>
+        {successLogin ? (
+          <div className="lm-success-animation">
+            <div className="lm-success-checkmark">
+              <svg viewBox="0 0 52 52">
+                <circle cx="26" cy="26" r="25" fill="none" />
+                <path fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+              </svg>
             </div>
-            <div className="link-item">
-              <p>Forgot your password?</p>
+          </div>
+        ) : (
+          <form className="lm-form" onSubmit={handleSubmit}>
+            {/* Error */}
+            {error && (
+              <div className="lm-error">
+                <span className="lm-error-icon">!</span>
+                {error}
+              </div>
+            )}
+
+            {/* Email */}
+            <div className={`lm-input-wrap ${emailFocused || formData.email ? 'lm-input-wrap--active' : ''}`}>
+              <Mail size={18} className="lm-input-icon" />
+              <input
+                ref={emailRef}
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                onFocus={() => setEmailFocused(true)}
+                onBlur={() => setEmailFocused(false)}
+                className="lm-input"
+                placeholder=" "
+                autoComplete="email"
+              />
+              <label className="lm-float-label">Email address</label>
+              <div className="lm-input-highlight" />
+            </div>
+
+            {/* Password */}
+            <div className={`lm-input-wrap ${passwordFocused || formData.password ? 'lm-input-wrap--active' : ''}`}>
+              <Lock size={18} className="lm-input-icon" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                onFocus={() => setPasswordFocused(true)}
+                onBlur={() => setPasswordFocused(false)}
+                className="lm-input"
+                placeholder=" "
+                autoComplete="current-password"
+              />
+              <label className="lm-float-label">Password</label>
               <button
                 type="button"
-                className="link-button"
+                className="lm-eye-btn"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+              <div className="lm-input-highlight" />
+            </div>
+
+            {/* Remember + Forgot */}
+            <div className="lm-options-row">
+              <label className="lm-checkbox-label">
+                <input
+                  type="checkbox"
+                  name="keepLoggedIn"
+                  checked={formData.keepLoggedIn}
+                  onChange={handleChange}
+                  className="lm-checkbox"
+                />
+                <span className="lm-checkbox-custom" />
+                Keep me signed in
+              </label>
+              <button
+                type="button"
+                className="lm-link-btn"
                 onClick={handleRecoveryClick}
                 disabled={!onRecoveryClick}
-                aria-disabled={!onRecoveryClick}
               >
-                <span className="red-icon">👤🕒</span> Account recovery
+                <KeyRound size={13} /> Forgot password?
               </button>
             </div>
-          </div>
 
-          <div className="demo-login">
-            <span>Quick demo login:</span>
-            <button type="button" onClick={() => createDemoSession('student')}>
-              Student
+            {/* Submit */}
+            <button type="submit" className="lm-submit-btn" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 size={18} className="lm-spinner" /> Signing in...
+                </>
+              ) : (
+                <>
+                  <LogIn size={18} /> Sign In
+                </>
+              )}
             </button>
-            <button type="button" onClick={() => createDemoSession('admin')}>
-              Admin
-            </button>
-          </div>
 
-          {/* Footer & Buttons */}
-          <div className="modal-footer">
-            <label className="checkbox-container">
-              <input
-                type="checkbox"
-                name="keepLoggedIn"
-                checked={formData.keepLoggedIn}
-                onChange={handleChange}
-              />
-              {' '}Keep me Logged-in
-            </label>
-            <div className="button-group">
-              <button
-                type="submit"
-                className="btn-login"
-                disabled={isLoading}
-              >
-                {isLoading ? '⏳ Logging in...' : '➜] Log-in'}
+            {/* Divider */}
+            <div className="lm-divider">
+              <span>or try a quick demo</span>
+            </div>
+
+            {/* Demo buttons */}
+            <div className="lm-demo-row">
+              <button type="button" className="lm-demo-btn lm-demo-btn--student" onClick={() => createDemoSession('student')}>
+                <GraduationCap size={16} />
+                Student
               </button>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={onClose}
-              >
-                ✖ Close
+              <button type="button" className="lm-demo-btn lm-demo-btn--admin" onClick={() => createDemoSession('admin')}>
+                <ShieldCheck size={16} />
+                Admin
               </button>
             </div>
-          </div>
-        </form>
+
+            {/* Register link */}
+            <p className="lm-register-text">
+              Don't have an account?{' '}
+              <a href="/register" className="lm-register-link">
+                <UserPlus size={14} /> Create one
+              </a>
+            </p>
+          </form>
+        )}
       </div>
     </div>
   );
