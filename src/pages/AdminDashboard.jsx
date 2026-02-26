@@ -4,7 +4,7 @@ import { BookOpen, Users, Download, Mail, Megaphone, Settings, LogOut, LayoutDas
 import { Documents, PDFs, Videos } from '../data/resourcesCatalog.js';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
-import { getAdminResources, saveAdminResources } from '../utils/resourceStore.js';
+import { getAdminResources, saveAdminResources, getStudentRequests, saveStudentRequests } from '../utils/resourceStore.js';
 
 /**
  * ADMIN DASHBOARD
@@ -99,7 +99,7 @@ export const AdminDashboard = () => {
     { id: 12, student: 'Sameer Khan', resource: 'Structural Analysis Notes', time: '2 days ago' },
   ]);
 
-  const [resourceRequests, setResourceRequests] = useState([
+  const defaultRequests = [
     { id: 1, student: 'Amit Patel', request: 'Advanced Database Systems book', date: '24 Feb 2026', status: 'Pending' },
     { id: 2, student: 'Sneha Reddy', request: 'Machine Learning lecture videos', date: '23 Feb 2026', status: 'Pending' },
     { id: 3, student: 'Nikhil Rao', request: 'Signal Processing sample papers', date: '21 Feb 2026', status: 'Approved' },
@@ -110,7 +110,23 @@ export const AdminDashboard = () => {
     { id: 8, student: 'Harsh Verma', request: 'Cloud Computing Certification Materials', date: '19 Feb 2026', status: 'Approved' },
     { id: 9, student: 'Priya Kapoor', request: 'Data Visualization Tutorials', date: '24 Feb 2026', status: 'Pending' },
     { id: 10, student: 'Ravi Shankar', request: 'IoT Development Framework Documentation', date: '22 Feb 2026', status: 'Rejected' },
-  ]);
+  ];
+
+  // Merge student-submitted requests from localStorage with defaults
+  const [resourceRequests, setResourceRequests] = useState(() => {
+    const savedRequests = getStudentRequests();
+    const studentMapped = savedRequests.map((r) => ({
+      id: r.id,
+      student: r.student || 'Student',
+      request: r.title + (r.description ? ` — ${r.description}` : ''),
+      date: r.submittedDate || 'Recently',
+      status: r.status || 'Pending',
+      _fromStudent: true,
+    }));
+    const defaultIds = new Set(defaultRequests.map((r) => r.id));
+    const uniqueStudentRequests = studentMapped.filter((r) => !defaultIds.has(r.id));
+    return [...uniqueStudentRequests, ...defaultRequests];
+  });
 
 
   useEffect(() => {
@@ -261,8 +277,13 @@ export const AdminDashboard = () => {
         ? { ...request, status }
         : request
     )));
-    addActivity('request', `${status} request from ${resourceRequests.find((req) => req.id === requestId)?.student || 'student'}`);
-  };
+    // Also sync status back to student requests in localStorage
+    const savedRequests = getStudentRequests();
+    const updatedSaved = savedRequests.map((r) =>
+      r.id === requestId ? { ...r, status } : r
+    );
+    saveStudentRequests(updatedSaved);
+    addActivity('request', `${status} request from ${resourceRequests.find((req) => req.id === requestId)?.student || 'student'}`);  };
 
 
   const handleQuickAction = (action) => {

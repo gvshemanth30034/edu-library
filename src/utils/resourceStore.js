@@ -30,3 +30,55 @@ export const saveAdminResources = (resources) => {
     console.error('Failed to save resources:', error);
   }
 };
+
+/* ── Student Resource Requests ── */
+
+const REQUESTS_KEY = 'eduLibrary-studentRequests';
+
+/**
+ * Get all student resource requests from localStorage.
+ * @returns {Array} Array of request objects
+ */
+export const getStudentRequests = () => {
+  try {
+    const data = localStorage.getItem(REQUESTS_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+};
+
+/**
+ * Save the full student requests array to localStorage.
+ * @param {Array} requests - Array of request objects to persist
+ */
+export const saveStudentRequests = (requests) => {
+  try {
+    localStorage.setItem(REQUESTS_KEY, JSON.stringify(requests));
+  } catch (error) {
+    console.error('Failed to save requests:', error);
+  }
+};
+
+/**
+ * Add a single student request and persist.
+ * @param {Object} request - { title, description, category }
+ * @returns {Object} The created request object
+ */
+export const addStudentRequest = (request) => {
+  const user = JSON.parse(localStorage.getItem('uiExtension-user') || '{}');
+  const now = new Date();
+  const newRequest = {
+    id: Date.now(),
+    title: request.title,
+    description: request.description,
+    category: request.category,
+    student: user.name || user.email || 'Student',
+    submittedDate: now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+    status: 'Pending',
+  };
+  const existing = getStudentRequests();
+  const updated = [newRequest, ...existing];
+  saveStudentRequests(updated);
+  return newRequest;
+};
