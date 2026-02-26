@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Grid3X3, List, Info, BookOpen, Book, Settings, Microscope, Library, Landmark, Scale, Palette, Globe, Activity, Laptop, Briefcase, LineChart, Leaf, Calculator, Atom, FlaskConical, Users, Dna, ArrowLeft } from 'lucide-react';
+import { Search, Grid3X3, List, Info, BookOpen, Book, Settings, Microscope, Library, Landmark, Scale, Palette, Globe, Activity, Laptop, Briefcase, LineChart, Leaf, Calculator, Atom, FlaskConical, Users, Dna, ArrowLeft, GraduationCap, Layers } from 'lucide-react';
 
 /**
  * BROWSE CATALOGS PAGE
@@ -197,15 +197,86 @@ export const BrowseCatalogsPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
-      {/* Refined Academic Header Section */}
-      <div className="bg-white border-b border-gray-200 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <h1 className="heading-entrance heading-premium text-4xl md:text-5xl font-bold leading-tight mb-4 bg-gradient-to-r from-primary via-teal-700 to-slate-800 bg-clip-text text-transparent">Academic Catalogs</h1>
-              <p className="heading-entrance heading-entrance-delay-1 text-slate-600 text-lg max-w-2xl leading-relaxed">
+      {/* Teal gradient hero */}
+      <div
+        className="relative overflow-hidden border-b border-teal-700/20"
+        style={{ background: 'linear-gradient(135deg, #004d4d 0%, #008080 42%, #1a9080 68%, #1e6e8c 100%)' }}
+      >
+        {/* Decorative orbs */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -top-16 -right-16 h-72 w-72 rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%)' }} />
+          <div className="absolute bottom-0 left-16 h-40 w-40 rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%)' }} />
+          <div className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)' }} />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+          <button
+            onClick={() => navigate('/student-dashboard')}
+            className="heading-entrance mb-5 inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-3.5 py-2 text-sm font-medium text-white/90 backdrop-blur-sm transition-all duration-200 hover:bg-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/40"
+          >
+            <ArrowLeft size={15} />
+            Dashboard
+          </button>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="flex-1 min-w-0">
+              <p className="heading-entrance mb-2 text-xs font-semibold uppercase tracking-widest text-teal-200">
+                Knowledge Repository
+              </p>
+              <h1 className="heading-entrance heading-premium text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-white mb-3">
+                Academic Catalogs
+              </h1>
+              <p className="heading-entrance heading-entrance-delay-1 text-base sm:text-lg text-teal-100 leading-relaxed max-w-lg">
                 Explore our comprehensive collection of peer-reviewed research, reference materials, and educational resources.
               </p>
+            </div>
+            {/* Floating icon cluster */}
+            <div className="heading-entrance hidden md:flex flex-shrink-0 items-center justify-center" style={{ animationDelay: '200ms' }}>
+              <div className="relative flex h-36 w-36 items-center justify-center">
+                <div aria-hidden="true" className="absolute inset-0 rounded-full"
+                  style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 72%)' }} />
+                <div className="relative flex flex-col items-center gap-3">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/15 shadow-lg backdrop-blur-sm">
+                    <GraduationCap className="h-7 w-7 text-white" />
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/15 shadow-md backdrop-blur-sm">
+                      <BookOpen className="h-5 w-5 text-teal-100" />
+                    </div>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/15 shadow-md backdrop-blur-sm">
+                      <Layers className="h-5 w-5 text-teal-100" />
+                    </div>
+                  </div>
+                  <div aria-hidden="true" className="absolute -right-3 -top-3 h-2.5 w-2.5 rounded-full bg-white/30" />
+                  <div aria-hidden="true" className="absolute -left-2 bottom-1 h-2 w-2 rounded-full bg-teal-200/40" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick stats bar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-5 relative z-20">
+        <div className="heading-entrance flex flex-wrap gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-5 py-3 shadow-sm">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50">
+              <BookOpen className="h-5 w-5 text-teal-600" />
+            </div>
+            <div>
+              <p className="text-xl font-bold text-slate-800">{CATALOG_DATA.length}</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Catalogs</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-5 py-3 shadow-sm">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50">
+              <Layers className="h-5 w-5 text-emerald-600" />
+            </div>
+            <div>
+              <p className="text-xl font-bold text-slate-800">{categories.length - 1}</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Categories</p>
             </div>
           </div>
         </div>
@@ -213,24 +284,18 @@ export const BrowseCatalogsPage = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <button
-          onClick={() => navigate('/student-dashboard')}
-          className="text-sm text-blue-600 hover:text-blue-800 font-medium tracking-wide mb-6 inline-flex items-center gap-1.5 transition-colors"
-        >
-          <ArrowLeft size={16} /> Dashboard
-        </button>
 
         {/* Search & Filter Section */}
         <div className="mb-10">
           <div className="mb-6 max-w-2xl">
             <div className="relative group">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-teal-600 transition-colors" size={20} />
               <input
                 type="text"
                 placeholder="Search catalogs, publications, or topics..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow shadow-sm text-slate-900 placeholder:text-slate-400"
+                className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-shadow shadow-sm text-slate-900 placeholder:text-slate-400"
               />
             </div>
           </div>
@@ -241,8 +306,8 @@ export const BrowseCatalogsPage = () => {
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${selectedCategory === category
-                    ? 'bg-slate-800 text-white shadow-sm ring-1 ring-slate-800'
-                    : 'bg-white text-slate-600 border border-gray-200 hover:bg-slate-50 hover:border-gray-300'
+                    ? 'bg-teal-700 text-white shadow-sm ring-1 ring-teal-700'
+                    : 'bg-white text-slate-600 border border-gray-200 hover:bg-teal-50 hover:border-teal-200 hover:text-teal-700'
                   }`}
               >
                 {category}
@@ -258,7 +323,7 @@ export const BrowseCatalogsPage = () => {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-md transition-colors ${viewMode === 'grid'
-                    ? 'bg-blue-50 text-blue-700'
+                    ? 'bg-teal-50 text-teal-700'
                     : 'text-slate-400 border border-transparent hover:bg-slate-100 hover:text-slate-600'
                   }`}
                 aria-label="Grid view"
@@ -268,7 +333,7 @@ export const BrowseCatalogsPage = () => {
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-md transition-colors ${viewMode === 'list'
-                    ? 'bg-blue-50 text-blue-700'
+                    ? 'bg-teal-50 text-teal-700'
                     : 'text-slate-400 border border-transparent hover:bg-slate-100 hover:text-slate-600'
                   }`}
                 aria-label="List view"
@@ -286,20 +351,29 @@ export const BrowseCatalogsPage = () => {
                 : 'space-y-4 max-w-5xl'
               }`}
           >
-            {filteredCatalogs.map((catalog) => (
+            {filteredCatalogs.map((catalog, idx) => (
               <CatalogCard
                 key={catalog.id}
                 catalog={catalog}
                 onClick={() => setSelectedCatalog(catalog)}
                 viewMode={viewMode}
+                index={idx}
               />
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
-            <BookOpen size={48} className="mx-auto text-slate-300 mb-4" />
+          <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300 shadow-sm">
+            <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-teal-50 mb-5">
+              <BookOpen size={28} className="text-teal-400" />
+            </div>
             <h3 className="heading-entrance heading-entrance-card text-xl font-semibold tracking-[-0.01em] text-slate-800 mb-2">No catalogs found</h3>
-            <p className="text-slate-500">Try adjusting your search query or category filters.</p>
+            <p className="text-slate-500 mb-6">Try adjusting your search query or category filters.</p>
+            <button
+              onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
+              className="inline-flex items-center gap-2 rounded-lg bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+            >
+              Clear Filters
+            </button>
           </div>
         )}
       </div>
@@ -314,27 +388,28 @@ export const BrowseCatalogsPage = () => {
   );
 };
 
-const CatalogCard = ({ catalog, onClick, viewMode }) => {
+const CatalogCard = ({ catalog, onClick, viewMode, index = 0 }) => {
   return (
     <div
       onClick={onClick}
-      className={`cursor-pointer transition-all duration-300 border border-gray-200 bg-white group hover:border-blue-300 hover:shadow-md ${viewMode === 'grid'
-          ? 'rounded-xl overflow-hidden flex flex-col h-full transform hover:-translate-y-1'
-          : 'p-6 rounded-xl flex items-start gap-6 hover:translate-x-1'
+      className={`heading-entrance cursor-pointer transition-all duration-300 border border-gray-200 bg-white group hover:border-teal-300 hover:shadow-lg ${viewMode === 'grid'
+          ? 'rounded-2xl overflow-hidden flex flex-col h-full transform hover:-translate-y-1'
+          : 'p-6 rounded-2xl flex items-start gap-6 hover:translate-x-1'
         }`}
+      style={{ animationDelay: `${index * 60}ms` }}
     >
       {viewMode === 'grid' ? (
         <>
-          <div className="bg-slate-50 border-b border-gray-100 h-24 flex flex-col items-center justify-center transition-colors group-hover:bg-blue-50/50">
+          <div className="bg-gradient-to-br from-teal-50 to-slate-50 border-b border-gray-100 h-24 flex flex-col items-center justify-center transition-colors group-hover:from-teal-100/60 group-hover:to-teal-50/40">
             <div className="transform transition-transform group-hover:scale-110 duration-200">
-              {catalog.icon}
+              {React.cloneElement(catalog.icon, { className: "w-10 h-10 text-teal-700" })}
             </div>
           </div>
           <div className="p-5 flex-1 flex flex-col">
-            <span className="inline-block self-start text-xs font-semibold px-2.5 py-1 rounded border border-slate-200 text-slate-600 bg-white mb-3 shadow-sm">
+            <span className="inline-block self-start text-xs font-semibold px-2.5 py-1 rounded-lg border border-teal-200 text-teal-700 bg-teal-50 mb-3 shadow-sm">
               {catalog.category}
             </span>
-            <h3 className="heading-entrance heading-entrance-card text-[1.075rem] font-semibold tracking-[-0.01em] text-slate-900 mb-2.5 leading-snug group-hover:text-blue-700 transition-colors">{catalog.title}</h3>
+            <h3 className="text-[1.075rem] font-semibold tracking-[-0.01em] text-slate-900 mb-2.5 leading-snug group-hover:text-teal-700 transition-colors">{catalog.title}</h3>
             <p className="text-sm text-slate-500 mb-5 line-clamp-2 leading-relaxed">{catalog.description}</p>
             <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
               <span className="text-[0.8rem] font-semibold text-slate-400 tracking-wide uppercase">{catalog.coverage}</span>
@@ -347,16 +422,16 @@ const CatalogCard = ({ catalog, onClick, viewMode }) => {
         </>
       ) : (
         <>
-          <div className="w-16 h-16 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0 transition-colors group-hover:bg-blue-50/50">
+          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-teal-50 to-slate-50 border border-teal-100 flex items-center justify-center flex-shrink-0 transition-colors group-hover:from-teal-100/60 group-hover:to-teal-50/40">
             <div className="transform transition-transform group-hover:scale-110 duration-200">
-              {React.cloneElement(catalog.icon, { className: "w-8 h-8 text-slate-600" })}
+              {React.cloneElement(catalog.icon, { className: "w-8 h-8 text-teal-700" })}
             </div>
           </div>
           <div className="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-1">
-                <h3 className="heading-entrance heading-entrance-card text-lg font-semibold tracking-[-0.01em] text-slate-900 group-hover:text-blue-700 transition-colors">{catalog.title}</h3>
-                <span className="text-[0.7rem] uppercase tracking-wide font-semibold px-2 py-0.5 rounded border border-slate-200 text-slate-600 bg-slate-50">
+              <div className="flex items-center gap-3 mb-1 flex-wrap">
+                <h3 className="text-lg font-semibold tracking-[-0.01em] text-slate-900 group-hover:text-teal-700 transition-colors">{catalog.title}</h3>
+                <span className="text-[0.7rem] uppercase tracking-wide font-semibold px-2 py-0.5 rounded-lg border border-teal-200 text-teal-700 bg-teal-50">
                   {catalog.category}
                 </span>
               </div>
@@ -378,7 +453,9 @@ const CatalogDetailsModal = ({ catalog, onClose }) => {
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto outline-none transition-all">
-        <div className="bg-slate-900 text-white p-8 flex items-start justify-between relative overflow-hidden">
+        <div className="text-white p-8 flex items-start justify-between relative overflow-hidden rounded-t-2xl"
+          style={{ background: 'linear-gradient(135deg, #004d4d 0%, #008080 50%, #1a9080 100%)' }}
+        >
           <div className="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-end -mr-10">
             <div className="transform scale-[4]">
               {catalog.icon}
@@ -390,12 +467,12 @@ const CatalogDetailsModal = ({ catalog, onClose }) => {
             </div>
             <div>
               <h2 className="heading-entrance heading-premium text-2xl font-bold tracking-tight mb-1">{catalog.title}</h2>
-              <span className="text-blue-200 text-sm font-medium tracking-wide uppercase">{catalog.category}</span>
+              <span className="text-teal-200 text-sm font-medium tracking-wide uppercase">{catalog.category}</span>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="relative z-10 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-full p-2 transition-colors focus:outline-none"
+            className="relative z-10 text-teal-200 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors focus:outline-none backdrop-blur-sm"
             aria-label="Close modal"
           >
             ✕
@@ -417,21 +494,25 @@ const CatalogDetailsModal = ({ catalog, onClose }) => {
               <p className="text-lg font-bold text-slate-800 align-middle leading-8 inline-block truncate w-full">{catalog.coverage}</p>
               <p className="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">Coverage</p>
             </div>
-            <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl text-center">
-              <p className="text-2xl font-bold text-blue-600">Active</p>
-              <p className="text-xs font-semibold text-blue-400 mt-1 uppercase tracking-wider">Status</p>
+            <div className="bg-teal-50 border border-teal-100 p-4 rounded-xl text-center">
+              <p className="text-2xl font-bold text-teal-600">Active</p>
+              <p className="text-xs font-semibold text-teal-400 mt-1 uppercase tracking-wider">Status</p>
             </div>
           </div>
 
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex gap-3 mb-8 items-start">
-            <Info size={18} className="text-slate-400 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-slate-600 leading-relaxed">
+          <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 flex gap-3 mb-8 items-start">
+            <Info size={18} className="text-teal-500 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-teal-800 leading-relaxed">
               Access to specific materials within this catalog may depend on your current academic enrollment status.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <button className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 active:bg-blue-800 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <button className="flex-1 text-white py-3 px-4 rounded-lg font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+              style={{ background: 'linear-gradient(135deg, #008080, #006666)' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, #006666, #004d4d)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, #008080, #006666)'}
+            >
               Access Catalog
             </button>
             <button
