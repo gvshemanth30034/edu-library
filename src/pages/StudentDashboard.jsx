@@ -4,6 +4,7 @@ import { BookOpen, Save, Download, Mail, Megaphone, LogOut, LayoutDashboard, Bel
 import { SAVED_RESOURCES_DATA, DOWNLOADS_DATA } from '../data/studentResourcesData';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
+import { getAdminResources } from '../utils/resourceStore.js';
 
 /**
  * STUDENT DASHBOARD
@@ -81,13 +82,29 @@ export const StudentDashboard = () => {
     return null;
   }
 
-  // Mock data
-  const recentResources = [
+  // Load admin-added resources so they reflect on student side
+  const adminResources = getAdminResources();
+  const adminMapped = adminResources.map((r) => ({
+    id: `admin-${r.id}`,
+    title: r.title,
+    subject: r.department,
+    type: r.type,
+    lastAccessed: r.addedAt || 'Recently added',
+    url: null,
+  }));
+
+  // Default resources + admin-added resources
+  const defaultResources = [
     { id: 1, title: 'Data Structures and Algorithms', subject: 'Computer Science', type: 'PDF', lastAccessed: '2 hours ago', url: 'https://www.orimi.com/pdf-test.pdf' },
     { id: 2, title: 'Thermodynamics Fundamentals', subject: 'Mechanical Engg.', type: 'Video', lastAccessed: '5 hours ago', url: 'https://www.youtube.com/watch?v=4LqZdkkBDas' },
     { id: 3, title: 'Digital Signal Processing', subject: 'Electronics', type: 'PDF', lastAccessed: '1 day ago', url: 'https://web.eecs.utk.edu/~hqi/teaching/ece505f15/lecture01_intro.pdf' },
     { id: 4, title: 'Software Engineering Principles', subject: 'Computer Science', type: 'Video', lastAccessed: '2 days ago', url: 'https://www.youtube.com/watch?v=O753uuutqH8' },
   ];
+
+  // Merge: admin-added resources on top, then defaults (avoid duplicates by title)
+  const defaultTitles = new Set(defaultResources.map((r) => r.title));
+  const uniqueAdminResources = adminMapped.filter((r) => !defaultTitles.has(r.title));
+  const recentResources = [...uniqueAdminResources, ...defaultResources];
 
   const departments = [
     { name: 'Computer Science',    count: 45, slug: 'computer-science' },

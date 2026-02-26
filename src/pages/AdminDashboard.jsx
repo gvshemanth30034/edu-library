@@ -4,6 +4,7 @@ import { BookOpen, Users, Download, Mail, Megaphone, Settings, LogOut, LayoutDas
 import { Documents, PDFs, Videos } from '../data/resourcesCatalog.js';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
+import { getAdminResources, saveAdminResources } from '../utils/resourceStore.js';
 
 /**
  * ADMIN DASHBOARD
@@ -52,7 +53,9 @@ export const AdminDashboard = () => {
   const departmentOptions = ['Computer Science', 'Electronics', 'Mechanical', 'Civil', 'Mathematics'];
   const typeOptions = ['PDF', 'Video', 'Document'];
 
-  const [resources, setResources] = useState([
+  const [resources, setResources] = useState(() => {
+    const saved = getAdminResources();
+    return saved.length > 0 ? saved : [
     { id: 1, title: 'Data Structures Notes', department: 'Computer Science', type: 'PDF', accessCount: 245, addedAt: '2026-02-10', assigned: true },
     { id: 2, title: 'Operating Systems Guide', department: 'Computer Science', type: 'PDF', accessCount: 189, addedAt: '2026-02-16', assigned: true },
     { id: 3, title: 'Computer Networks PDF', department: 'Electronics', type: 'PDF', accessCount: 167, addedAt: '2026-02-08', assigned: false },
@@ -73,7 +76,13 @@ export const AdminDashboard = () => {
     { id: 18, title: 'Machine Learning Basics', department: 'Computer Science', type: 'Video', accessCount: 234, addedAt: '2026-02-21', assigned: true },
     { id: 19, title: 'Cloud Computing Architecture', department: 'Computer Science', type: 'PDF', accessCount: 167, addedAt: '2026-02-17', assigned: false },
     { id: 20, title: 'Environmental Impact Assessment', department: 'Civil', type: 'Document', accessCount: 98, addedAt: '2026-02-05', assigned: true },
-  ]);
+  ];
+  });
+
+  // Sync resources to localStorage whenever they change
+  useEffect(() => {
+    saveAdminResources(resources);
+  }, [resources]);
 
   const [recentDownloads, setRecentDownloads] = useState([
     { id: 1, student: 'Priya Sharma', resource: 'Circuit Theory Notes', time: '15 min ago' },
