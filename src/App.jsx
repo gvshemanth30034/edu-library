@@ -123,6 +123,7 @@ function App() {
         <Route path="/admin-settings" element={<AdminSettings />} />
         <Route path="/videos/:slug" element={<VideoPlayerPage />} />
         <Route path="/resource-preview" element={<ResourcePreviewPage />} />
+          <Route path="/document-preview" element={<ResourcePreviewPage />} />
 
         {/* ROLE SYSTEM: Student Dashboard - Protected route for students only */}
         <Route path="/student-dashboard" element={<StudentDashboard />} />

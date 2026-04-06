@@ -1,10 +1,14 @@
+import { findMappedPdfUrl } from './subjectPdfMapping.js';
+
 const DOC_EXTENSIONS = ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'];
 const VIDEO_EXTENSIONS = ['mp4', 'webm', 'ogg', 'mov', 'm4v'];
 const PDF_EXTENSIONS = ['pdf'];
 const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg', 'avif'];
+const DOCUMENT_LIKE_TYPES = ['doc', 'docx', 'word', 'document', 'article', 'report', 'archive', 'dataset', 'standards', 'legal document'];
 const EXTERNAL_PROTOCOLS = ['http://', 'https://'];
 const SAMPLE_DOC_URL = 'https://calibre-ebook.com/downloads/demos/demo.docx';
 const SAMPLE_IMAGE_URL = 'https://via.placeholder.com/1200x800.png?text=Resource+Preview';
+const SAMPLE_PDF_URL = '/files/pdfs/data-structures-algorithms-notes.pdf';
 const TRUSTED_EMBED_HOSTS = new Set([window.location.host]);
 
 const VIDEO_TITLE_MAP = {
@@ -116,38 +120,57 @@ const remapBrokenLocalFileUrl = (url, resource) => {
 export const openResourceByType = (resource) => {
   const declaredType = String(resource?.type || '').trim().toLowerCase();
   const rawUrl = getUrlFromResource(resource);
-  if (!rawUrl && declaredType !== 'video') {
-    window.alert('Resource not available');
-    return;
-  }
+
+  const fallbackPdfUrl = findMappedPdfUrl({
+    title: resource?.title,
+    subject: resource?.subject,
+    category: resource?.category,
+  }) || SAMPLE_PDF_URL;
+
+  const fallbackUrlByType = () => {
+    if (declaredType === 'video') {
+      return '';
+    }
+
+    if (declaredType === 'pdf') {
+      return fallbackPdfUrl;
+    }
+
+    if (DOCUMENT_LIKE_TYPES.includes(declaredType)) {
+      return SAMPLE_DOC_URL;
+    }
+
+    if (declaredType === 'image') {
+      return SAMPLE_IMAGE_URL;
+    }
+
+    return fallbackPdfUrl;
+  };
+
+  const safeRawUrl = rawUrl || fallbackUrlByType();
 
   const resolvedUrl = declaredType === 'video'
-    ? getYouTubeUrlForResource(resource, rawUrl)
-    : rawUrl;
+    ? getYouTubeUrlForResource(resource, safeRawUrl)
+    : safeRawUrl;
 
   const url = remapBrokenLocalFileUrl(normalizeAbsoluteUrl(resolvedUrl), resource);
   const extension = getFileExtension(url);
 
   const isPdf = declaredType === 'pdf' || PDF_EXTENSIONS.includes(extension);
-  const isDoc = ['doc', 'docx', 'word'].includes(declaredType) || DOC_EXTENSIONS.includes(extension);
+  const isDoc = DOCUMENT_LIKE_TYPES.includes(declaredType) || DOC_EXTENSIONS.includes(extension);
   const isVideo = ['video', 'mp4', 'webm'].includes(declaredType) || VIDEO_EXTENSIONS.includes(extension);
   const isImage = ['image', 'img', 'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(declaredType) || IMAGE_EXTENSIONS.includes(extension);
   const isExternalLink = declaredType === 'link' || isExternalUrl(url);
 
   if (isPdf) {
-    if (isEmbeddable(url)) {
-      const viewerUrl = `/resource-preview?url=${encodeURIComponent(url)}&title=${encodeURIComponent(resource?.title || 'Resource Preview')}&subject=${encodeURIComponent(resource?.subject || resource?.category || 'Unknown Subject')}&type=pdf`;
-      window.open(viewerUrl, '_blank');
-      return;
-    }
-
-    window.open(url, '_blank');
+    const viewerUrl = `/resource-preview?url=${encodeURIComponent(url)}&title=${encodeURIComponent(resource?.title || 'Untitled Resource')}&subject=${encodeURIComponent(resource?.subject || resource?.category || 'Unknown Subject')}&type=pdf`;
+    window.open(viewerUrl, '_blank');
     return;
   }
 
   if (isDoc) {
-    const googleViewerUrl = `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(url)}`;
-    window.open(googleViewerUrl, '_blank');
+     const viewerUrl = `/document-preview?url=${encodeURIComponent(url)}&title=${encodeURIComponent(resource?.title || 'Untitled Resource')}&subject=${encodeURIComponent(resource?.subject || resource?.category || 'Unknown Subject')}&type=document`;
+     window.open(viewerUrl, '_blank');
     return;
   }
 
