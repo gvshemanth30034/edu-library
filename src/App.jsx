@@ -37,6 +37,7 @@ import { AdminAnnouncements } from './pages/AdminAnnouncements.jsx';
 import { UsersLog } from './pages/UsersLog.jsx';
 import { AdminSettings } from './pages/AdminSettings.jsx';
 import { VideoPlayerPage } from './pages/VideoPlayerPage.jsx';
+import { ResourcePreviewPage } from './pages/ResourcePreviewPage.jsx';
 import './index.css';
 
 /**
@@ -121,6 +122,7 @@ function App() {
         <Route path="/users-log" element={<UsersLog />} />
         <Route path="/admin-settings" element={<AdminSettings />} />
         <Route path="/videos/:slug" element={<VideoPlayerPage />} />
+        <Route path="/resource-preview" element={<ResourcePreviewPage />} />
 
         {/* ROLE SYSTEM: Student Dashboard - Protected route for students only */}
         <Route path="/student-dashboard" element={<StudentDashboard />} />

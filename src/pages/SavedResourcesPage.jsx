@@ -4,6 +4,8 @@ import { Search, Grid3X3, List, BookOpen, ArrowLeft, Bookmark, Heart, FolderOpen
 import { SAVED_RESOURCES_DATA } from '../data/studentResourcesData';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
+import { openResourceByType } from '../utils/resourceOpener.js';
+import { findMappedPdfUrl } from '../utils/subjectPdfMapping.js';
 
 export const SavedResourcesPage = () => {
   const navigate = useNavigate();
@@ -12,17 +14,25 @@ export const SavedResourcesPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState('grid');
 
-  const categories = ['All', ...new Set(SAVED_RESOURCES_DATA.map((item) => item.category))];
+  const resolvedSavedResources = useMemo(() => {
+    return SAVED_RESOURCES_DATA.map((resource) => ({
+      ...resource,
+      type: resource.type || 'PDF',
+      url: resource.url || findMappedPdfUrl({ title: resource.title, category: resource.category }),
+    }));
+  }, []);
+
+  const categories = ['All', ...new Set(resolvedSavedResources.map((item) => item.category))];
 
   const filteredResources = useMemo(() => {
-    return SAVED_RESOURCES_DATA.filter((resource) => {
+    return resolvedSavedResources.filter((resource) => {
       const matchesSearch =
         resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         resource.description.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'All' || resource.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, resolvedSavedResources]);
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
@@ -199,6 +209,7 @@ const SavedResourceCard = ({ resource, viewMode, index = 0 }) => {
   const { language } = useLanguage();
   return (
     <div
+      onClick={() => openResourceByType(resource)}
       className={`heading-entrance cursor-pointer transition-all duration-300 border border-gray-200 bg-white group hover:border-teal-300 hover:shadow-lg ${viewMode === 'grid'
           ? 'rounded-2xl overflow-hidden flex flex-col h-full transform hover:-translate-y-1'
           : 'p-6 rounded-2xl flex items-start gap-6 hover:translate-x-1'

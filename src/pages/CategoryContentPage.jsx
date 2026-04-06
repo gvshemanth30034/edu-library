@@ -4,6 +4,7 @@ import { Search, BookOpen } from 'lucide-react';
 import { getCategoryBySlug } from '../data/categoryContentData';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
+import { openResourceByType } from '../utils/resourceOpener.js';
 
 export const CategoryContentPage = () => {
   const { slug } = useParams();
@@ -126,6 +127,15 @@ const ContentItem = ({ item }) => {
                 </span>
               ))}
             </div>
+          </div>
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => openResourceByType(item)}
+              className="inline-flex items-center rounded-md bg-teal-600 px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            >
+              Open Resource
+            </button>
           </div>
         </div>
       </div>

@@ -4,6 +4,8 @@ import { Search, Grid3X3, List, Download, ArrowLeft, CheckCircle2, Loader, Alert
 import { DOWNLOADS_DATA } from '../data/studentResourcesData';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
+import { openResourceByType } from '../utils/resourceOpener.js';
+import { findMappedPdfUrl } from '../utils/subjectPdfMapping.js';
 
 export const DownloadsPage = () => {
   const navigate = useNavigate();
@@ -11,6 +13,14 @@ export const DownloadsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [viewMode, setViewMode] = useState('grid');
+
+  const resolvedDownloads = useMemo(() => {
+    return DOWNLOADS_DATA.map((resource) => ({
+      ...resource,
+      type: resource.type || 'PDF',
+      url: resource.url || findMappedPdfUrl({ title: resource.title, category: resource.category }),
+    }));
+  }, []);
 
   const statusLabels = {
     All: translate('all', language),
@@ -29,21 +39,21 @@ export const DownloadsPage = () => {
   };
 
   const filteredDownloads = useMemo(() => {
-    return DOWNLOADS_DATA.filter((resource) => {
+    return resolvedDownloads.filter((resource) => {
       const matchesSearch =
         resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         resource.description.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesStatus = selectedStatus === 'All' || resource.status === selectedStatus;
       return matchesSearch && matchesStatus;
     });
-  }, [searchQuery, selectedStatus]);
+  }, [searchQuery, selectedStatus, resolvedDownloads]);
 
   const counts = useMemo(() => ({
-    All: DOWNLOADS_DATA.length,
-    Completed: DOWNLOADS_DATA.filter((r) => r.status === 'Completed').length,
-    'In Progress': DOWNLOADS_DATA.filter((r) => r.status === 'In Progress').length,
-    Failed: DOWNLOADS_DATA.filter((r) => r.status === 'Failed').length,
-  }), []);
+    All: resolvedDownloads.length,
+    Completed: resolvedDownloads.filter((r) => r.status === 'Completed').length,
+    'In Progress': resolvedDownloads.filter((r) => r.status === 'In Progress').length,
+    Failed: resolvedDownloads.filter((r) => r.status === 'Failed').length,
+  }), [resolvedDownloads]);
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
@@ -224,6 +234,7 @@ const DownloadCard = ({ resource, viewMode, index = 0 }) => {
 
   return (
     <div
+      onClick={() => openResourceByType(resource)}
       className={`heading-entrance cursor-pointer transition-all duration-300 border border-gray-200 bg-white group hover:border-teal-300 hover:shadow-lg ${viewMode === 'grid'
           ? 'rounded-2xl overflow-hidden flex flex-col h-full transform hover:-translate-y-1'
           : 'p-6 rounded-2xl flex items-start gap-6 hover:translate-x-1'

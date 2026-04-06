@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Megaphone } from 'lucide-react';
+import { getSortedAnnouncements, simulateAdminAddAnnouncement } from '../utils/announcementsStore.js';
 
 export const AdminAnnouncements = () => {
   const navigate = useNavigate();
@@ -8,19 +9,17 @@ export const AdminAnnouncements = () => {
   const [announcementPublishing, setAnnouncementPublishing] = useState(false);
   const [audience, setAudience] = useState('All Students');
   const [priority, setPriority] = useState('Normal');
-  const [announcements, setAnnouncements] = useState([
-    { id: 1, message: 'End-semester examination resource pack now available for all departments. Access study guides, past papers and revision notes.', date: '26 Feb 2026', audience: 'All Students', priority: 'High' },
-    { id: 2, message: 'New Deep Learning with PyTorch video series uploaded — 12 lectures covering CNNs, RNNs, and Transformers.', date: '25 Feb 2026', audience: 'Computer Science', priority: 'Normal' },
-    { id: 3, message: 'Library portal will undergo scheduled maintenance on Saturday, 1 Mar 2026 from 2:00 AM to 5:00 AM IST.', date: '24 Feb 2026', audience: 'All Students', priority: 'High' },
-    { id: 4, message: 'Circuit Theory and Signal Processing lab manuals updated with new experiment procedures.', date: '23 Feb 2026', audience: 'Electronics', priority: 'Normal' },
-    { id: 5, message: 'Structural Analysis and Concrete Technology notes revised for the updated syllabus.', date: '22 Feb 2026', audience: 'Civil', priority: 'Normal' },
-    { id: 6, message: 'New Thermodynamics and Fluid Mechanics quick-reference sheets added to Mechanical resources.', date: '21 Feb 2026', audience: 'Mechanical', priority: 'Low' },
-    { id: 7, message: 'Mid-term resources updated for all departments — includes practice problems and solution sets.', date: '20 Feb 2026', audience: 'All Students', priority: 'High' },
-    { id: 8, message: 'Resource request feature now supports file attachments. Students can attach reference materials with their requests.', date: '18 Feb 2026', audience: 'All Students', priority: 'Low' },
-  ]);
+  const [announcements, setAnnouncements] = useState(() => getSortedAnnouncements(20));
 
   const audienceOptions = ['All Students', 'Computer Science', 'Electronics', 'Mechanical', 'Civil', 'Mathematics'];
-  const priorityOptions = ['Low', 'Normal', 'High'];
+  const priorityOptions = ['Normal', 'High'];
+
+  useEffect(() => {
+    window.simulateAdminAddAnnouncement = simulateAdminAddAnnouncement;
+    return () => {
+      delete window.simulateAdminAddAnnouncement;
+    };
+  }, []);
 
   const handlePublish = () => {
     if (!announcementDraft.trim()) {
@@ -28,14 +27,21 @@ export const AdminAnnouncements = () => {
     }
     setAnnouncementPublishing(true);
     setTimeout(() => {
-      const newAnnouncement = {
+      const normalizedPriority = priority === 'High' ? 'urgent' : 'normal';
+      const nextAnnouncement = {
         id: Date.now(),
+        title: `${audience} Announcement`,
         message: announcementDraft.trim(),
-        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-        audience,
-        priority,
+        priority: normalizedPriority,
+        createdAt: new Date().toISOString(),
       };
-      setAnnouncements((prev) => [newAnnouncement, ...prev]);
+
+      const currentRaw = localStorage.getItem('announcements');
+      const current = currentRaw ? JSON.parse(currentRaw) : [];
+      const updated = [nextAnnouncement, ...(Array.isArray(current) ? current : [])];
+      localStorage.setItem('announcements', JSON.stringify(updated));
+
+      setAnnouncements(getSortedAnnouncements(20));
       setAnnouncementDraft('');
       setAnnouncementPublishing(false);
     }, 600);
@@ -117,15 +123,15 @@ export const AdminAnnouncements = () => {
             ) : (
               announcements.map((item) => (
                 <div key={item.id} className="admin-announcement-item">
-                  <span className={`ann-priority-dot ann-priority-dot--${item.priority.toLowerCase()}`}></span>
+                  <span className={`ann-priority-dot ann-priority-dot--${item.priority === 'urgent' ? 'high' : 'normal'}`}></span>
                   <div className="ann-content">
                     <p className="ann-message">{item.message}</p>
                     <div className="ann-meta">
-                      <span className="ann-meta-tag ann-meta-tag--audience">{item.audience}</span>
-                      <span className={`ann-meta-tag ann-meta-tag--priority-${item.priority.toLowerCase()}`}>{item.priority} priority</span>
+                      <span className="ann-meta-tag ann-meta-tag--audience">{item.audience || 'All Students'}</span>
+                      <span className={`ann-meta-tag ann-meta-tag--priority-${item.priority === 'urgent' ? 'high' : 'normal'}`}>{item.priority === 'urgent' ? 'High' : 'Normal'} priority</span>
                     </div>
                   </div>
-                  <span className="ann-date">{item.date}</span>
+                  <span className="ann-date">{new Date(item.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                 </div>
               ))
             )}

@@ -135,8 +135,7 @@ export const AdminDashboard = () => {
     { id: 10, student: 'Ravi Shankar', request: 'IoT Development Framework Documentation', date: '22 Feb 2026', status: 'Rejected' },
   ];
 
-  // Merge student-submitted requests from localStorage with defaults
-  const [resourceRequests, setResourceRequests] = useState(() => {
+  const buildResourceRequests = () => {
     const savedRequests = getStudentRequests();
     const studentMapped = savedRequests.map((r) => ({
       id: r.id,
@@ -149,7 +148,32 @@ export const AdminDashboard = () => {
     const defaultIds = new Set(defaultRequests.map((r) => r.id));
     const uniqueStudentRequests = studentMapped.filter((r) => !defaultIds.has(r.id));
     return [...uniqueStudentRequests, ...defaultRequests];
-  });
+  };
+
+  // Merge student-submitted requests from localStorage with defaults
+  const [resourceRequests, setResourceRequests] = useState(buildResourceRequests);
+
+  useEffect(() => {
+    const syncRequests = () => setResourceRequests(buildResourceRequests());
+
+    // Keep admin requests list current when localStorage changes in other tabs
+    const handleStorage = (event) => {
+      if (event.key === 'eduLibrary-studentRequests') {
+        syncRequests();
+      }
+    };
+
+    // Refresh when admin tab regains focus
+    const handleFocus = () => syncRequests();
+
+    window.addEventListener('storage', handleStorage);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, []);
 
 
   useEffect(() => {

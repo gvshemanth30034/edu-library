@@ -772,20 +772,31 @@ export const ResourcesAnalytics = () => {
 
             {/* Stats for Requests - Premium */}
             <div className="admin-stats-grid">
-              <div className="heading-entrance admin-stat-card" style={{ animationDelay: '0ms' }}>
+              <button
+                type="button"
+                className="heading-entrance admin-stat-card cursor-pointer text-left"
+                style={{ animationDelay: '0ms' }}
+                onClick={() => navigate('/requests-log')}
+              >
                 <div className="stat-icon flex items-center justify-center rounded-xl bg-teal-50 text-teal-600 p-3 h-14 w-14"><Mail size={28} /></div>
                 <div className="stat-content">
                   <h3 className="heading-entrance heading-entrance-card heading-premium">Total Requests</h3>
                   <p className="stat-number">{totalRequests}</p>
                   <span className="stat-meta">All submissions</span>
                 </div>
-              </div>
+              </button>
               {requestStatusStats.map((stat, index) => {
                 const statusIcons = [<Clock size={28} />, <CheckCircle size={28} />, <XCircle size={28} />];
                 const statusColors = ['#f59e0b', '#10b981', '#ef4444'];
                 const statusBgs = ['bg-amber-50', 'bg-emerald-50', 'bg-red-50'];
                 return (
-                  <div key={stat.status} className="heading-entrance admin-stat-card" style={{ animationDelay: `${(index + 1) * 80}ms` }}>
+                  <button
+                    key={stat.status}
+                    type="button"
+                    className="heading-entrance admin-stat-card cursor-pointer text-left"
+                    style={{ animationDelay: `${(index + 1) * 80}ms` }}
+                    onClick={() => navigate(`/requests-log?status=${encodeURIComponent(stat.status)}`)}
+                  >
                     <div className={`stat-icon flex items-center justify-center rounded-xl p-3 h-14 w-14 ${statusBgs[index]}`}
                          style={{ color: statusColors[index] }}>
                       {statusIcons[index]}
@@ -795,7 +806,7 @@ export const ResourcesAnalytics = () => {
                       <p className="stat-number">{stat.count}</p>
                       <span className="stat-meta">{totalRequests > 0 ? ((stat.count / totalRequests) * 100).toFixed(1) : 0}%</span>
                     </div>
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -817,7 +828,7 @@ export const ResourcesAnalytics = () => {
               </div>
               <button
                 type="button"
-                onClick={() => navigate('/requests-log')}
+                onClick={() => navigate('/requests-log?status=Pending')}
                 className="analytics-action-btn mt-5"
               >
                 View pending requests

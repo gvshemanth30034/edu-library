@@ -5,6 +5,9 @@ import { SAVED_RESOURCES_DATA, DOWNLOADS_DATA } from '../data/studentResourcesDa
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
 import { getAdminResources } from '../utils/resourceStore.js';
+import { openResourceByType } from '../utils/resourceOpener.js';
+import { PDFs, Documents, Videos } from '../data/resourcesCatalog.js';
+import { getSortedAnnouncements } from '../utils/announcementsStore.js';
 
 /**
  * STUDENT DASHBOARD
@@ -41,6 +44,7 @@ export const StudentDashboard = () => {
   const [userName, setUserName] = useState('Student');
   const [activeNav, setActiveNav] = useState('overview');
   const [announcementsOpen, setAnnouncementsOpen] = useState(false);
+  const [announcements, setAnnouncements] = useState([]);
   const announcementsRef = useRef(null);
   const { language } = useLanguage();
 
@@ -59,6 +63,29 @@ export const StudentDashboard = () => {
     setUserRole(normalizedRole);
     setUserName(user.name || user.email || 'Student');
   }, [navigate]);
+
+  useEffect(() => {
+    const loadAnnouncements = () => {
+      console.log('announcements raw:', localStorage.getItem('announcements'));
+      setAnnouncements(getSortedAnnouncements(5));
+    };
+
+    loadAnnouncements();
+
+    const handleStorage = (event) => {
+      if (event.key === 'announcements') {
+        loadAnnouncements();
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+    window.addEventListener('focus', loadAnnouncements);
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('focus', loadAnnouncements);
+    };
+  }, []);
 
   // Close announcements dropdown when clicking outside
   useEffect(() => {
@@ -82,6 +109,128 @@ export const StudentDashboard = () => {
     return null;
   }
 
+  const normalizeTitle = (value) =>
+    String(value || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '');
+
+  const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  const containsKeyword = (text, keyword) => {
+    const normalizedText = String(text || '').toLowerCase();
+    const normalizedKeyword = String(keyword || '').toLowerCase().trim();
+    if (!normalizedKeyword) return false;
+
+    if (normalizedKeyword.length <= 3) {
+      const pattern = new RegExp(`\\b${escapeRegex(normalizedKeyword)}\\b`, 'i');
+      return pattern.test(normalizedText);
+    }
+
+    return normalizedText.includes(normalizedKeyword);
+  };
+
+  // Subject/topic -> dedicated PDF file mapping
+  const SUBJECT_PDF_MAP = {
+    'operating systems': '/files/pdfs/operating-systems-guide.pdf',
+    os: '/files/pdfs/operating-systems-guide.pdf',
+    'database management systems': '/files/pdfs/database-management-systems-guide.pdf',
+    dbms: '/files/pdfs/database-management-systems-guide.pdf',
+    'computer networks': '/files/pdfs/computer-networks-guide.pdf',
+    cn: '/files/pdfs/computer-networks-guide.pdf',
+    'artificial intelligence': '/files/pdfs/artificial-intelligence-guide.pdf',
+    ai: '/files/pdfs/artificial-intelligence-guide.pdf',
+    'software engineering': '/files/pdfs/software-engineering-guide.pdf',
+    se: '/files/pdfs/software-engineering-guide.pdf',
+  };
+
+  const getMappedSubjectPdfUrl = (resource) => {
+    const searchText = `${resource?.title || ''} ${resource?.subject || ''}`.toLowerCase();
+    const mapEntries = Object.entries(SUBJECT_PDF_MAP);
+
+    for (const [keyword, mappedUrl] of mapEntries) {
+      if (containsKeyword(searchText, keyword)) {
+        return mappedUrl;
+      }
+    }
+
+    return null;
+  };
+
+  const resolveResourceUrl = (resource) => {
+    if (resource?.url) return resource.url;
+
+    const titleKey = normalizeTitle(resource?.title);
+    const typeKey = String(resource?.type || '').toLowerCase();
+
+    // Use explicit subject mapping first for PDF-like resources.
+    if (typeKey !== 'video' && typeKey !== 'document') {
+      const mappedSubjectPdf = getMappedSubjectPdfUrl(resource);
+      if (mappedSubjectPdf) {
+        return mappedSubjectPdf;
+      }
+    }
+
+    if (typeKey === 'video') {
+      const matchedVideo = Videos.find((item) => {
+        const videoTitle = normalizeTitle(item.title);
+        return videoTitle.includes(titleKey) || titleKey.includes(videoTitle);
+      });
+      if (matchedVideo?.slug) {
+        return `/videos/${matchedVideo.slug}`;
+      }
+      return matchedVideo?.mediaUrl || null;
+    }
+
+    if (typeKey === 'document') {
+      const matchedDoc = Documents.find((item) => {
+        const docTitle = normalizeTitle(item.title);
+        return docTitle.includes(titleKey) || titleKey.includes(docTitle);
+      });
+      return matchedDoc?.url || null;
+    }
+
+    const matchedPdf = PDFs.find((item) => {
+      const pdfTitle = normalizeTitle(item.title);
+      return pdfTitle.includes(titleKey) || titleKey.includes(pdfTitle);
+    });
+    return matchedPdf?.url || null;
+  };
+
+  const getFallbackUrlByType = (type) => {
+    const typeKey = String(type || '').toLowerCase();
+    if (typeKey === 'video') {
+      return Videos[0]?.slug ? `/videos/${Videos[0].slug}` : Videos[0]?.mediaUrl || null;
+    }
+    if (typeKey === 'document') {
+      return Documents[0]?.url || null;
+    }
+    return PDFs[0]?.url || null;
+  };
+
+  const resolveSubjectSlug = (subject) => {
+    const normalized = String(subject || '').toLowerCase();
+
+    if (normalized.includes('computer science')) return 'computer-science';
+    if (normalized.includes('electronics')) return 'electronics';
+    if (normalized.includes('mathematics')) return 'mathematics';
+    if (normalized.includes('physics')) return 'physics';
+    if (normalized.includes('civil')) return 'civil-engineering';
+    if (normalized.includes('mechanical')) return 'engineering';
+    if (normalized.includes('engineering')) return 'engineering';
+
+    return null;
+  };
+
+  const handleSubjectClick = (subject) => {
+    const slug = resolveSubjectSlug(subject);
+    if (!slug) {
+      window.alert('Subject details are not available');
+      return;
+    }
+
+    navigate(`/category/${slug}`);
+  };
+
   // Load admin-added resources so they reflect on student side
   const adminResources = getAdminResources();
   const adminMapped = adminResources.map((r) => ({
@@ -90,20 +239,23 @@ export const StudentDashboard = () => {
     subject: r.department,
     type: r.type,
     lastAccessed: r.addedAt || 'Recently added',
-    url: null,
+    url: resolveResourceUrl(r) || getFallbackUrlByType(r.type),
   }));
 
   // Default resources + admin-added resources
   const defaultResources = [
-    { id: 1, title: 'Data Structures and Algorithms', subject: 'Computer Science', type: 'PDF', lastAccessed: '2 hours ago', url: 'https://www.orimi.com/pdf-test.pdf' },
+    { id: 1, title: 'Data Structures and Algorithms', subject: 'Computer Science', type: 'PDF', lastAccessed: '2 hours ago', url: '/files/pdfs/data-structures-algorithms-notes.pdf' },
     { id: 2, title: 'Thermodynamics Fundamentals', subject: 'Mechanical Engg.', type: 'Video', lastAccessed: '5 hours ago', url: 'https://www.youtube.com/watch?v=4LqZdkkBDas' },
-    { id: 3, title: 'Digital Signal Processing', subject: 'Electronics', type: 'PDF', lastAccessed: '1 day ago', url: 'https://web.eecs.utk.edu/~hqi/teaching/ece505f15/lecture01_intro.pdf' },
+    { id: 3, title: 'Digital Signal Processing', subject: 'Electronics', type: 'PDF', lastAccessed: '1 day ago', url: '/files/pdfs/digital-signal-processing-notes.pdf' },
     { id: 4, title: 'Software Engineering Principles', subject: 'Computer Science', type: 'Video', lastAccessed: '2 days ago', url: 'https://www.youtube.com/watch?v=O753uuutqH8' },
     { id: 5, title: 'Machine Learning Foundations', subject: 'Computer Science', type: 'PDF', lastAccessed: '3 hours ago', url: null },
     { id: 6, title: 'Linear Algebra for Engineers', subject: 'Mathematics', type: 'PDF', lastAccessed: '1 day ago', url: null },
     { id: 7, title: 'Computer Networks Masterclass', subject: 'Computer Science', type: 'Video', lastAccessed: '4 hours ago', url: null },
     { id: 8, title: 'Fluid Mechanics Essentials', subject: 'Mechanical Engg.', type: 'Document', lastAccessed: '2 days ago', url: null },
-  ];
+  ].map((resource) => ({
+    ...resource,
+    url: resolveResourceUrl(resource) || resource.url || getFallbackUrlByType(resource.type),
+  }));
 
   // Merge: admin-added resources on top, then defaults (avoid duplicates by title)
   const defaultTitles = new Set(defaultResources.map((r) => r.title));
@@ -150,17 +302,11 @@ export const StudentDashboard = () => {
       lastAccessed: '2 days ago',
       url: null,
     },
-  ];
-
-  const announcements = [
-    { date: '26 Feb 2026', message: 'End-semester exam schedule released for all departments', priority: 'high' },
-    { date: '25 Feb 2026', message: 'New video series on Cloud Computing is now available', priority: 'normal' },
-    { date: '24 Feb 2026', message: 'Library will remain closed on 28 Feb for maintenance', priority: 'medium' },
-    { date: '23 Feb 2026', message: 'Updated syllabus materials uploaded for Semester 4 CS', priority: 'high' },
-    { date: '22 Feb 2026', message: 'Research paper submission portal opens next week', priority: 'high' },
-    { date: '20 Feb 2026', message: 'Guest lecture on AI Ethics — Register before 25 Feb', priority: 'normal' },
-    { date: '18 Feb 2026', message: 'Mid-term grades published for all departments', priority: 'high' },
-  ];
+  ].map((item) => ({
+    ...item,
+    type: item.url?.includes('youtube') ? 'Video' : 'PDF',
+    url: item.url || resolveResourceUrl({ title: item.title, type: item.url?.includes('youtube') ? 'Video' : 'PDF' }) || getFallbackUrlByType(item.url?.includes('youtube') ? 'Video' : 'PDF'),
+  }));
 
   return (
     <div className="dashboard-wrapper dashboard-wrapper--bottom-nav">
@@ -185,7 +331,7 @@ export const StudentDashboard = () => {
                   <Bell size={18} />
                   {/* High-priority badge */}
                   <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-white text-[9px] font-bold leading-none shadow">
-                    {announcements.filter(a => a.priority === 'high').length}
+                    {announcements.filter(a => a.priority === 'urgent').length}
                   </span>
                 </button>
 
@@ -198,7 +344,7 @@ export const StudentDashboard = () => {
                         <Bell size={15} className="text-orange-600" />
                         <span className="font-semibold text-slate-800 text-sm">{translate('announcements', language)}</span>
                         <span className="inline-flex items-center justify-center h-5 px-1.5 rounded-full bg-red-500 text-white text-[10px] font-bold">
-                          {announcements.filter(a => a.priority === 'high').length} {translate('urgent', language)}
+                          {announcements.filter(a => a.priority === 'urgent').length} {translate('urgent', language)}
                         </span>
                       </div>
                       <button
@@ -211,14 +357,17 @@ export const StudentDashboard = () => {
                     </div>
                     {/* List */}
                     <ul className="divide-y divide-gray-100 max-h-72 overflow-y-auto">
-                      {announcements.map((a, idx) => (
-                        <li key={idx} className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+                      {announcements.length === 0 ? (
+                        <li className="px-4 py-5 text-sm text-slate-500">No announcements available</li>
+                      ) : announcements.map((a) => (
+                        <li key={a.id} className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
                           <span className={`mt-0.5 flex-shrink-0 h-2.5 w-2.5 rounded-full ${
-                            a.priority === 'high' ? 'bg-red-500' : a.priority === 'medium' ? 'bg-orange-400' : 'bg-teal-400'
+                            a.priority === 'urgent' ? 'bg-red-500' : 'bg-teal-400'
                           }`} />
                           <div className="flex-1 min-w-0">
+                            <p className="text-xs font-semibold text-slate-800 mb-0.5">{a.title}</p>
                             <p className="text-sm text-slate-700 leading-snug">{a.message}</p>
-                            <p className="text-xs text-slate-400 mt-0.5">{a.date}</p>
+                            <p className="text-xs text-slate-400 mt-0.5">{new Date(a.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
                           </div>
                         </li>
                       ))}
@@ -373,15 +522,23 @@ export const StudentDashboard = () => {
                 {recentResources.map((resource, idx) => (
                   <tr key={idx}>
                     <td className="resource-title">
-                      {resource.url ? (
-                        <a href={resource.url} target="_blank" rel="noopener noreferrer" className="cursor-pointer hover:underline">
-                          {resource.title}
-                        </a>
-                      ) : (
-                        resource.title
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => openResourceByType(resource)}
+                        className="cursor-pointer hover:underline bg-transparent border-0 p-0 text-left"
+                      >
+                        {resource.title}
+                      </button>
                     </td>
-                    <td>{resource.subject}</td>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => handleSubjectClick(resource.subject)}
+                        className="text-teal-300 hover:text-teal-200 hover:underline transition-colors bg-transparent border-0 p-0 text-left"
+                      >
+                        {resource.subject}
+                      </button>
+                    </td>
                     <td><span className="resource-badge">{resource.type}</span></td>
                     <td className="text-muted">{resource.lastAccessed}</td>
                   </tr>
@@ -407,7 +564,7 @@ export const StudentDashboard = () => {
                 <div className="flex items-center justify-between mt-3">
                   <p className="learning-meta">{translate('lastAccessedColon', language)} {item.lastAccessed}</p>
                   <button
-                    onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
+                    onClick={() => openResourceByType(item)}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-600 text-white text-xs font-semibold hover:bg-teal-700 active:bg-teal-800 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1"
                     aria-label={`Continue ${item.title}`}
                   >

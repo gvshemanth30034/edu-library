@@ -1,12 +1,15 @@
 import React, { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, MessageSquare, Clock, CheckCircle2, XCircle, Inbox } from 'lucide-react';
 import { getStudentRequests, saveStudentRequests } from '../utils/resourceStore.js';
 
 export const RequestsLog = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const queryStatus = new URLSearchParams(location.search).get('status');
+  const initialStatusFilter = ['Pending', 'Approved', 'Rejected'].includes(queryStatus) ? queryStatus : 'All';
+  const [statusFilter, setStatusFilter] = useState(initialStatusFilter);
   const [departmentFilter, setDepartmentFilter] = useState('All');
 
   const departmentOptions = ['Computer Science', 'Electronics', 'Mechanical', 'Civil', 'Mathematics'];
