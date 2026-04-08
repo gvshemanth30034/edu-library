@@ -43,6 +43,7 @@ export const Navbar = () => {
     localStorage.removeItem('uiExtension-user');
     localStorage.removeItem('uiExtension-isLoggedIn');
     localStorage.removeItem('uiExtension-userRole');
+    localStorage.removeItem('uiExtension-authToken');
     setIsLoggedIn(false);
     setUserName('');
     setUserRole('');

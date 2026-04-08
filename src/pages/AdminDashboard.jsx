@@ -49,6 +49,7 @@ export const AdminDashboard = () => {
     localStorage.removeItem('uiExtension-user');
     localStorage.removeItem('uiExtension-isLoggedIn');
     localStorage.removeItem('uiExtension-userRole');
+    localStorage.removeItem('uiExtension-authToken');
     navigate('/');
   };
 

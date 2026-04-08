@@ -3,13 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, CheckCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
+import { registerWithBackend } from '../services/authApi.js';
 
 /**
- * FRONTEND-ONLY REGISTER PAGE
- * - No backend APIs
- * - Validates form locally
- * - Stores dummy user in localStorage
- * - Redirects to login after registration
+ * Register page wired to backend authentication APIs.
  */
 
 export const RegisterPage = () => {
@@ -36,8 +33,8 @@ export const RegisterPage = () => {
     setError(''); // Clear error on input change
   };
 
-  // Handle registration submission (frontend only)
-  const handleSubmit = (e) => {
+  // Handle registration submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
@@ -64,31 +61,26 @@ export const RegisterPage = () => {
       return;
     }
 
-    // Simulate registration delay
     setIsLoading(true);
-    setTimeout(() => {
-      // Create new user object
-      const newUser = {
-        id: Math.random().toString(36).substr(2, 9),
+
+    try {
+      await registerWithBackend({
         name: formData.name,
         email: formData.email,
-        password: formData.password, // In real app, NEVER store plaintext
-        registeredAt: new Date().toISOString(),
-      };
-
-      // Store in localStorage
-      const existingUsers = JSON.parse(localStorage.getItem('uiExtension-users') || '[]');
-      existingUsers.push(newUser);
-      localStorage.setItem('uiExtension-users', JSON.stringify(existingUsers));
-
-      setIsLoading(false);
+        password: formData.password,
+        role: formData.role,
+      });
       setSuccess(translate('accountCreated', language));
+    } catch (apiError) {
+      setError(apiError?.message || 'Registration failed');
+      setIsLoading(false);
+      return;
+    }
 
-      // Redirect to login after 1.5 seconds
-      setTimeout(() => {
-        navigate('/login');
-      }, 1500);
-    }, 600);
+    setIsLoading(false);
+    setTimeout(() => {
+      navigate('/login');
+    }, 1500);
   };
 
   return (

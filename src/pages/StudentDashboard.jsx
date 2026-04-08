@@ -8,6 +8,7 @@ import { getAdminResources } from '../utils/resourceStore.js';
 import { openResourceByType } from '../utils/resourceOpener.js';
 import { PDFs, Documents, Videos } from '../data/resourcesCatalog.js';
 import { getSortedAnnouncements } from '../utils/announcementsStore.js';
+import { fetchStudentDashboardData } from '../services/studentDashboardApi.js';
 
 /**
  * STUDENT DASHBOARD
@@ -44,6 +45,11 @@ export const StudentDashboard = () => {
   const [userName, setUserName] = useState('Student');
   const [activeNav, setActiveNav] = useState('overview');
   const [announcements, setAnnouncements] = useState([]);
+  const [savedCount, setSavedCount] = useState(SAVED_RESOURCES_DATA.length);
+  const [downloadsCount, setDownloadsCount] = useState(DOWNLOADS_DATA.length);
+  const [apiRecentResources, setApiRecentResources] = useState([]);
+  const [apiLearningItems, setApiLearningItems] = useState([]);
+  const [apiDepartments, setApiDepartments] = useState([]);
   const { language } = useLanguage();
 
   useEffect(() => {
@@ -86,6 +92,57 @@ export const StudentDashboard = () => {
     };
   }, []);
 
+  useEffect(() => {
+    let isActive = true;
+
+    const loadDashboardData = async () => {
+      const user = JSON.parse(localStorage.getItem('uiExtension-user') || '{}');
+      const dashboard = await fetchStudentDashboardData();
+
+      if (!isActive || !dashboard) {
+        return;
+      }
+
+      if (dashboard?.student?.name) {
+        setUserName(dashboard.student.name);
+      }
+
+      const nextSavedCount = Number(dashboard?.metrics?.savedResources);
+      if (!Number.isNaN(nextSavedCount)) {
+        setSavedCount(nextSavedCount);
+      }
+
+      const nextDownloadsCount = Number(dashboard?.metrics?.downloads);
+      if (!Number.isNaN(nextDownloadsCount)) {
+        setDownloadsCount(nextDownloadsCount);
+      }
+
+      if (Array.isArray(dashboard?.recentResources) && dashboard.recentResources.length > 0) {
+        setApiRecentResources(dashboard.recentResources);
+      }
+
+      if (Array.isArray(dashboard?.learningItems) && dashboard.learningItems.length > 0) {
+        setApiLearningItems(dashboard.learningItems);
+      }
+
+      if (Array.isArray(dashboard?.departments) && dashboard.departments.length > 0) {
+        setApiDepartments(dashboard.departments);
+      }
+
+      if (Array.isArray(dashboard?.announcements) && dashboard.announcements.length > 0) {
+        setAnnouncements(dashboard.announcements);
+      }
+    };
+
+    if (isLoggedIn && userRole === 'student') {
+      loadDashboardData();
+    }
+
+    return () => {
+      isActive = false;
+    };
+  }, [isLoggedIn, userRole]);
+
   // Close announcements dropdown when clicking outside
   /*
   useEffect(() => {
@@ -103,6 +160,7 @@ export const StudentDashboard = () => {
     localStorage.removeItem('uiExtension-isLoggedIn');
     localStorage.removeItem('uiExtension-user');
     localStorage.removeItem('uiExtension-userRole');
+    localStorage.removeItem('uiExtension-authToken');
     navigate('/');
   };
 
@@ -309,6 +367,10 @@ export const StudentDashboard = () => {
     url: item.url || resolveResourceUrl({ title: item.title, type: item.url?.includes('youtube') ? 'Video' : 'PDF' }) || getFallbackUrlByType(item.url?.includes('youtube') ? 'Video' : 'PDF'),
   }));
 
+  const displayedRecentResources = apiRecentResources.length > 0 ? apiRecentResources : recentResources;
+  const displayedLearningItems = apiLearningItems.length > 0 ? apiLearningItems : learningItems;
+  const displayedDepartments = apiDepartments.length > 0 ? apiDepartments : departments;
+
   return (
     <div className="dashboard-wrapper dashboard-wrapper--bottom-nav">
       {/* Main Content */}
@@ -440,13 +502,13 @@ export const StudentDashboard = () => {
           />
           <DashboardActionCard
             title={translate('savedAction', language)}
-            subtitle={`${SAVED_RESOURCES_DATA.length} ${translate('itemsSaved', language)}`}
+            subtitle={`${savedCount} ${translate('itemsSaved', language)}`}
             icon={<Save className="w-7 h-7 text-slate-600 group-hover:text-blue-600 transition-colors" />}
             onClick={() => navigate('/saved-resources')}
           />
           <DashboardActionCard
             title={translate('downloadsAction', language)}
-            subtitle={`${DOWNLOADS_DATA.length} ${translate('filesDownloaded', language)}`}
+            subtitle={`${downloadsCount} ${translate('filesDownloaded', language)}`}
             icon={<Download className="w-7 h-7 text-slate-600 group-hover:text-blue-600 transition-colors" />}
             onClick={() => navigate('/downloads')}
           />
@@ -472,7 +534,7 @@ export const StudentDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {recentResources.map((resource, idx) => (
+                {displayedRecentResources.map((resource, idx) => (
                   <tr key={idx}>
                     <td className="resource-title">
                       <button
@@ -505,7 +567,7 @@ export const StudentDashboard = () => {
         <section className="dashboard-section">
           <h2 className="section-title heading-entrance heading-premium">{translate('ongoingLearning', language)}</h2>
           <div className="learning-cards">
-            {learningItems.map((item, idx) => (
+            {displayedLearningItems.map((item, idx) => (
               <div key={idx} className="learning-card">
                 <div className="learning-header">
                   <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">{item.title}</h4>
@@ -543,7 +605,7 @@ export const StudentDashboard = () => {
             </button>
           </div>
           <div className="department-grid">
-            {departments.map((dept, idx) => (
+            {displayedDepartments.map((dept, idx) => (
               <div key={idx} className="department-card">
                 <h4 className="heading-entrance heading-entrance-card font-semibold tracking-[-0.01em]">{dept.name}</h4>
                 <p className="dept-count">{dept.count} {translate('resourcesCount', language)}</p>
