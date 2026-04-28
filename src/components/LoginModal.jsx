@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LogIn, Mail, Lock, Eye, EyeOff, X, UserPlus, KeyRound, GraduationCap, ShieldCheck, Loader2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
-import { loginWithBackend } from '../services/authApi.js';
+import { authStorage, loginUser } from '../utils/authApi.js';
 
 /**
  * Login Modal - Modern Animated Design
  * Teal/green theme matching the Digital Library branding
  */
 export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
+  const navigate = useNavigate();
   const { language } = useLanguage();
   const t = (key) => translate(key, language);
   const [formData, setFormData] = useState({
@@ -53,33 +55,6 @@ export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
     setError('');
   };
 
-  const persistSession = (user, token) => {
-    const normalizedRole = String(user?.role || 'student').toLowerCase();
-    const userSession = {
-      id: user?.id || Math.random().toString(36).substr(2, 9),
-      email: user?.email || formData.email,
-      name: user?.name || 'Student',
-      role: normalizedRole,
-      token: token || null,
-      isLoggedIn: true,
-      loginTime: new Date().toISOString(),
-    };
-
-    localStorage.setItem('uiExtension-user', JSON.stringify(userSession));
-    localStorage.setItem('uiExtension-isLoggedIn', 'true');
-    localStorage.setItem('uiExtension-userRole', normalizedRole);
-
-    if (token) {
-      localStorage.setItem('uiExtension-authToken', token);
-    } else {
-      localStorage.removeItem('uiExtension-authToken');
-    }
-
-    if (formData.keepLoggedIn) {
-      localStorage.setItem('uiExtension-rememberMe', 'true');
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -90,38 +65,38 @@ export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
     if (formData.password.length < 6) { setError(t('passwordMinLength')); return; }
 
     setIsLoading(true);
-
     try {
-      const result = await loginWithBackend(formData.email, formData.password);
-      persistSession(result?.user, result?.token);
+      const response = await loginUser(formData.email.trim(), formData.password);
+      const normalizedRole = authStorage.saveSession(response);
+
+      if (formData.keepLoggedIn) {
+        localStorage.setItem('uiExtension-rememberMe', 'true');
+      }
       setSuccessLogin(true);
       setTimeout(() => {
         onClose();
-        window.location.href = String(result?.user?.role || 'student') === 'admin' ? '/admin-dashboard' : '/student-dashboard';
+        window.location.href = normalizedRole === 'admin' ? '/admin-dashboard' : '/student-dashboard';
       }, 700);
-    } catch (backendError) {
-      setError(backendError?.message || t('emailNotFound'));
+    } catch (err) {
+      setError(err.message || t('emailNotFound'));
     } finally {
       setIsLoading(false);
     }
   };
 
-  const createDemoSession = async (role) => {
-    const credentials = role === 'admin'
-      ? { email: 'demo.admin@library.local', password: 'Admin@123' }
-      : { email: 'demo.student@library.local', password: 'Student@123' };
+  const createDemoSession = (role) => {
+    const demoSession = {
+      id: Math.random().toString(36).substr(2, 9),
+      email: `demo.${role}@library.local`,
+      name: role === 'admin' ? 'Admin Demo' : 'Student Demo',
+      role,
+      isLoggedIn: true,
+      loginTime: new Date().toISOString(),
+    };
 
-    setIsLoading(true);
-    try {
-      const result = await loginWithBackend(credentials.email, credentials.password);
-      persistSession(result?.user, result?.token);
-    } catch (backendError) {
-      setError(backendError?.message || 'Demo login failed');
-      setIsLoading(false);
-      return;
-    } finally {
-      setIsLoading(false);
-    }
+    localStorage.setItem('uiExtension-user', JSON.stringify(demoSession));
+    localStorage.setItem('uiExtension-isLoggedIn', 'true');
+    localStorage.setItem('uiExtension-userRole', role);
 
     setSuccessLogin(true);
     setTimeout(() => {
@@ -293,9 +268,17 @@ export const LoginModal = ({ isOpen, onClose, onRecoveryClick }) => {
             {/* Register link */}
             <p className="lm-register-text">
               {t('noAccount')}{' '}
-              <a href="/register" className="lm-register-link">
+              <button
+                type="button"
+                className="lm-register-link"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                  navigate('/register');
+                }}
+              >
                 <UserPlus size={14} /> {t('createOne')}
-              </a>
+              </button>
             </p>
           </form>
         )}

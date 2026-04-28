@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
+import { authStorage, loginUser } from '../utils/authApi.js';
 
 /**
- * FRONTEND-ONLY LOGIN PAGE
- * - No backend authentication
- * - Stores fake user session in localStorage
- * - Simulates login with basic validation
+ * LOGIN PAGE
+ * - Calls backend auth API
+ * - Stores session/token in existing localStorage keys
  */
 
 export const LoginPage = () => {
@@ -37,8 +37,8 @@ export const LoginPage = () => {
     navigate(role === 'admin' ? '/admin-dashboard' : '/student-dashboard');
   };
 
-  // Handle login form submission (frontend only)
-  const handleSubmit = (e) => {
+  // Handle login form submission
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -52,36 +52,16 @@ export const LoginPage = () => {
       return;
     }
 
-    // Simulate login delay (as if calling API)
     setIsLoading(true);
-    setTimeout(() => {
-      // ROLE SYSTEM: Look up user from registered users or create default
-      const existingUsers = JSON.parse(localStorage.getItem('uiExtension-users') || '[]');
-      const registeredUser = existingUsers.find(u => u.email === email);
-      
-      // Extract role from registered user data, or default to "user"
-      const normalizedRole = registeredUser?.role === 'user' ? 'student' : (registeredUser?.role || 'student');
-      const userRole = normalizedRole;
-
-      // Create user session object
-      const fakeUser = {
-        id: Math.random().toString(36).substr(2, 9),
-        email,
-        name: registeredUser?.name || email.split('@')[0],
-        role: userRole, // ROLE SYSTEM: Store role
-        isLoggedIn: true,
-        loginTime: new Date().toISOString(),
-      };
-
-      // Store session in localStorage
-      localStorage.setItem('uiExtension-user', JSON.stringify(fakeUser));
-      localStorage.setItem('uiExtension-isLoggedIn', 'true');
-      localStorage.setItem('uiExtension-userRole', userRole); // ROLE SYSTEM: Store role separately
-
-      setIsLoading(false);
-      // Redirect to role dashboard
+    try {
+      const response = await loginUser(email.trim(), password);
+      const userRole = authStorage.saveSession(response);
       navigate(userRole === 'admin' ? '/admin-dashboard' : '/student-dashboard');
-    }, 600);
+    } catch (err) {
+      setError(err.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

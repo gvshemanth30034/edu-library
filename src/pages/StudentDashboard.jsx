@@ -8,7 +8,7 @@ import { getAdminResources } from '../utils/resourceStore.js';
 import { openResourceByType } from '../utils/resourceOpener.js';
 import { PDFs, Documents, Videos } from '../data/resourcesCatalog.js';
 import { getSortedAnnouncements } from '../utils/announcementsStore.js';
-import { fetchStudentDashboardData } from '../services/studentDashboardApi.js';
+import { fetchStudentDashboard } from '../utils/authApi.js';
 
 /**
  * STUDENT DASHBOARD
@@ -43,6 +43,7 @@ export const StudentDashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('');
   const [userName, setUserName] = useState('Student');
+  const [dashboardData, setDashboardData] = useState(null);
   const [activeNav, setActiveNav] = useState('overview');
   const [announcements, setAnnouncements] = useState([]);
   const [savedCount, setSavedCount] = useState(SAVED_RESOURCES_DATA.length);
@@ -96,8 +97,12 @@ export const StudentDashboard = () => {
     let isActive = true;
 
     const loadDashboardData = async () => {
-      const user = JSON.parse(localStorage.getItem('uiExtension-user') || '{}');
-      const dashboard = await fetchStudentDashboardData();
+      const token = localStorage.getItem('uiExtension-authToken');
+      if (!token) {
+        return;
+      }
+
+      const dashboard = await fetchStudentDashboard(token);
 
       if (!isActive || !dashboard) {
         return;
@@ -319,9 +324,14 @@ export const StudentDashboard = () => {
   // Merge: admin-added resources on top, then defaults (avoid duplicates by title)
   const defaultTitles = new Set(defaultResources.map((r) => r.title));
   const uniqueAdminResources = adminMapped.filter((r) => !defaultTitles.has(r.title));
-  const recentResources = [...uniqueAdminResources, ...defaultResources];
+  const backendRecentResources = dashboardData?.recentResources?.length
+    ? dashboardData.recentResources
+    : [];
+  const recentResources = backendRecentResources.length > 0
+    ? backendRecentResources
+    : [...uniqueAdminResources, ...defaultResources];
 
-  const departments = [
+  const defaultDepartments = [
     { name: 'Computer Science',    count: 156, slug: 'computer-science' },
     { name: 'Electronics & Comm.', count: 98,  slug: 'electronics' },
     { name: 'Mechanical Engg.',    count: 84,  slug: 'mechanical' },
@@ -330,7 +340,7 @@ export const StudentDashboard = () => {
     { name: 'Physics',             count: 53,  slug: 'physics' },
   ];
 
-  const learningItems = [
+  const defaultLearningItems = [
     {
       title: 'Data Structures',
       progress: 60,
@@ -366,6 +376,33 @@ export const StudentDashboard = () => {
     type: item.url?.includes('youtube') ? 'Video' : 'PDF',
     url: item.url || resolveResourceUrl({ title: item.title, type: item.url?.includes('youtube') ? 'Video' : 'PDF' }) || getFallbackUrlByType(item.url?.includes('youtube') ? 'Video' : 'PDF'),
   }));
+
+  const formatAnnouncementDate = (value) => {
+    if (!value) return 'Recently';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return 'Recently';
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  };
+
+  const defaultAnnouncements = [
+    { date: '26 Feb 2026', message: 'End-semester exam schedule released for all departments', priority: 'high' },
+    { date: '25 Feb 2026', message: 'New video series on Cloud Computing is now available', priority: 'normal' },
+    { date: '24 Feb 2026', message: 'Library will remain closed on 28 Feb for maintenance', priority: 'medium' },
+    { date: '23 Feb 2026', message: 'Updated syllabus materials uploaded for Semester 4 CS', priority: 'high' },
+    { date: '22 Feb 2026', message: 'Research paper submission portal opens next week', priority: 'high' },
+    { date: '20 Feb 2026', message: 'Guest lecture on AI Ethics — Register before 25 Feb', priority: 'normal' },
+    { date: '18 Feb 2026', message: 'Mid-term grades published for all departments', priority: 'high' },
+  ];
+
+  const learningItems = apiLearningItems.length > 0 ? apiLearningItems : defaultLearningItems;
+  const departments = apiDepartments.length > 0 ? apiDepartments : defaultDepartments;
+  const announcementsToDisplay = announcements.length > 0
+    ? announcements
+    : defaultAnnouncements;
 
   const displayedRecentResources = apiRecentResources.length > 0 ? apiRecentResources : recentResources;
   const displayedLearningItems = apiLearningItems.length > 0 ? apiLearningItems : learningItems;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { registerUser } from '../utils/authApi.js';
 
 /**
  * Registration Page
@@ -91,7 +92,7 @@ export const RegistrationPage = () => {
     setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
@@ -138,35 +139,24 @@ export const RegistrationPage = () => {
       return;
     }
 
-    // Simulate registration
     setIsLoading(true);
-    setTimeout(() => {
-      const newUser = {
-        id: Math.random().toString(36).substr(2, 9),
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+    try {
+      await registerUser({
         name: `${formData.firstName} ${formData.lastName || ''}`.trim(),
-        email: formData.email,
+        email: formData.email.trim(),
         password: formData.password,
-        dob: formData.dob,
-        gender: formData.gender,
-        state: formData.state,
-        district: formData.district,
         role: formData.role,
-        registeredAt: new Date().toISOString(),
-      };
+      });
 
-      const users = JSON.parse(localStorage.getItem('uiExtension-users') || '[]');
-      users.push(newUser);
-      localStorage.setItem('uiExtension-users', JSON.stringify(users));
-
-      setIsLoading(false);
       setSuccess('Account created successfully! Redirecting to login...');
-
       setTimeout(() => {
-        navigate('/');
-      }, 2000);
-    }, 600);
+        navigate('/login');
+      }, 1200);
+    } catch (err) {
+      setError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleReset = () => {
