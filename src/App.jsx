@@ -96,7 +96,7 @@ function App() {
         {/* Register Page - Redirect to home if already logged in */}
         <Route
           path="/register"
-          element={isLoggedIn ? <Navigate to="/" replace /> : <RegistrationPage />}
+          element={<RegistrationPage />}
         />
 
         {/* Browse Catalogs - Always accessible */}

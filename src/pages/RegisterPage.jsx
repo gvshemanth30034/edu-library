@@ -3,10 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, CheckCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { translate } from '../translations/index.js';
+<<<<<<< HEAD
 import { registerWithBackend } from '../services/authApi.js';
 
 /**
  * Register page wired to backend authentication APIs.
+=======
+import { registerUser } from '../utils/authApi.js';
+
+/**
+ * REGISTER PAGE
+ * - Uses backend register API
+ * - Keeps existing UX and redirection
+>>>>>>> 12c7bbf (Connect frontend to backend auth and dashboard APIs)
  */
 
 export const RegisterPage = () => {
@@ -62,6 +71,7 @@ export const RegisterPage = () => {
     }
 
     setIsLoading(true);
+<<<<<<< HEAD
 
     try {
       await registerWithBackend({
@@ -81,6 +91,25 @@ export const RegisterPage = () => {
     setTimeout(() => {
       navigate('/login');
     }, 1500);
+=======
+    try {
+      await registerUser({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
+        role: formData.role,
+      });
+
+      setSuccess(translate('accountCreated', language));
+      setTimeout(() => {
+        navigate('/login');
+      }, 1200);
+    } catch (err) {
+      setError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+>>>>>>> 12c7bbf (Connect frontend to backend auth and dashboard APIs)
   };
 
   return (
